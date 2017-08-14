@@ -1,0 +1,231 @@
+/*
+Theme Name: URnext WordPress Theme
+Author: Yoeri Dekker
+Description: A lean and mean one-page theme for WordPress
+Version: 0.0.1
+Tags: one page, one-page
+*/
+
+/*
+    Reset CSS
+    http://meyerweb.com/eric/tools/css/reset/ 
+    v2.0 | 20110126
+    License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+body.logged-in .fixed-top,
+body.logged-in .sticky-top{
+    /*top:32px;*/
+}
+
+/* System Fonts as used by GitHub */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: 100;
+}
+/* menu */
+.toggle-button {
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    margin: 30px 0;
+    height: 21px;
+    width: 30px;
+    cursor: pointer;
+    z-index: 3;
+    float: right;
+}
+
+.bar {
+    background-color:rgba(0,0,0,0.9);
+    display: block;
+    width: 100%;
+    height: 2px;
+    border: 0;
+    -webkit-transition: all .35s ease;
+    transition: all .35s ease;
+}
+.bar + .bar {
+    margin-top: 7px;
+}
+.bar .middle {
+    top: 11px;
+}
+.bar .bottom {
+    top: 22px;
+}
+.toggle-button:hover {
+    opacity: .7;
+}
+.toggle-active .bar {
+    background-color: #000;
+}
+.toggle-active .top {
+    -webkit-transform: translateY(6px) translateX(0) rotate(45deg);
+}
+.toggle-active .middle {
+   opacity: 0;
+}
+.toggle-active .bottom {
+    -webkit-transform: translateY(-12px) translateX(0) rotate(-45deg);
+}
+div#particles-js{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.1);
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.inset-content{
+    padding-top:120px;
+    padding-bottom: 60px;
+}
+div.content-panel{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+div.content-panel:nth-child(even) {
+    background: #f60;
+}
+
+div.content-panel.home{
+    background: url(http://agnisites.com/fortune/demo17/wp-content/uploads/sites/18/2016/10/ea9zg7hkfxq-geoffrey-arduini.jpg);
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.overlay {
+    position: fixed;
+    background: rgba(255,255,255,0.99);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    z-index: 1029;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: opacity .35s, visibility .35s, height .35s;
+}
+.nav-active {
+    opacity: 1;
+    visibility: visible;
+    height: 100%;
+/*    max-height: 340px;*/
+}
+.overlay ul {
+    display: block;
+    position: relative;
+    top: 100px;
+    left: 0;
+    font-size: 40px;
+    text-align: center;
+    list-style: none;
+    padding: 0;
+}
+.overlay ul li {
+    display: none;
+}
+.overlay ul li a {
+    color: #000;
+    font-weight: 100;
+    text-decoration: none;
+}
+/**/
+.pager {
+	position:fixed;
+	right:20px;
+	top: 50%;
+    transform: translateY(-50%);
+	font-size:1.4em;
+	z-index: 10;
+}
+.pager a {
+	display:block;
+	height:20px;
+	margin-bottom:5px;
+	color: #000;
+	position:relative;
+	padding:4px;
+}
+.pager a.active:after {
+	box-shadow:inset 0 0 0 5px;
+}
+.pager a .hover-text {
+    position: absolute;
+    right: 5px;
+    top: 0px;
+    font-size: 13px;
+    font-weight: 100;
+    transition: opacity 0.5s ease;
+    padding-right: 15px;
+    opacity: 0;
+    min-width: 100px;
+    text-align: right;
+}
+.pager a:hover .hover-text {
+	opacity: 1;
+}
+.pager a:after {
+	-webkit-transition:box-shadow 0.5s ease;
+	transition:box-shadow 0.5s ease;
+	width:10px;
+	height:10px;
+	display: block;
+	border:1px solid;
+	border-radius:50%;
+	content:'';
+	position: absolute;
+	margin:auto;
+	top:0;
+	right:4px;
+	bottom:0;
+}
