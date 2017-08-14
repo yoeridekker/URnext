@@ -6,7 +6,7 @@ get_header();
 <div class="content-panel home" data-section-name="Home">
     <!-- particles.js container -->
     <div id="particles-js"></div>
-    <div class="container inset-content">
+    <div class="container inset-content animated slideInLeft">
         <div class="row">
             <div class="col-md-6">
                 Hello World!
