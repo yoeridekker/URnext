@@ -1,15 +1,24 @@
 
+new WOW().init();
+
+jQuery(window).on('load', function(){
+    jQuery("#siteloader").fadeOut(1000);
+});
 
 jQuery( document ).ready( function($){
+  
     $.scrollify({
         section : ".content-panel",
-        scrollbars:false,
+        scrollbars: true,
+        offset:10,
         before:function(i,panels) {
             var ref = panels[i].attr("data-section-name");
             $(".pager .active").removeClass("active");
             $(".pager").find("a[href=\"#" + ref + "\"]").addClass("active");
         },
+        
         afterRender:function() {
+            
             var pager = "<ul class=\"pager\">";
             var activeClass = "";
             $(".content-panel").each(function(i) {
@@ -17,16 +26,11 @@ jQuery( document ).ready( function($){
                 if(i===0) {
                     activeClass = "active";
                 }
-                pager += "<li><a class=\"" + activeClass + "\" href=\"#" + $(this).attr("data-section-name") + "\"><span class=\"hover-text\">" + $(this).attr("data-section-name").charAt(0).toUpperCase() + $(this).attr("data-section-name").slice(1) + "</span></a></li>";
+                pager += "<li><a class=\"text-color " + activeClass + "\" href=\"#" + $(this).attr("data-section-name") + "\"></a></li>";
             });
             pager += "</ul>";
             $(".home").append(pager);
-            /*
-            Tip: The two click events below are the same:
-            $(".pager a").on("click",function() {
-                $.scrollify.move($(this).attr("href"));
-            });
-            */
+
             $(".pager a").on("click",$.scrollify.move);
             setParticles();
         }

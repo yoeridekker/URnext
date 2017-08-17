@@ -1,6 +1,3 @@
-<?php 
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,31 +9,63 @@
 	<!-- favicons -->
     <?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class('bg-body-color'); ?>>
+    <div id="siteloader"></div>
     <!-- Image and text -->
-    <nav class="navbar navbar sticky-top navbar-light bg-faded" style="background:rgba(0,0,0,0.03); border-bottom: 1px solid rgba(0,0,0,0.1)">
-        <div class="container">
+    <nav id="navbar" class="navbar navbar sticky-top navbar-light bg-faded bg-header-color">
+        <div class="container full-width">
             <div class="row">
                 <div class="col-sm-12">
                     <a class="navbar-brand" href="<?php echo site_url(); ?>">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-                        URnext
+                        <?php if( $logo = get_theme_mod('logo') ): ?>
+                            <img src="<?php echo $logo; ?>" class="d-inline-block align-top" title="<?php echo get_bloginfo('name');?>" alt="<?php echo __('Logo','urnext'); ?> <?php echo get_bloginfo('name');?>">
+                        <?php endif; ?>
+                        <span class="header-text-color">URnext</span>
                     </a>
-                    <div class="toggle-button" id="toggle">
-                        <span class="bar top"></span>
-                        <span class="bar middle"></span>
-                        <span class="bar bottom"></span>
+                    <div class="toggle-button header-text-color" id="toggle">
+                        <span class="bg-header-text-color bar top"></span>
+                        <span class="bg-header-text-color bar middle"></span>
+                        <span class="bg-header-text-color bar bottom"></span>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
-    <nav class="overlay" id="overlay">
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Portfolio</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
+    <nav class="overlay bg-menu-color" id="overlay">
+        <?php 
+        wp_nav_menu(
+            array(
+                'theme_location'    => 'primary',
+                'container'         => false,
+                'menu_class'        => 'menu-text-color'
+            )
+        );
+        ?>
     </nav>
+
+    <?php 
+    $style = 'height:9999px;';
+    if( has_post_thumbnail() ):
+        $style.= sprintf('background-image:url(%s)', get_the_post_thumbnail_url() );
+    endif; 
+    ?>
+    <!-- start the first panel -->
+    <div class="content-panel home bg-body-color" data-section-name="top" style="<?php echo $style; ?>;">
+        <!-- particles.js container -->
+        <div id="particles-js"></div>
+        <div class="container as-table inset-content full-height">
+            <div class="row as-row full-height">
+                <div class="col-md-12 as-cell full-height centered">
+                    <h1 class="wow fadeIn text-color light-weight" data-wow-duration="0.6s" data-wow-delay="0.3s">Hello World!</h1>
+                    <p class="wow fadeIn text-color light-weight" data-wow-duration="0.6s" data-wow-delay="0.9s">
+                        Lorum ipsum dolar amit...
+                    </p>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <!-- end the first panel -->
+
+    <!-- start the content panel -->
+    <div class="content-panel" data-section-name="content">
