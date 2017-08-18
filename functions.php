@@ -32,6 +32,9 @@ function urnext_load_scripts() {
     wp_enqueue_script( 'bootstrap', get_template_directory_uri() . '/assets/js/bootstrap.min.js', array('jquery'), '4.0.0', true );
     wp_enqueue_script( 'wow', get_template_directory_uri() . '/assets/js/wow.min.js', array('jquery'), '4.0.0', true );
 
+    wp_enqueue_script( 'fitcolumns', get_template_directory_uri() . '/assets/vendor/isotope/layout-modes/fit-columns.js', array('jquery'), '1.0.0', true );
+    wp_enqueue_script( 'isotope', get_template_directory_uri() . '/assets/vendor/isotope/isotope.pkgd.js', array('jquery'), '1.0.0', true );
+
     wp_enqueue_script( 'main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'scrollify', 'bootstrap'), '1.0.0', true );
 }
 add_action( 'wp_enqueue_scripts', 'urnext_load_scripts' );

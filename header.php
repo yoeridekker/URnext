@@ -13,21 +13,17 @@
     <div id="siteloader"></div>
     <!-- Image and text -->
     <nav id="navbar" class="navbar navbar sticky-top navbar-light bg-faded bg-header-color">
-        <div class="container full-width">
-            <div class="row">
-                <div class="col-sm-12">
-                    <a class="navbar-brand" href="<?php echo site_url(); ?>">
-                        <?php if( $logo = get_theme_mod('logo') ): ?>
-                            <img src="<?php echo $logo; ?>" class="d-inline-block align-top" title="<?php echo get_bloginfo('name');?>" alt="<?php echo __('Logo','urnext'); ?> <?php echo get_bloginfo('name');?>">
-                        <?php endif; ?>
-                        <span class="header-text-color">URnext</span>
-                    </a>
-                    <div class="toggle-button header-text-color" id="toggle">
-                        <span class="bg-header-text-color bar top"></span>
-                        <span class="bg-header-text-color bar middle"></span>
-                        <span class="bg-header-text-color bar bottom"></span>
-                    </div>
-                </div>
+        <div class="full-width">
+            <a class="navbar-brand" href="<?php echo site_url(); ?>">
+                <?php if( $logo = get_theme_mod('logo') ): ?>
+                    <img src="<?php echo $logo; ?>" class="d-inline-block align-top" title="<?php echo get_bloginfo('name');?>" alt="<?php echo __('Logo','urnext'); ?> <?php echo get_bloginfo('name');?>">
+                <?php endif; ?>
+                <span class="header-text-color">URnext</span>
+            </a>
+            <div class="toggle-button header-text-color" id="toggle">
+                <span class="bg-header-text-color bar top"></span>
+                <span class="bg-header-text-color bar middle"></span>
+                <span class="bg-header-text-color bar bottom"></span>
             </div>
         </div>
     </nav>

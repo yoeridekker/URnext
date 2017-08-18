@@ -5,10 +5,8 @@ get_header();
 // Start the Loop.
 while ( have_posts() ) : the_post(); ?>
 
-    <div class="container inset-content">
-        <div class="row">
-
-            <div class="col-md-12 text-color" data-wow-duration="1s" data-wow-delay="0.1s">
+    <div class="full">
+        
         
             <?php 
             /*
@@ -24,8 +22,6 @@ while ( have_posts() ) : the_post(); ?>
             }
             ?>
 
-            </div>
-        </div>
         <div class="clear"></div>
     </div>
 

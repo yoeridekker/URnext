@@ -1,12 +1,57 @@
 
 new WOW().init();
 
+var blockheight, windowwidth;
+var breakpoints = {
+  0: 1,
+  480: 1,
+  560: 2,
+  768: 3,
+};
+var breakpoint;
+
+function setWindowwidth(){
+  windowwidth = jQuery(window).width();
+
+  Object.keys(breakpoints).forEach(function(key) {
+    if( windowwidth > parseFloat(key) ){
+      breakpoint = breakpoints[key]
+     
+    }
+        
+    console.log(breakpoint);
+  });
+  console.log( windowwidth ); 
+}
+function setBlockheight(){
+  setWindowwidth();
+  jQuery('div.grid div.grid-item').each(function(){
+      jQuery(this).height( jQuery(this).width() );
+  });
+}
+
+jQuery(window).on('resize', function(){
+  setBlockheight();
+});
+
 jQuery(window).on('load', function(){
     jQuery("#siteloader").fadeOut(1000);
 });
 
 jQuery( document ).ready( function($){
+  setBlockheight();
+  $('.grid').isotope({
+    itemSelector: '.grid-item',
+    percentPosition: true,
+    layoutMode: 'masonry',
+    masonry: {
+      // use element for option
+      columnWidth: '.grid-item'
+    }
+  });
+
   
+
     $.scrollify({
         section : ".content-panel",
         scrollbars: true,
