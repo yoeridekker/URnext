@@ -11,30 +11,34 @@
 ?>
 
 
-<!--
-<article id="post-<?php the_ID(); ?>" <?php post_class('container inset-content'); ?>>
-    
-    <?php the_title(); ?>
-    <?php the_content(); ?>
-</article><
--->
 
-<div class="grid">
-    <?php 
-    $string = '
-        <div class="grid-item" style="background-image:url(https://unsplash.it/400?image=529);">
-            <div class="inner">
-                <h3>Working on heights</h3>
-                <p>Some short text for this tile...</p>
-                <span class="date">15 feb. 2017</span>
+<div class="wow slideInDown col-md-12 text-color" data-wow-offset="100" data-wow-duration="1s" data-wow-delay="0s">
+    <div class="archive-intro intro">
+        <div class="container centered">
+            <h1 class="archive-title light-weight underline after-text-color faded">
+                <?php the_title(''); ?>
+            </h1>
+            <?php if ( has_excerpt() ) : ?>
+                <div class="archive-meta"><?php the_excerpt(); ?></div>
+            <?php endif; ?>
+            <div>
+                <a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>" class="btn center-button button text-color border-text-color"><?php _e('By','urnext'); ?>: <?php the_author(); ?></a>
+                <a href="#" class="btn center-button button text-color border-text-color">World</a>
             </div>
-            <div class="corner"></div>
         </div>
-        <div class="grid-item no-image"><div class="inner">hello</div><div class="corner"></div></div>
-        <div class="grid-item half" style="background-image:url(https://unsplash.it/600?image=625);"><div class="inner">goodbye</div><div class="corner"></div></div>
-        <div class="grid-item no-image"><div class="inner">hello</div><div class="corner"></div></div>
-        <div class="grid-item" style="background-image:url(https://unsplash.it/300?image=527);"><div class="inner">hello</div><div class="corner"></div></div>
-        <div class="grid-item no-image"><div class="inner">hello</div><div class="corner"></div></div>
-    ';
-    echo str_repeat( $string , 4 ); ?>
+    </div>
 </div>
+
+
+<div data-wow-offset="10" data-wow-delay="0s" class="wow slideInLeft <?php echo is_active_sidebar( 'right_sidebar' ) ? 'col-lg-8' : 'col-md-12';?> text-color">
+    <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+        <?php the_content(); ?>
+    </article>
+</div>
+
+<?php if ( is_active_sidebar( 'right_sidebar' ) ) : ?>
+    <div id="sidebar" data-wow-delay="0s" data-wow-offset="10" class="wow slideInRight col-lg-4 text-color right-sidebar widget-area" role="complementary">
+        <?php dynamic_sidebar( 'right_sidebar' ); ?>
+    </div><!-- #primary-sidebar -->
+<?php endif; ?>
+

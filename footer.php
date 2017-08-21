@@ -1,9 +1,9 @@
 </div>
 
 <div class="content-panel" data-section-name="footer">
-    <div class="footer">
+    <footer class="footer bg-footer-color footer-text-color">
         footer
-    </div>
+    </footer>
 </div>
 <?php wp_footer(); ?>
 </body>

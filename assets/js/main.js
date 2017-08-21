@@ -1,32 +1,24 @@
 
 new WOW().init();
 
-var blockheight, windowwidth;
-var breakpoints = {
-  0: 1,
-  480: 1,
-  560: 2,
-  768: 3,
-};
-var breakpoint;
+var blockheight, windowwidth, windowheight, scroll, nav;
+
 
 function setWindowwidth(){
   windowwidth = jQuery(window).width();
-
-  Object.keys(breakpoints).forEach(function(key) {
-    if( windowwidth > parseFloat(key) ){
-      breakpoint = breakpoints[key]
-     
-    }
-        
-    console.log(breakpoint);
-  });
-  console.log( windowwidth ); 
 }
+
+function setWindowheight(){
+  windowheight = jQuery(window).height();
+}
+
 function setBlockheight(){
   setWindowwidth();
+  setWindowheight();
   jQuery('div.grid div.grid-item').each(function(){
-      jQuery(this).height( jQuery(this).width() );
+    var gridWidth = jQuery(this).width();
+    var gridHeight = jQuery(this).hasClass('full') ? ( gridWidth / 2 ) : gridWidth ;
+      jQuery(this).height( gridHeight );
   });
 }
 
@@ -38,7 +30,13 @@ jQuery(window).on('load', function(){
     jQuery("#siteloader").fadeOut(1000);
 });
 
+jQuery(window).on('scroll', function(){
+  scroll = jQuery(window).scrollTop();
+});
+
+
 jQuery( document ).ready( function($){
+  nav = jQuery('nav#navbar');
   setBlockheight();
   $('.grid').isotope({
     itemSelector: '.grid-item',
@@ -46,7 +44,7 @@ jQuery( document ).ready( function($){
     layoutMode: 'masonry',
     masonry: {
       // use element for option
-      columnWidth: '.grid-item'
+      columnWidth: '.sizer'
     }
   });
 
@@ -56,12 +54,19 @@ jQuery( document ).ready( function($){
         section : ".content-panel",
         scrollbars: true,
         offset:10,
+        interstitialSection: 'div.auto-height',
         before:function(i,panels) {
             var ref = panels[i].attr("data-section-name");
             $(".pager .active").removeClass("active");
             $(".pager").find("a[href=\"#" + ref + "\"]").addClass("active");
         },
-        
+        after: function( i,panels ){
+          if( i > 0 ){
+            nav.fadeOut();
+          }else{
+            nav.fadeIn();
+          }
+        },
         afterRender:function() {
             
             var pager = "<ul class=\"pager\">";
@@ -94,6 +99,12 @@ jQuery( document ).ready( function($){
             
         });
     });
+
+    $('a#search').click( function(e) {
+      e.preventDefault();
+      $(this).toggleClass('toggle-active');
+      $('#search-overlay').toggleClass('nav-active');
+  });
 });
 
 function initMenu(){
@@ -102,6 +113,10 @@ function initMenu(){
 }
 /* ---- particles.js config ---- */
 function setParticles(){
+    // check if a paricles container is set 
+    if( jQuery('#particles-js').length === 0 ){
+      return false;
+    }
 particlesJS("particles-js", {
     "particles": {
       "number": {
