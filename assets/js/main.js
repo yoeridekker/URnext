@@ -48,7 +48,11 @@ jQuery( document ).ready( function($){
     }
   });
 
-  
+  $('.slick-gallery').slick({
+    centerMode:true,
+    centerPadding:0,
+    slidesToShow:3
+  });
 
     $.scrollify({
         section : ".content-panel",

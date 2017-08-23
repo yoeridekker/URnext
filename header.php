@@ -62,4 +62,4 @@
     <?php get_template_part('parts/banner'); ?>
 
     <!-- start the content panel -->
-    <div class="content-panel" data-section-name="content">
+    <div class="content-panel" data-section-name="content" id="main-content">

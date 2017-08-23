@@ -5,7 +5,10 @@ Description: A lean and mean one-page theme for WordPress
 Version: 0.0.1
 Tags: one page, one-page
 */
-
+#main-content ol, #main-content ul{
+    margin-left:30px;
+    list-style: disc;
+}
 .sticky-top{
     position: fixed !important;
     width: 100%;
@@ -284,6 +287,11 @@ a.navbar-brand img{
     width: auto;
 }
 
+/* main content */
+#main-content{
+    margin-bottom: 0;
+}
+
 /* archive */
 .archive-intro{
     padding: 120px 0 40px 0;
@@ -388,6 +396,20 @@ div.grid div.grid-item:hover div.inner{
     transform: scale(1);
 }
 
+/* comments */
+.comment-form label{
+    display: block;
+    width:100%;
+}
+.comment-form input,
+.comment-form textarea,
+.comment-form input{
+    display: block;
+    width:100%;
+}
+.comment-form input[type=submit]{
+    width: auto;
+}
 body.layout-boxed #navbar{
     width: 100%;
     max-width: 1180px;
@@ -443,8 +465,8 @@ body.layout-boxed .pager{
 }
 /* footer */
 footer{
-    min-height: 100%;
-    padding-top: 120px;
+    padding: 120px 0 50px 0;
+    margin-top: 100px;
 }
 /* helper */
 .button.center-button{
@@ -503,7 +525,8 @@ footer{
     display: table-cell !important;
     vertical-align: middle;
 }
-.button {
+.button,
+.buttons a{
     display: block;
     background: none;
     font-weight: 300;
@@ -519,20 +542,37 @@ footer{
     outline: none;
     text-decoration: none;
     transform: scale(1);
+    color: inherit;
+    border: 1px solid;
+    border-color:inherit;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
-.button.center{
+.buttons.left{
+    float: left;
+}
+.buttons.right{
+    float: right;
+}
+.button.center,
+.buttons.center a{
     margin-left: auto;
     margin-right: auto;
 }
-.button:hover{
-    background: rgba(0,0,0,0.01);
+.button:hover,
+.buttons a:hover{
     transform: scale(1.05);
 }
-.button:focus,.button:hover{
+.button:focus,
+.button:hover,
+.buttons a:focus,
+.buttons a:hover{
     opacity: 1;
     color: inherit;
 }
-.button:focus{
+.button:focus,
+.buttons a:focus{
     outline: none;
     box-shadow: none;
 }
