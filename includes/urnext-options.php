@@ -69,6 +69,24 @@ $urnext_options = array(
                 'style'         => 'color',
                 'selector'      => 'html,body'
             ),
+
+            // Body background and text color
+            'a_color' => array(
+                'default'       => '#000000',
+                'label'         => __( 'Link Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'body a,body a:active,body a:visited',
+                'only_global'   => true
+            ),
+            'a_color_hover' => array(
+                'default'       => '#ff6600',
+                'label'         => __( 'Link Hover Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'body a:hover',
+                'only_global'   => true
+            ),
            
         )
     ),
@@ -139,6 +157,20 @@ $urnext_options = array(
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color'
             ),
+            'sticky_header'     => array(
+                'default'       => '',
+                'label'         => __( 'Sticky Header', 'urnext' ), 
+                'method'        => 'WP_Customize_Control',
+                'type'          => 'checkbox',
+                'description'   => __( 'Check to make the header sticky', 'urnext' ), 
+            ),
+            'hide_header'     => array(
+                'default'       => '',
+                'label'         => __( 'Hide Header', 'urnext' ), 
+                'method'        => 'WP_Customize_Control',
+                'type'          => 'checkbox',
+                'description'   => __( 'Check to make the header hide on sroll', 'urnext' ), 
+            ),
             'particles_js'      => array(
                 'default'       => '',
                 'label'         => __( 'Header Particles Animation', 'urnext' ), 
@@ -162,7 +194,7 @@ $urnext_options = array(
                 'description'   => __( 'Set the header opacity between 0 and 100', 'urnext' ), 
             ),
 
-                // Logo
+            // Logo
             'logo' => array(
                 'label'         => __( 'Upload your logo', 'urnext' ), 
                 'method'        => 'WP_Customize_Image_Control'
@@ -174,7 +206,7 @@ $urnext_options = array(
         'description'   => __('Change footer style options', 'urnext'), 
         'settings'      => array(
 
-            // Body background and text color
+            // Footer background and text color
             'footer_color' => array(
                 'default'       => '#00c7ce',
                 'label'         => __( 'Footer Background Color', 'urnext' ), 
@@ -186,6 +218,24 @@ $urnext_options = array(
                 'label'         => __( 'Footer Text Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
+            ),
+
+            // Footer link color
+            'a_footer_color' => array(
+                'default'       => '#ffffff',
+                'label'         => __( 'Footer Link Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'body footer a,body footer a:active,body footer a:visited',
+                'only_global'   => true
+            ),
+            'a_footer_color_hover' => array(
+                'default'       => '#cccccc',
+                'label'         => __( 'Footer Link Hover Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'body footer a:hover',
+                'only_global'   => true
             ),
             
         )
@@ -219,7 +269,8 @@ function urnext_options( $wp_customize ) {
             // Add setting
             $wp_customize->add_setting( $setting,
                 array(
-                    'default' => ( isset( $setting_data['default'] ) ? $setting_data['default'] : '' )
+                    'default' => ( isset( $setting_data['default'] ) ? $setting_data['default'] : '' ),
+                    'sanitize_callback' => 'sanitize_customizer_setting',
                 )
             ); 
             
@@ -262,6 +313,11 @@ function urnext_options( $wp_customize ) {
 
 }
 
+function sanitize_customizer_setting( $input ){
+    return wp_kses_data( $input );
+}
+
+
 add_action( 'wp_head' , 'urnext_dynamic_css' );
 
 function urnext_dynamic_css() {
@@ -277,9 +333,14 @@ function urnext_dynamic_css() {
                 $class      = str_replace('_', '-', $setting);
                 $classname  = $class;
                 $value      = get_theme_mod($setting);
+                $rgb        = hex2rgba( $value, false );
 
                 // Append to the classname if selector is not empty 
                 if( isset( $details['selector'] ) && !empty( $details['selector'] ) ){
+                    if( isset( $details['only_global'] ) && $details['only_global'] ){
+                        $css.= sprintf('%s{color:%s}', $details['selector'], $rgb );
+                        continue;
+                    }
                     $classname.= ', ' . $details['selector'];
                 }
 
@@ -291,7 +352,6 @@ function urnext_dynamic_css() {
                     $opacity    = $opacity === '' ? false : ( (int) $opacity / 100 );
 
                     // Create font color class, no opacity
-                    $rgb = hex2rgba( $value, false );
                     $css.= sprintf('.%s{color:%s}', $classname, $rgb ); 
 
                     // Create background color class, use opacity
@@ -299,7 +359,7 @@ function urnext_dynamic_css() {
                     $css.= sprintf('.bg-%s{background-color:%s}', $classname, $rgba ); 
 
                     // Create border color class, use opacity
-                    $css.= sprintf('.border-%s{border-color:%s}', $classname, $rgba ); 
+                    $css.= sprintf('.border-%s{border-color:%s !important}', $classname, $rgba ); 
 
                     // Create after color class, use opacity
                     $css.= sprintf('.after-%s:after{background:%s}', $class, $rgba ); 

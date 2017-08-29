@@ -1,8 +1,8 @@
 <?php
 /**
- * The default template for displaying content
+ * The default template for displaying content in summary pages
  *
- * Used for both single and index/archive/search.
+ * Used for index/archive/search.
  *
  * @package URnext
  * @since URnext 1.0
@@ -35,8 +35,6 @@
     </div>
 </div>
 
-<?php get_template_part('parts/gallery'); ?>
-
 <div class="container">
     <div class="row">
         <div data-wow-offset="10" data-wow-delay="0s" class="wow slideInLeft <?php echo is_active_sidebar( 'right_sidebar' ) ? 'col-lg-8' : 'col-md-12';?> text-color">
@@ -52,15 +50,8 @@
             ?>
         </div>
 
-        <?php if ( is_active_sidebar( 'right_sidebar' ) ) : ?>
-            <div id="sidebar" data-wow-delay="0s" data-wow-offset="10" class="wow textadjust slideInRight col-lg-4 text-color right-sidebar widget-area" role="complementary">
-                <?php dynamic_sidebar( 'right_sidebar' ); ?>
-            </div><!-- #primary-sidebar -->
-        <?php endif; ?>
-
         <div class="wow slideInUp col-md-12 text-color" data-wow-offset="100" data-wow-duration="1s" data-wow-delay="0s">
             <div class="post-navigation ">
-                <div class="buttons left border-text-color text-color inherit-border"><?php previous_post_link('%link'); ?></div>
                 <div class="buttons right border-text-color text-color inherit-border" ><?php next_post_link('%link'); ?></div>
             </div>
         </div>

@@ -2,6 +2,9 @@
 // Get the default header 
 get_header();
 
+// Get the banner
+get_template_part('parts/banner');
+
 // Start the Loop.
 while ( have_posts() ) : the_post(); ?>
 

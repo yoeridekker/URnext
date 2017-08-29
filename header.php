@@ -1,29 +1,34 @@
+<?php 
+$sticky_header = (bool) get_theme_mod('sticky_header');
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html <?php language_attributes(); ?> class="bg-body-color">
 <head>
-    <title><?php wp_title(); ?></title>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<!-- favicons -->
     <?php wp_head(); ?>
+    <script>
+        var hideHeaderOnScroll = <?php echo get_theme_mod('hide_header') ? 'true' : 'false' ; ?>;
+    </script>
 </head>
 <body <?php body_class('font bg-body-color ' . get_theme_mod('layout') ); ?>>
     <div id="siteloader" class="bg-body-color"></div>
 
-    <div class="toggle-button top-bar-text-color" id="toggle">
+    <div class="toggler toggle-button top-bar-text-color" id="toggle">
         <span class="bg-top-bar-text-color bar top"></span>
         <span class="bg-top-bar-text-color bar middle"></span>
         <span class="bg-top-bar-text-color bar bottom"></span>
     </div>
 
-    <a href="#" id="search" class="search-button">
-        <span class="lnr lnr-magnifier top-bar-text-color"></span>    
+    <a href="#" id="search" class="toggler search-button">
+        <span class="lnr lnr-magnifier top-bar-text-color"></span>
     </a>
 
     <!-- Image and text -->
-    <nav id="navbar" class="navbar navbar sticky-top navbar-light bg-top-bar-color">
+    <nav id="navbar" class="navbar navbar <?php if( $sticky_header ) echo 'sticky-top'; ?> navbar-light bg-top-bar-color">
         <div class="full-width">
             <a class="navbar-brand" href="<?php echo site_url(); ?>">
                 <?php if( $logo = get_theme_mod('logo') ): ?>
@@ -58,8 +63,3 @@
         );
         ?>
     </nav>
-
-    <?php get_template_part('parts/banner'); ?>
-
-    <!-- start the content panel -->
-    <div class="content-panel" data-section-name="content" id="main-content">

@@ -4,14 +4,37 @@ Author: Yoeri Dekker
 Description: A lean and mean one-page theme for WordPress
 Version: 0.0.1
 Tags: one page, one-page
+Text Domain: urnext
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
+
+
+/* =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Global
+// ========================================================================== */
+
+
+body a{
+    -webkit-transition: all .35s ease;
+    transition: all .35s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+body a:hover{
+    text-decoration: none;
+}
+.textajust p{
+    font-size:inherit;
+}
 #main-content ol, #main-content ul{
     margin-left:30px;
     list-style: disc;
 }
 .sticky-top{
     position: fixed !important;
-    width: 100%;
 }
 
 /* System Fonts as used by GitHub */
@@ -33,6 +56,10 @@ body.layout-boxed{
 /* menu */
 #navbar{
     padding: 0 1rem;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 1030;
 }
 .toggle-button {
     position: fixed;
@@ -97,6 +124,9 @@ a.search-button span{
     font-size: 25px;
     font-weight: bold;
     right: 0;
+}
+a.search-button.toggle-active span{
+    display: none;
 }
 #search-overlay input.searchbar{
     background: none;
@@ -296,6 +326,9 @@ a.navbar-brand img{
 .archive-intro{
     padding: 120px 0 40px 0;
 }
+body.archive footer{
+    margin-top: 0;
+}
 
 /* sidebar */
 #sidebar > div{
@@ -319,8 +352,6 @@ div.grid div.grid-item{
     padding: 0;
     position: relative;
     display: table;
-    background-color: #054160;
-    color:#fff;
     background-size: cover;
     background-position: 50% 50%;
     overflow: hidden;
@@ -351,7 +382,6 @@ div.grid div.grid-item div.inner{
     -webkit-transition: all 0.4s ease;
     -moz-transition: all 0.4s ease;
     transition: all 0.4s ease;
-    color:#000;
     opacity: 0;
     position: relative;
     z-index: 2;
@@ -365,33 +395,33 @@ div.grid div.grid-item div.inner h3{
 div.grid div.grid-item div.inner span.date{
     font-size: inherit;
     font-weight: 100;
-    text-decoration: underline;
+    text-decoration: none;
     text-align: center;
     display: block
 }
+div.grid div.grid-item div.inner a.button{
+    border-color:inherit;
+    color:inherit;
+}
 div.grid div.grid-item div.corner{
     position: absolute;
-    width: 150%;
-    background: rgba(0,0,0,0);
-    height: 150%;
-    transform: rotate(45deg);
+    width: 100%;
+    height: 100%;
+    transform: none;
+    opacity: 0;
     z-index: 1;
-    right: -150%;
-    bottom: -150%;
-    -webkit-transition: all 0.4s ease 0.4s;
-    -moz-transition: all 0.4s ease 0.4s;
-    transition: all 0.4s ease 0.4s;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: all 0.4s ease 0.1s;
+    -moz-transition: all 0.4s ease 0.1s;
+    transition: all 0.4s ease 0.1s;
 }
-div.grid div.grid-item:hover div.corner{
-    background: rgba(0,0,0,0.1);
-    right: -78%;
-    bottom: -78%;
+div.grid div.grid-item.image:hover div.corner{
+    opacity: 0.85;
 }
 div.grid div.grid-item.no-image div.inner,
 div.grid div.grid-item:hover div.inner{
-    background-color:rgba(0,0,0,0.4);
-    color:#fff;
-    text-shadow: 0 0 4px rgba(0,0,0,0.3);
+    text-shadow: 0 0 3px rgba(0,0,0,0.1);
     opacity: 1;
     transform: scale(1);
 }
@@ -415,10 +445,15 @@ body.layout-boxed #navbar{
     max-width: 1180px;
     left: 50%;
     margin-left: -590px;
+    height: 80px;
 }
 body.layout-boxed .toggle-button{
     right: 50%;
     margin-right: -570px;
+}
+body.layout-boxed .search-button{
+    right: 50%;
+    margin-right: -520px;
 }
 body.layout-boxed .pager{
     right: 50%;
@@ -464,14 +499,36 @@ body.layout-boxed .pager{
     }
 }
 /* footer */
-footer{
-    padding: 120px 0 50px 0;
-    margin-top: 100px;
+#main-content footer{
+    padding: 120px 0 0 0;
+    margin-top: 0;
+}
+#main-content footer ul, #main-content footer ol{
+    list-style: none;
+    margin-left: 0;
+}
+#main-content footer ul li, #main-content footer ol li{
+    
+}
+#main-content footer ul li:before, #main-content footer ol li:before {
+    content: "\0BB \020";
+}
+
+#main-content footer div.copyright{
+    background: rgba(0,0,0,0.1);
+    padding: 10px 0;
+    margin: 15px 0 0 0;
 }
 /* helper */
+.inherit-border a{
+    border-color:inherit !important;
+}
 .button.center-button{
     display: inline-block;
     width: auto;
+}
+.blocked{
+    display: block
 }
 .underline{
     position: relative;
@@ -544,10 +601,19 @@ footer{
     transform: scale(1);
     color: inherit;
     border: 1px solid;
-    border-color:inherit;
+    border-color:transparent;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
+}
+.button.small,
+.buttons a.small{
+    border-radius: 15px;
+    line-height: 30px;
+    font-size: 14px;
+    height: 30px;
+    padding: 0 10px;
+    margin: 10px;
 }
 .buttons.left{
     float: left;

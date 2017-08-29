@@ -9,9 +9,7 @@ if ( have_posts() ) : ?>
 
     <div class="archive-intro intro">
         <div class="container centered">
-            <h1 class="archive-title light-weight centered underline after-text-color faded">
-                <?php single_cat_title(''); ?>
-            </h1>
+            <?php the_archive_title( '<h1 class="archive-title light-weight centered underline after-text-color faded">', '</h1>' ); ?>
             <?php if ( category_description() ) : ?>
                 <div class="archive-meta centered"><?php echo category_description(); ?></div>
             <?php endif; ?>
