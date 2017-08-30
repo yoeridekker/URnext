@@ -4,7 +4,7 @@ $has_banner = has_post_thumbnail();
 $style      = '';
 $class      = 'auto-height';
 if( $has_banner ):
-    $style = 'height:9999px;';
+    $class.= ' has-banner';
     $style.= sprintf('background-image:url(%s)', get_the_post_thumbnail_url() );
     $class = '';
 endif;

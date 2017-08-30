@@ -37,6 +37,7 @@ body a:hover{
     position: fixed !important;
 }
 
+
 /* System Fonts as used by GitHub */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -61,6 +62,9 @@ body.layout-boxed{
     top: 0;
     z-index: 1030;
 }
+body.admin-bar #navbar{
+    top:32px;
+}
 .toggle-button {
     position: fixed;
     display: inline-block;
@@ -74,7 +78,9 @@ body.layout-boxed{
     z-index: 1040;
     float: right;
 }
-
+body.admin-bar .toggle-button{
+    top:32px;
+}
 .bar {
     background-color:rgba(0,0,0,0.9);
     display: block;
@@ -128,6 +134,9 @@ a.search-button span{
 a.search-button.toggle-active span{
     display: none;
 }
+body.admin-bar a.search-button{
+    top:62px;
+}
 #search-overlay input.searchbar{
     background: none;
     width: 50%;
@@ -175,7 +184,7 @@ div#header-overlay{
     z-index: 1;
 }
 .inset-content{
-    padding:120px 30px 60px 30px;
+    padding:200px 30px 100px 30px;
 }
 div.content-panel{
     box-sizing: border-box;
@@ -278,29 +287,6 @@ div.content-panel img{
 	right:4px;
 	bottom:0;
 }
-
-/* This is a compiled file, you should be editing the file in the templates directory */
-.pace {
-    -webkit-pointer-events: none;
-    pointer-events: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-}
-
-.pace-inactive {
-    display: none;
-}
-
-.pace .pace-progress {
-    background: #000;
-    position: fixed;
-    z-index: 2000;
-    top: 0;
-    right: 100%;
-    width: 100%;
-    height: 4px;
-}
 #siteloader{
     position: fixed;
     top: 0;
@@ -320,6 +306,11 @@ a.navbar-brand img{
 /* main content */
 #main-content{
     margin-bottom: 0;
+}
+
+#main-content article a{
+    border-bottom:  1px solid transparent;
+    border-color: inherit;
 }
 
 /* archive */
@@ -418,6 +409,9 @@ div.grid div.grid-item div.corner{
 }
 div.grid div.grid-item.image:hover div.corner{
     opacity: 0.85;
+}
+div.grid div.grid-item.no-image div.corner{
+    opacity: 1;
 }
 div.grid div.grid-item.no-image div.inner,
 div.grid div.grid-item:hover div.inner{

@@ -1,14 +1,16 @@
 <?php 
-
 // Get the default header 
 get_header();
+?>
 
+<?php 
+// Get the banner for the author archive
+get_template_part('parts/banner-author'); 
+?>
+
+<?php 
+// Loop the authors posts
 $i = 0;
-
-$curauth = (isset($_GET['author_name'])) ? get_user_by('slug', $author_name) : get_userdata(intval($author));
-
-get_template_part('parts/banner-author');
-
 if ( have_posts() ) : ?>
 
     <div class="grid">
@@ -53,4 +55,5 @@ if ( have_posts() ) : ?>
 
 // Get the default footer
 get_footer();
-?>
+
+// Omit the php closing tag

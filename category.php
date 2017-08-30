@@ -1,8 +1,14 @@
 <?php 
-
 // Get the default header 
 get_header();
+?>
 
+<?php 
+// Get the banner for the category archive
+get_template_part('parts/banner'); 
+?>
+
+<?php 
 $i = 0;
 
 if ( have_posts() ) : ?>
@@ -43,14 +49,14 @@ if ( have_posts() ) : ?>
             
             <!-- start grid item -->
             <div class="grid-item<?php echo $class; ?>" style="<?php echo $style; ?>">
-                <div class="inner">
-                    <h3 class="headadjust"><?php the_title(); ?></h3>
-                    <span class="date textadjust"><?php the_time( get_option('date_format') ) ?></span>
-                    <div class="centered">
-                        <a href="<?php the_permalink(); ?>" class="textadjust btn center-button button"><?php _e('Read more', 'urnext'); ?></a>
+                <div class="inner header-text-color ">
+                    <h3 class="headadjust header-text-color "><?php the_title(); ?></h3>
+                    <span class="date header-text-color  textadjust"><?php the_time( get_option('date_format') ) ?></span>
+                    <div class="centered header-text-color ">
+                        <a href="<?php the_permalink(); ?>" class="textadjust header-text-color btn center-button button"><?php _e('Read more', 'urnext'); ?></a>
                     </div>
                 </div>
-                <div class="corner bg-body-color"></div>
+                <div class="corner bg-header-color"></div>
             </div>
             <!-- end grid item -->
         

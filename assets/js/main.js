@@ -86,6 +86,7 @@ function setBlockheight(){
 function initGallery(){
   $jquery('.slick-gallery').slick({
     centerMode: true,
+    
     centerPadding: 0,
     slidesToShow: 3,
     infinite: true,
@@ -122,15 +123,24 @@ function initGrid(){
 }
 
 function initScrollPanels( resize ){
+  
   if ( windowwidth < 768 ){
-    $jquery.scrollify.disable();
-    $jquery("#siteloader").fadeOut(1000);
-    return true;
+    $jquery('div.content-panel.has-banner').addClass('auto-height');
+  }else{
+    $jquery('div.content-panel.has-banner').removeClass('auto-height');
   }
+  
   if( resize ){
-    $jquery.scrollify.update();
+    $jquery.scrollify.destroy();
+    setScrollPanels();
     return true;
   }
+  
+  // Set the scroll panels
+  setScrollPanels();
+}
+
+function setScrollPanels(){
   nav = $jquery('nav#navbar');
   scroller = $jquery.scrollify({
     section : ".content-panel",

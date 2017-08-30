@@ -70,7 +70,7 @@ $urnext_options = array(
                 'selector'      => 'html,body'
             ),
 
-            // Body background and text color
+            // Hyperlink styles
             'a_color' => array(
                 'default'       => '#000000',
                 'label'         => __( 'Link Color', 'urnext' ), 
@@ -87,6 +87,15 @@ $urnext_options = array(
                 'selector'      => 'body a:hover',
                 'only_global'   => true
             ),
+
+            // Primary color
+            'primary_color' => array(
+                'default'       => '#00c7ce',
+                'label'         => __( 'Primary Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'description'   => __('The primary color is used for hover effects, overlays and other additional styles','urnext')
+            ),  
            
         )
     ),
@@ -339,9 +348,9 @@ function urnext_dynamic_css() {
                 if( isset( $details['selector'] ) && !empty( $details['selector'] ) ){
                     if( isset( $details['only_global'] ) && $details['only_global'] ){
                         $css.= sprintf('%s{color:%s}', $details['selector'], $rgb );
-                        continue;
+                    }else{
+                        $classname.= ', ' . $details['selector'];
                     }
-                    $classname.= ', ' . $details['selector'];
                 }
 
                 // For color options
