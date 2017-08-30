@@ -323,7 +323,7 @@ function urnext_options( $wp_customize ) {
 }
 
 function sanitize_customizer_setting( $input ){
-    return wp_kses_data( $input );
+    return (string) $input;
 }
 
 
