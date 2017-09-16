@@ -14,20 +14,40 @@ $sticky_header = (bool) get_theme_mod('sticky_header');
         var hideHeaderOnScroll = <?php echo get_theme_mod('hide_header') ? 'true' : 'false' ; ?>;
     </script>
 </head>
-<body <?php body_class('font bg-body-color ' . get_theme_mod('layout') ); ?>>
-    <div id="siteloader" class="bg-body-color"></div>
 
+<!-- start page output -->
+<body <?php body_class('font bg-body-color ' . get_theme_mod('layout') ); ?>>
+   
+   <!-- start siteloader -->
+   <div id="siteloader" class="bg-body-color">
+        <div class="spinner"></div>
+   </div>
+    <!-- end siteloader -->
+
+    <!-- start menu button -->
     <div class="toggler toggle-button top-bar-text-color" id="toggle">
         <span class="bg-top-bar-text-color bar top"></span>
         <span class="bg-top-bar-text-color bar middle"></span>
         <span class="bg-top-bar-text-color bar bottom"></span>
     </div>
+    <!-- end menu button -->
 
+    <!-- start search button -->
     <a href="#" id="search" class="toggler search-button">
         <span class="lnr lnr-magnifier top-bar-text-color"></span>
     </a>
+    <!-- end search button -->
 
-    <!-- Image and text -->
+    <?php if( URNEXT_WOOCOMMERCE_ACTIVE ): ?>
+    <a href="<?php echo wc_get_cart_url(); ?>" id="cart" class="cart-button add-tooltip" title="Hello">
+        <span class="lnr lnr-cart top-bar-text-color"></span>
+        <?php if( WC()->cart->get_cart_contents_count() > 0 ): ?>
+            <span class="count bg-header-color header-text-color"><?php echo WC()->cart->get_cart_contents_count(); ?></span>
+        <?php endif; ?>
+    </a>
+    <?php endif; ?>
+
+    <!-- start navbar -->
     <nav id="navbar" class="navbar navbar <?php if( $sticky_header ) echo 'sticky-top'; ?> navbar-light bg-top-bar-color">
         <div class="full-width">
             <a class="navbar-brand" href="<?php echo site_url(); ?>">
@@ -39,6 +59,9 @@ $sticky_header = (bool) get_theme_mod('sticky_header');
             </a>
         </div>
     </nav>
+    <!-- end navbar -->
+
+    <!-- start search form -->
     <div class="overlay bg-menu-color" id="search-overlay">
         <div class="ontop container as-table full-height">
             <div class="row as-row full-height">
@@ -52,6 +75,9 @@ $sticky_header = (bool) get_theme_mod('sticky_header');
             <div class="clear"></div>
         </div>
     </div>
+    <!-- end search form -->
+
+    <!-- start menu overlay -->
     <nav class="overlay bg-menu-color" id="overlay">
         <?php 
         wp_nav_menu(
@@ -63,3 +89,4 @@ $sticky_header = (bool) get_theme_mod('sticky_header');
         );
         ?>
     </nav>
+    <!-- end menu overlay -->

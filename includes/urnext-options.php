@@ -25,7 +25,7 @@ $urnext_options = array(
 
             // Fonts
             'font' => array(
-                'default'       => '',
+                'default'       => 'system',
                 'label'         => __( 'Font', 'urnext' ), 
                 'method'        => 'WP_Customize_Control',
                 'type'          => 'select',
@@ -35,7 +35,7 @@ $urnext_options = array(
                 'selector'      => 'html,body'
             ),
             'font_size' => array(
-                'default'       => '15',
+                'default'       => '10',
                 'label'         => __( 'Fontsize', 'urnext' ), 
                 'method'        => 'WP_Customize_Control',
                 'type'          => 'number',
@@ -44,7 +44,7 @@ $urnext_options = array(
                 'selector'      => 'html,body'
             ),
             'heading_font' => array(
-                'default'       => '',
+                'default'       => 'system',
                 'label'         => __( 'Headings Font', 'urnext' ), 
                 'method'        => 'WP_Customize_Control',
                 'type'          => 'select',
@@ -56,36 +56,40 @@ $urnext_options = array(
 
             // Body background and text color
             'body_color' => array(
-                'default'       => '#00c7ce',
+                'default'       => '#ffffff',
                 'label'         => __( 'Background Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
-                'selector'      => 'html,body'
+                'selector'      => 'html,body',
+                'opacity'       => 100
             ),
             'text_color' => array(
-                'default'       => '#ffffff',
+                'default'       => '#444444',
                 'label'         => __( 'Text Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
-                'selector'      => 'html,body'
+                'selector'      => 'html,body',
+                'opacity'       => 100
             ),
 
             // Hyperlink styles
             'a_color' => array(
-                'default'       => '#000000',
+                'default'       => '#222222',
                 'label'         => __( 'Link Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
                 'selector'      => 'body a,body a:active,body a:visited',
-                'only_global'   => true
+                'only_global'   => true,
+                'opacity'       => 100
             ),
             'a_color_hover' => array(
-                'default'       => '#ff6600',
+                'default'       => '#000000',
                 'label'         => __( 'Link Hover Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
                 'selector'      => 'body a:hover',
-                'only_global'   => true
+                'only_global'   => true,
+                'opacity'       => 100
             ),
 
             // Primary color
@@ -94,6 +98,7 @@ $urnext_options = array(
                 'label'         => __( 'Primary Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
+                'opacity'       => 100,
                 'description'   => __('The primary color is used for hover effects, overlays and other additional styles','urnext')
             ),  
            
@@ -109,13 +114,15 @@ $urnext_options = array(
                 'default'       => '#ffffff',
                 'label'         => __( 'Top Bar Background Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color'
+                'style'         => 'color',
+                'opacity'       => 0
             ),
             'top_bar_text_color' => array(
-                'default'       => '#000000',
+                'default'       => '#ffffff',
                 'label'         => __( 'Top Bar Font Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color'
+                'style'         => 'color',
+                'opacity'       => 100
             ),
             'top_bar_color_opacity' => array(
                 'default'       => '0',
@@ -127,19 +134,21 @@ $urnext_options = array(
 
             // Menu background and text color
             'menu_color' => array(
-                'default'       => '#ffffff',
+                'default'       => '#67bbbf',
                 'label'         => __( 'Menu Background Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color'
+                'style'         => 'color',
+                'opacity'       => 100
             ),
             'menu_text_color' => array(
-                'default'       => '#000000',
+                'default'       => '#ffffff',
                 'label'         => __( 'Menu Font Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color'
+                'style'         => 'color',
+                'opacity'       => 100
             ),
             'menu_color_opacity' => array(
-                'default'       => '0',
+                'default'       => '100',
                 'label'         => __( 'Menu Opacity', 'urnext' ), 
                 'method'        => 'WP_Customize_Control',
                 'type'          => 'number',
@@ -148,23 +157,25 @@ $urnext_options = array(
 
             // Header background and text color
             'header_color' => array(
-                'default'       => '#ffffff',
+                'default'       => '#67bbbf',
                 'label'         => __( 'Header Background Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color'
+                'style'         => 'color',
+                'opacity'       => 100
             ),
             'header_color_opacity' => array(
-                'default'       => '0',
+                'default'       => '100',
                 'label'         => __( 'Header Opacity', 'urnext' ), 
                 'method'        => 'WP_Customize_Control',
                 'type'          => 'number',
                 'description'   => __( 'Set the header opacity between 0 and 100', 'urnext' ), 
             ),
             'header_text_color' => array(
-                'default'       => '#000000',
+                'default'       => '#ffffff',
                 'label'         => __( 'Header Font Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color'
+                'style'         => 'color',
+                'opacity'       => 100
             ),
             'sticky_header'     => array(
                 'default'       => '',
@@ -193,19 +204,21 @@ $urnext_options = array(
                 'default'       => '#ffffff',
                 'label'         => __( 'Header Overlay Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color'
+                'style'         => 'color',
+                'opacity'       => 0, 
             ),
             'header_overlay_color_opacity' => array(
                 'default'       => '0',
                 'label'         => __( 'Header Overlay Opacity', 'urnext' ), 
                 'method'        => 'WP_Customize_Control',
                 'type'          => 'number',
-                'description'   => __( 'Set the header opacity between 0 and 100', 'urnext' ), 
+                'description'   => __( 'Set the header opacity between 0 and 100', 'urnext' ),
             ),
 
             // Logo
             'logo' => array(
                 'label'         => __( 'Upload your logo', 'urnext' ), 
+                'default'       => get_template_directory_uri() . '/images/logo.png',
                 'method'        => 'WP_Customize_Image_Control'
             ),
         ),
@@ -217,34 +230,38 @@ $urnext_options = array(
 
             // Footer background and text color
             'footer_color' => array(
-                'default'       => '#00c7ce',
+                'default'       => '#dddddd',
                 'label'         => __( 'Footer Background Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
+                'opacity'       => 100
             ),
             'footer_text_color' => array(
-                'default'       => '#ffffff',
+                'default'       => '#555555',
                 'label'         => __( 'Footer Text Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
+                'opacity'       => 100
             ),
 
             // Footer link color
             'a_footer_color' => array(
-                'default'       => '#ffffff',
+                'default'       => '#000000',
                 'label'         => __( 'Footer Link Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
                 'selector'      => 'body footer a,body footer a:active,body footer a:visited',
-                'only_global'   => true
+                'only_global'   => true,
+                'opacity'       => 100
             ),
             'a_footer_color_hover' => array(
-                'default'       => '#cccccc',
+                'default'       => '#777777',
                 'label'         => __( 'Footer Link Hover Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
                 'selector'      => 'body footer a:hover',
-                'only_global'   => true
+                'only_global'   => true,
+                'opacity'       => 100
             ),
             
         )
@@ -342,7 +359,12 @@ function urnext_dynamic_css() {
                 $class      = str_replace('_', '-', $setting);
                 $classname  = $class;
                 $value      = get_theme_mod($setting);
-                $rgb        = hex2rgba( $value, false );
+
+                // if we have no value, set the default
+                if( (string) $value === '' && isset( $details['default'] ) ){
+                    $value = $details['default'];
+                }
+                $rgb = hex2rgba( $value, false );
 
                 // Append to the classname if selector is not empty 
                 if( isset( $details['selector'] ) && !empty( $details['selector'] ) ){
@@ -357,8 +379,9 @@ function urnext_dynamic_css() {
                 if( $details['style'] === 'color' ){
 
                     // Check if opacity is set
-                    $opacity    = (string) get_theme_mod($setting . '_opacity');
-                    $opacity    = $opacity === '' ? false : ( (int) $opacity / 100 );
+                    $get_opacity    = (string) get_theme_mod($setting . '_opacity');
+                    $opacity        = $get_opacity === '' && isset( $details['opacity'] ) ? (int) $details['opacity'] : (int) $get_opacity ;
+                    $opacity        = ( $opacity / 100 );
 
                     // Create font color class, no opacity
                     $css.= sprintf('.%s{color:%s}', $classname, $rgb ); 
@@ -374,7 +397,7 @@ function urnext_dynamic_css() {
                     $css.= sprintf('.after-%s:after{background:%s}', $class, $rgba ); 
                 }
 
-                if( $details['style'] === 'font' ){
+                if( $details['style'] === 'font' && $value !== 'system' ){
                     $font_options   = explode('|', $value );
                     $font_name      = $font_options[0];
                     $font_link      = $font_options[1];
@@ -383,9 +406,10 @@ function urnext_dynamic_css() {
                 }
 
                 if( $details['style'] === 'fontsize' ){
-                    $fontsize = (int) $value;
-                    $lineheight = $fontsize + 14;
-                    $css.= sprintf(".%s{font-size:%spx; line-height:%spx}", $classname, $fontsize, $lineheight);
+                    $size       = (int) $value;
+                    $fontsize   = ( $size / 10 );
+                    $lineheight = ( $size + 7 )/10;
+                    $css.= sprintf(".%s{font-size:%srem; line-height:%srem}", $classname, $fontsize, $lineheight);
                 }
 
             endif;
@@ -442,20 +466,20 @@ function hex2rgba($color, $opacity = false) {
 }
 
 function get_google_fonts_list(){
+    global $google_font_list;
+
     $options    = array();
-    $json_fonts = file_get_contents('fonts.json', true);
+    require_once('fonts.php');
 
-    if( $json_fonts ){
-        $fonts = json_decode( $json_fonts, true );
-        foreach( $fonts['items'] as $font ){
+    foreach( $google_font_list['items'] as $font ){
 
-            // Set options
-            $family     = $font['family'];
-            $variants   = implode(',', $font['variants'] );
-            $link       = sprintf('https://fonts.googleapis.com/css?family=%s:%s', $family, $variants );
-            $options[ $family .'|'. $link ] = $family;
+        // Set options
+        $family     = $font['family'];
+        $variants   = implode(',', $font['variants'] );
+        $link       = sprintf('https://fonts.googleapis.com/css?family=%s:%s', $family, $variants );
+        $options[ $family .'|'. $link ] = $family;
 
-        }
     }
+
     return $options;
 }

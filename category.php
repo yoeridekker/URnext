@@ -7,6 +7,8 @@ get_header();
 // Get the banner for the category archive
 get_template_part('parts/banner'); 
 ?>
+<!-- start main content -->
+<div class="content-panel" data-section-name="content" id="main-content">
 
 <?php 
 $i = 0;
@@ -38,8 +40,8 @@ if ( have_posts() ) : ?>
             <?php 
             // Define the archive inline styles
             $class = ( $i % 3 == 0 ) ? ' half' : '' ;
-            $bg    = get_field('background_color');
-            $color = get_field('text_color');
+            $bg    = get_post_meta('background_color');
+            $color = get_post_meta('text_color');
             $image = has_post_thumbnail() ? get_the_post_thumbnail_url() : false ;
             $class.= $image ? ' image' : ' no-image' ;
             $style = $image ? sprintf('background-image:url(%s);', $image ) : '' ;
@@ -66,8 +68,11 @@ if ( have_posts() ) : ?>
  
 <?php else: ?>
     <p><?php _e('Sorry, no posts matched your criteria.', 'urnext'); ?></p>
-<?php endif; 
+<?php endif; ?>
 
+</div>
+
+<?php
 // Get the default footer
 get_footer();
 ?>

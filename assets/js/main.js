@@ -6,6 +6,7 @@
 // Define constants
 var 
   scroller,
+  contentOffset,
   windowwidth,
   windowheight,
   scroll,
@@ -25,18 +26,29 @@ var $jquery = jQuery.noConflict();
 // Window resize
 $jquery(window).on('resize', function(){
   setBlockheight();
-  initScrollPanels(true);
+  initBanner(true);
+  contentOffset = $jquery('div#main-content').offset().top;
 });
 
 // Window load
 $jquery(window).on('load', function(){
-    initScrollPanels(false);
+    initBanner(false);
+    contentOffset = $jquery('div#main-content').offset().top;
     $jquery('body').focus();
 });
 
 // Window scroll
 $jquery(window).on('scroll', function(){
   scroll = $jquery(window).scrollTop();
+
+  // Defined in header.php
+  if( hideHeaderOnScroll ){
+    if( scroll >= contentOffset ){
+      nav.fadeOut();
+    }else{
+      nav.fadeIn();
+    }
+  }
 });
 
 // Document ready
@@ -49,6 +61,33 @@ $jquery( document ).ready( function(){
 });
 
 function globalInit(){
+  nav = $jquery('nav#navbar');
+  contentOffset = $jquery('div#main-content').offset().top;
+  
+  $jquery('.add-tooltip').tooltipster({
+    side:'bottom',
+    content: 'Loading cart...',
+    functionBefore: function(instance, helper) {
+      var $origin = $jquery(helper.origin);
+      // we set a variable so the data is only loaded once via Ajax, not every time the tooltip opens
+      if ($origin.data('loaded') !== true) {
+          $jquery.get( localize.ajaxurl + '?action=urnext_get_cart_contens', function(data) {
+
+              // call the 'content' method to update the content of our tooltip with the returned data.
+              // note: this content update will trigger an update animation (see the updateAnimation option)
+              instance.content(data);
+
+              // to remember that the data has been loaded
+              $origin.data('loaded', true);
+          });
+      }
+    }
+  });
+
+  $jquery('#scroll-down').on('click', function(e){
+    e.preventDefault();
+    $jquery("html, body").animate({ scrollTop: contentOffset }, 1000);
+  });
   $jquery(".textadjust").fitText(
     2,
     { 
@@ -63,6 +102,7 @@ function globalInit(){
       maxFontSize: '60px'
     }
   );
+
 }
 
 function setWindowwidth(){
@@ -122,26 +162,30 @@ function initGrid(){
   });
 }
 
-function initScrollPanels( resize ){
+function initBanner( resize ){
   
   if ( windowwidth < 768 ){
-    $jquery('div.content-panel.has-banner').addClass('auto-height');
+    $jquery('#banner').addClass('auto-height');
   }else{
-    $jquery('div.content-panel.has-banner').removeClass('auto-height');
+    //$jquery('#banner').removeClass('auto-height');
   }
-  
-  if( resize ){
-    $jquery.scrollify.destroy();
-    setScrollPanels();
-    return true;
-  }
-  
-  // Set the scroll panels
-  setScrollPanels();
+
+  // set the banner
+  setBanner();
 }
 
-function setScrollPanels(){
-  nav = $jquery('nav#navbar');
+function setBanner(){
+  
+  setParticles();
+  $jquery("#siteloader").fadeOut(1000);
+
+  if( $jquery('#banner').hasClass('auto-height') ){
+    $jquery('#banner').height('auto');
+  }else{
+    $jquery('#banner').height(windowheight);
+  }
+  
+  /*
   scroller = $jquery.scrollify({
     section : ".content-panel",
     scrollbars: true,
@@ -182,6 +226,7 @@ function setScrollPanels(){
       $jquery("#siteloader").fadeOut(1000);
     }
   });
+  */
 }
 
 function initMenu(){

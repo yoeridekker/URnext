@@ -23,27 +23,28 @@ $footer_width = ( 12 / $footer_count );
 $footer_width_class = sprintf('col-sm-6 col-md-%s', $footer_width );
 
 ?>
-    <footer class="footer bg-footer-color footer-text-color">
+<!-- start footer -->
+<footer class="footer bg-footer-color footer-text-color">
+    <div class="container">
+        <div class="row">
+        <?php foreach( $footer_widgets as $footer_widget ): ?>
+            <div class="<?php echo $footer_width_class; ?> text-color widget-area border-footer-text-color">
+                <?php dynamic_sidebar( $footer_widget ); ?>
+            </div>
+        <?php endforeach; ?>
+        </div>
+    </div>
+    <div class="copyright">
         <div class="container">
             <div class="row">
-            <?php foreach( $footer_widgets as $footer_widget ): ?>
-                <div class="<?php echo $footer_width_class; ?> text-color widget-area border-footer-text-color">
-                    <?php dynamic_sidebar( $footer_widget ); ?>
-                </div>
-            <?php endforeach; ?>
-            </div>
-        </div>
-        <div class="copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 footer-text-color widget-area border-footer-text-color">
-                        Hello world
-                    </div>
+                <div class="col-md-6 footer-text-color widget-area border-footer-text-color">
+                    Hello world
                 </div>
             </div>
         </div>
-    </footer>
-</div>
+    </div>
+</footer>
+<!-- end footer -->
 <?php wp_footer(); ?>
 </body>
 </html>

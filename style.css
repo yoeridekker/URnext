@@ -1,9 +1,8 @@
 /*
-Theme Name: URnext WordPress Theme
+Theme Name: URnext
 Author: Yoeri Dekker
 Description: A lean and mean one-page theme for WordPress
 Version: 0.0.1
-Tags: one page, one-page
 Text Domain: urnext
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -16,7 +15,9 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 //   01. Global
 // ========================================================================== */
 
-
+body{
+    font-size: 100%;
+}
 body a{
     -webkit-transition: all .35s ease;
     transition: all .35s ease;
@@ -62,7 +63,7 @@ body.layout-boxed{
     top: 0;
     z-index: 1030;
 }
-body.admin-bar #navbar{
+body.admin-bar #navbar.sticky-top{
     top:32px;
 }
 .toggle-button {
@@ -85,13 +86,13 @@ body.admin-bar .toggle-button{
     background-color:rgba(0,0,0,0.9);
     display: block;
     width: 100%;
-    height: 2px;
+    height: 1px;
     border: 0;
     -webkit-transition: all .35s ease;
     transition: all .35s ease;
 }
 .bar + .bar {
-    margin-top: 7px;
+    margin-top: 8px;
 }
 .bar .middle {
     top: 11px;
@@ -115,27 +116,28 @@ body.admin-bar .toggle-button{
     -webkit-transform: translateY(-12px) translateX(0) rotate(-45deg);
 }
 
+/* search button */
 a.search-button{
     position: fixed;
     display: inline-block;
     padding: 0;
     right: 70px;
-    top: 30px;
+    top: 33px;
     cursor: pointer;
     z-index: 1040;
     text-decoration: none !important;
 }
 a.search-button span{
     text-decoration: none;
-    font-size: 25px;
-    font-weight: bold;
+    font-size: 1.4rem;
+    font-weight: 100;
     right: 0;
 }
 a.search-button.toggle-active span{
     display: none;
 }
 body.admin-bar a.search-button{
-    top:62px;
+    top:65px;
 }
 #search-overlay input.searchbar{
     background: none;
@@ -146,7 +148,7 @@ body.admin-bar a.search-button{
     border-bottom: 1px solid;
     text-align: center;
     outline: none;
-    font-size: 25px;
+    font-size: 1.1rem;
     text-transform: uppercase;
     font-weight: 100;
     -webkit-transition: all 0.6s ease;
@@ -160,6 +162,42 @@ body.admin-bar a.search-button{
 #search-overlay input.searchbar:focus{
     width: 100%;
 }
+
+/* cart button */
+a.cart-button{
+    position: fixed;
+    display: inline-block;
+    padding: 0;
+    right: 110px;
+    top: 31px;
+    cursor: pointer;
+    z-index: 1031;
+    text-decoration: none !important;
+}
+a.cart-button span.lnr{
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 100;
+    right: 0;
+}
+a.cart-button span.count{
+    text-decoration: none;
+    font-weight: 100;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 0.6rem;
+    height: 15px;
+    width: 15px;
+    line-height: 15px;
+    text-align: center;
+    border-radius: 50%;
+}
+body.admin-bar a.cart-button{
+    top:63px;
+}
+
+
 div#particles-js{
     width: 100%;
     height: 100%;
@@ -224,7 +262,7 @@ div.content-panel img{
     position: relative;
     top: 100px;
     left: 0;
-    font-size: 40px;
+    font-size: 3rem;
     line-height: 60px;
     text-align: center;
     list-style: none;
@@ -261,7 +299,7 @@ div.content-panel img{
     position: absolute;
     right: 5px;
     top: 0px;
-    font-size: 13px;
+    font-size: 1.3rem;
     font-weight: 100;
     transition: opacity 0.5s ease;
     padding-right: 15px;
@@ -303,6 +341,37 @@ a.navbar-brand img{
     width: auto;
 }
 
+div#scroll-down {
+    position: absolute;
+    cursor: pointer;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -25px;
+    width: 50px;
+    height: 50px;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    z-index: 100;
+    opacity: 0.7;
+    -webkit-transition: all 0.3s ease 0s;
+    -moz-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+}
+div#scroll-down > span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 100;
+}
+div#scroll-down:hover {
+    opacity: 1;
+}
 /* main content */
 #main-content{
     margin-bottom: 0;
@@ -494,7 +563,7 @@ body.layout-boxed .pager{
 }
 /* footer */
 #main-content footer{
-    padding: 120px 0 0 0;
+    padding: 60px 0 0 0;
     margin-top: 0;
 }
 #main-content footer ul, #main-content footer ol{
@@ -604,7 +673,7 @@ body.layout-boxed .pager{
 .buttons a.small{
     border-radius: 15px;
     line-height: 30px;
-    font-size: 14px;
+    font-size: 80%;
     height: 30px;
     padding: 0 10px;
     margin: 10px;

@@ -5,6 +5,12 @@ get_header();
 // Get the banner
 get_template_part('parts/banner');
 
+?>
+
+<!-- start main content -->
+<div class="content-panel" data-section-name="content" id="main-content">
+
+<?php 
 // Start the Loop.
 while ( have_posts() ) : the_post(); ?>
 
@@ -17,7 +23,10 @@ while ( have_posts() ) : the_post(); ?>
     get_template_part( 'content', get_post_format() );
     ?>
 
-<?php endwhile;
+<?php endwhile; ?>
 
+</div>
+
+<?php
 // Get the default footer
 get_footer();

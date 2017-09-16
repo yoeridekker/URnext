@@ -1,23 +1,22 @@
 <?php 
-$particles  = get_theme_mod('particles_js'); 
+$particles  = (bool) get_theme_mod('particles_js'); 
 $has_banner = has_post_thumbnail();
 $style      = '';
 $class      = 'auto-height';
+
 if( $has_banner ):
-    $class.= ' has-banner';
+    $class = 'has-banner';
     $style.= sprintf('background-image:url(%s)', get_the_post_thumbnail_url() );
-    $class = '';
 endif;
 
-?>
-
-<?php if( is_singular() ): ?>
-    <!-- start the first panel -->
-    <div class="content-panel home bg-header-color <?php echo $class; ?>" data-section-name="top" style="<?php echo $style; ?>;">
+if( is_singular() ): ?>
+    <!-- start banner -->
+    <div id="banner" class="content-panel home bg-header-color <?php echo $class; ?>" data-section-name="top" style="<?php echo $style; ?>;">
         
         <?php if( $particles ): ?>
-            <!-- particles.js container -->
+            <!-- start particles.js -->
             <div id="particles-js"></div>
+            <!-- end particles.js -->
         <?php endif; ?>
         
         <div id="header-overlay" class="bg-header-overlay-color"></div>
@@ -29,15 +28,19 @@ endif;
             </div>
             <div class="clear"></div>
         </div>
+        <div id="scroll-down" class="border-header-text-color">
+            <span class="lnr lnr-chevron-down header-text-color"></span>
+        </div>
     </div>
-    <!-- end the first panel -->
+    <!-- end banner -->
 <?php else: ?>
-    <!-- start the first panel -->
-    <div class="content-panel home bg-header-color auto-height" data-section-name="top">
+    <!-- start banner -->
+    <div id="banner" class="content-panel home bg-header-color auto-height" data-section-name="top">
 
         <?php if( $particles ): ?>
-            <!-- particles.js container -->
+            <!-- start particles.js -->
             <div id="particles-js"></div>
+            <!-- ned particles.js -->
         <?php endif; ?>
         <div id="header-overlay" class="bg-header-overlay-color"></div>
 
@@ -52,9 +55,9 @@ endif;
             </div>
             <div class="clear"></div>
         </div>
+        <div id="scroll-down" class="border-header-text-color">
+            <span class="lnr lnr-chevron-down header-text-color"></span>
+        </div>
     </div>
-    <!-- end the first panel -->
+    <!-- end banner -->
 <?php endif; ?>
-
-<!-- start the content panel -->
-<div class="content-panel" data-section-name="content" id="main-content">
