@@ -1,5 +1,60 @@
 <?php
+global $urnext_theme_settings;
 
+$urnext_theme_settings = array( 
+    'top_bar' => array(
+        'label'     => __('Top bar','urnext'),
+        'fields'    => array(
+            'field_1' => array(
+                'label' => __('Field 1', 'urnext'),
+                'type'  => 'switch'
+            ),
+        )
+    ),
+    
+    'header' => array(
+        'label' => __('Header', 'urnext'),
+        'fields'    => array(
+            'field_2' => array(
+                'label' => __('Field 2', 'urnext'),
+                'type'  => 'switch'
+            )
+        )
+    ),
+
+    'woocommerce' => array(
+        'label' => __('Woocommerce', 'urnext'),
+        'fields'    => array(
+            'urnext_woocommerce_products_per_page' => array(
+                'label' => __('Products per page', 'urnext'),
+                'type'  => 'number'
+            ),
+            'urnext_woocommerce_products_columns' => array(
+                'label' => __('Woocommerce Number of Product Columns', 'urnext'),
+                'type'  => 'number'
+            ),
+            'urnext_woocommerce_testval' => array(
+                'label' => __('Test', 'urnext'),
+                'type'  => 'text'
+            ),
+            'urnext_woocommerce_textarea' => array(
+                'label' => __('Textarea', 'urnext'),
+                'type'  => 'textarea'
+            )
+        )
+    ),
+
+    'performance' => array(
+        'label' => __('Performance', 'urnext'),
+        'fields'    => array(
+            'urnext_compile_js_css' => array(
+                'label' => __('Compile JS and CSS', 'urnext'),
+                'type'  => 'switch'
+            )
+        )
+    ),
+    
+);
 /**
 *
 * This file will create the theme options for the URnext theme
@@ -14,41 +69,88 @@ class URnextSettingsPage{
     private $options;
 
     /**
+     * Holds all the settings
+     */
+    private $settings = array();
+
+    /**
      * Start up
      */
-    public function __construct(){
+    public function __construct( $settings ){
+        $this->settings = $settings;
+
         add_action( 'admin_menu', array( $this, 'add_urnext_theme_settings_page' ) );
         add_action( 'admin_init', array( $this, 'urnext_theme_settings_page_init' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'urnext_theme_settings_load_script' ) );
+    }
+
+    public function urnext_theme_settings_load_script(){
+        wp_enqueue_script( 'admin_switch_button', get_template_directory_uri() . '/assets/admin/js/jquery.switchButton.js', array('jquery', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-effects-core'), null, true );
+        wp_enqueue_script( 'urnext_admin_main', get_template_directory_uri() . '/assets/admin/js/admin.js', array('admin_switch_button'), null, true );
+        wp_enqueue_style( 'urnext_wp_admin_css', get_template_directory_uri() . '/assets/admin/css/admin.css', false, '1.0.0' );
     }
 
     /**
      * Add options page
      */
     public function add_urnext_theme_settings_page(){
+
         // This page will be under "Settings"
-        add_options_page(
+        add_menu_page(
             __('URnext Theme Options', 'urnext'), 
-            __('Theme Options', 'urnext'), 
+            __('URnext', 'urnext'), 
             'manage_options', 
-            'urnext-settings', 
-            array( $this, 'create_urnext_theme_settings_admin_page' )
+            'urnext_settings', 
+            array( $this, 'create_urnext_theme_settings_admin_page' ),
+            get_template_directory_uri() . '/assets/admin/images/icon.svg',
+            3
         );
+
+        // Now loop the settings
+        foreach( $this->settings as $setting_name => $settings ){
+
+            // Create submenu for the URnext settings
+            add_submenu_page( 
+                'urnext_settings',
+                $settings['label'],
+                $settings['label'],
+                'manage_options',
+                sprintf('urnext_page_%s', $setting_name ),
+                array( $this, 'urnext_callback_setting_page')
+                //array( $this, sprintf('urnext_callback_%s', $setting_name ) )
+            );
+        }
+    }
+
+    public function create_urnext_theme_settings_admin_page(){
+        echo 'URnext info page';
+
+        $mods = get_theme_mods();
+        $opts = array();
+        foreach( $this->settings as $setting_name => $details ){
+            $opt_name = 'urnext_theme_option_name_' . $setting_name;
+            $opts[$opt_name] = get_option( $opt_name );
+        }
+        
+        echo '<pre>';
+        var_dump($opts, $mods);
+        echo '</pre>';
     }
 
     /**
-     * Options page callback
+     * Options page callbacks
      */
-    public function create_urnext_theme_settings_admin_page(){
-        // Set class property
-        $this->options = get_option( 'urnext_theme_option_name' );
-        var_dump( $this->options );
+    public function urnext_callback_setting_page(){
+        $screen = get_current_screen();
+        $setting = str_replace('urnext_page_urnext_page_', '', $screen->id );
+        $this->options = get_option( 'urnext_theme_option_name_' . $setting );
         ?>
-        <div class="wrap">
+        <div class="wrap urnext-options">
             <form method="post" action="options.php">
             <?php
                 // This prints out all hidden setting fields
-                settings_fields( 'urnext_theme_option_group' );
-                do_settings_sections( 'my-setting-admin' );
+                settings_fields( 'urnext_theme_option_group_' . $setting );
+                do_settings_sections( 'urnext_page_' . $setting );
                 submit_button();
             ?>
             </form>
@@ -61,34 +163,37 @@ class URnextSettingsPage{
      */
     public function urnext_theme_settings_page_init(){
 
-        register_setting(
-            'urnext_theme_option_group', // Option group
-            'urnext_theme_option_name', // Option name
-            array( $this, 'sanitize' ) // Sanitize
-        );
+        foreach( $this->settings as $setting_name => $settings ){
 
-        add_settings_section(
-            'setting_section_id', // ID
-            __('URnext Theme Options', 'urnext'), // Title
-            array( $this, 'print_section_info' ), // Callback
-            'my-setting-admin' // Page
-        );  
+            register_setting(
+                'urnext_theme_option_group_' . $setting_name, // Option group
+                'urnext_theme_option_name_' . $setting_name, // Option name
+                array( $this, 'sanitize' ) // Sanitize
+            );
 
-        add_settings_field(
-            'id_number', // ID
-            'ID Number', // Title 
-            array( $this, 'id_number_callback' ), // Callback
-            'my-setting-admin', // Page
-            'setting_section_id' // Section           
-        );      
+            add_settings_section(
+                sprintf('section_id_%s', $setting_name ), // ID
+                sprintf( __('URnext Theme Options - %s', 'urnext'), $settings['label']), // Title
+                array( $this, 'print_section_info' ), // Callback
+                sprintf('urnext_page_%s', $setting_name ) // Page
+            );
 
-        add_settings_field(
-            'title', 
-            'Title', 
-            array( $this, 'title_callback' ), 
-            'my-setting-admin', 
-            'setting_section_id'
-        );      
+            foreach( $settings['fields'] as $field_name => $field ){
+                add_settings_field(
+                    $field_name, // ID
+                    $field['label'], // Title 
+                    array( $this, sprintf('%s_callback', $field['type'] ) ), // Callback
+                    sprintf('urnext_page_%s', $setting_name ), // Page
+                    sprintf('section_id_%s', $setting_name ), // Section      
+                    array(
+                        'name'      => $field_name,
+                        'section'   => 'urnext_theme_option_name_' . $setting_name
+                    )    
+                ); 
+            }
+
+        }
+
     }
 
     /**
@@ -97,47 +202,71 @@ class URnextSettingsPage{
      * @param array $input Contains all settings fields as array keys
      */
     public function sanitize( $input ){
-
-        $new_input = array();
-        if( isset( $input['id_number'] ) )
-            $new_input['id_number'] = absint( $input['id_number'] );
-
-        if( isset( $input['title'] ) )
-            $new_input['title'] = sanitize_text_field( $input['title'] );
-
-        return $new_input;
+        if( isset($input) && !empty( $input ) ){
+            $return = array();
+            foreach( $input as $key => $value ){
+                $return[$key] = sanitize_option( $key, $value );
+            }
+            $input = $return;
+        }
+        var_dump( $input );
+        return $input;
     }
 
     /** 
      * Print the Section text
      */
-    public function print_section_info()
-    {
-        print __('Change your theme settings below', 'urnext');
+    public function print_section_info(){
+        print __('<p class="info">Change your theme settings below</p>', 'urnext');
     }
 
     /** 
      * Get the settings option array and print one of its values
      */
-    public function id_number_callback()
-    {
+    public function number_callback( $args ){
         printf(
-            '<input type="text" id="id_number" name="urnext_theme_option_name[id_number]" value="%s" />',
-            isset( $this->options['id_number'] ) ? esc_attr( $this->options['id_number']) : ''
+            '<input type="number" id="%s" name="%s[%s]" value="%s" />',
+            $args['name'],
+            $args['section'],
+            $args['name'],
+            isset( $this->options[ $args['name'] ] ) ? esc_attr( $this->options[ $args['name'] ]) : ''
         );
     }
 
+    public function textarea_callback( $args ){
+        printf(
+            '<textarea id="%s" name="%s[%s]">%s</textarea>',
+            $args['name'],
+            $args['section'],
+            $args['name'],
+            isset( $this->options[ $args['name'] ] ) ? esc_attr( $this->options[ $args['name'] ]) : ''
+        );
+    }
+    
+
     /** 
      * Get the settings option array and print one of its values
      */
-    public function title_callback()
-    {
+    public function text_callback( $args ){
         printf(
-            '<input type="text" id="title" name="urnext_theme_option_name[title]" value="%s" />',
-            isset( $this->options['title'] ) ? esc_attr( $this->options['title']) : ''
+            '<input type="text" id="%s" name="%s[%s]" value="%s" />',
+            $args['name'],
+            $args['section'],
+            $args['name'],
+            isset( $this->options[ $args['name'] ] ) ? esc_attr( $this->options[ $args['name'] ]) : ''
+        );
+    }
+
+    public function switch_callback( $args ){
+        $checked = isset( $this->options[ $args['name'] ] ) && (int) $this->options[$args['name']] === 1 ? ' checked' : '' ;
+        printf(
+            '<div class="switch-wrapper"><input id="%s" class="switcher" name="%s[%s]" type="checkbox" value="1"%s></div>',
+            $args['name'],
+            $args['section'],
+            $args['name'],
+            $checked
         );
     }
 }
 
-if( is_admin() )
-    $urnext_settings_page = new URnextSettingsPage();
+if( is_admin() ) $urnext_settings_page = new URnextSettingsPage( $urnext_theme_settings );
