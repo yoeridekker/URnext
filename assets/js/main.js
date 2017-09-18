@@ -7,8 +7,9 @@
 var 
   scroller,
   contentOffset,
-  windowwidth,
-  windowheight,
+  windowwidth = 0,
+  windowheight = 0,
+  bannerheight = 0,
   scroll,
   nav,
   particlesColor = '#fff';
@@ -23,41 +24,44 @@ var $jquery = jQuery.noConflict();
  * UBnext theme functions - setup listeners
  */
 
-// Window resize
-$jquery(window).on('resize', function(){
-  setBlockheight();
-  initBanner(true);
-  contentOffset = $jquery('div#main-content').offset().top;
-});
+
 
 // Window load
 $jquery(window).on('load', function(){
     initBanner(false);
     contentOffset = $jquery('div#main-content').offset().top;
     $jquery('body').focus();
-});
 
-// Window scroll
-$jquery(window).on('scroll', function(){
-  scroll = $jquery(window).scrollTop();
+    // Window resize
+    $jquery(window).on('resize', function(){
+        setBlockheight();
+        initBanner(true);
+        contentOffset = $jquery('div#main-content').offset().top;
+    });
 
-  // Defined in header.php
-  if( hideHeaderOnScroll ){
-    if( scroll >= contentOffset ){
-      nav.fadeOut();
-    }else{
-      nav.fadeIn();
-    }
-  }
+    // Window scroll
+    $jquery(window).on('scroll', function(){
+        scroll = $jquery(window).scrollTop();
+
+        // Defined in header.php
+        if( hideHeaderOnScroll ){
+            if( scroll >= ( contentOffset - 100 ) ){
+                nav.fadeOut(100);
+            }else{
+                nav.fadeIn(400);
+            }
+        }
+    });
+
 });
 
 // Document ready
 $jquery( document ).ready( function(){
-  globalInit();
-  initGallery();
-  setBlockheight();
-  initGrid();
-  initMenu();
+    globalInit();
+    initGallery();
+    setBlockheight();
+    initGrid();
+    initMenu();
 });
 
 function globalInit(){
@@ -157,33 +161,44 @@ function initGrid(){
     layoutMode: 'masonry',
     masonry: {
       // use element for option
-      columnWidth: '.sizer'
+      columnWidth: '.sizer', 
     }
   });
 }
 
 function initBanner( resize ){
-  
-  if ( windowwidth < 768 ){
-    $jquery('#banner').addClass('auto-height');
-  }else{
-    //$jquery('#banner').removeClass('auto-height');
-  }
-
-  // set the banner
-  setBanner();
+    if ( windowwidth < 768 ){
+        $jquery('#banner.has-banner').addClass('auto-height');
+    }else{
+        $jquery('#banner.has-banner').removeClass('auto-height');
+    }
+    // set the banner
+    setBanner();
 }
 
 function setBanner(){
   
-  setParticles();
-  $jquery("#siteloader").fadeOut(1000);
+    setParticles();
 
-  if( $jquery('#banner').hasClass('auto-height') ){
-    $jquery('#banner').height('auto');
-  }else{
-    $jquery('#banner').height(windowheight);
-  }
+    var adminBarHeight = 0;
+    if( $jquery('#wpadminbar').length === 1 ){
+        adminBarHeight = $jquery('#wpadminbar').outerHeight();
+    }
+
+    var breadcrumbsHeight = 0;
+    if( $jquery('div#breadcrumbs').length === 1 ){
+        breadcrumbsHeight = $jquery('div#breadcrumbs').outerHeight();
+    }
+
+    bannerheight = windowheight - adminBarHeight - breadcrumbsHeight;
+
+    if( $jquery('#banner').hasClass('auto-height') ){
+        $jquery('#banner').height('auto');
+    }else{
+        $jquery('#banner').height(bannerheight);
+    }
+
+    $jquery("#siteloader").fadeOut(1000);
   
   /*
   scroller = $jquery.scrollify({
@@ -234,10 +249,13 @@ function initMenu(){
   var menu        = $jquery('#overlay');
   var search      = $jquery('#search-overlay');
   var activeClass = 'nav-active';
+  var body        = $jquery('body');
   var onSearch    = false;
 
   toggles.click( function(e) {
+
     e.preventDefault();
+    body.toggleClass('no-overflow');
     var toggleTarget = $jquery(this).attr('id');
     if( toggleTarget === 'toggle' ){
       toggles.toggleClass('toggle-active');
@@ -248,9 +266,9 @@ function initMenu(){
         menu.toggleClass(activeClass);
         menu.find("li").each(function(i) {
           if( menu.hasClass(activeClass) ){
-            $jquery(this).delay(100*i).fadeIn();
+            $jquery(this).delay(50*i).fadeIn();
           }else{
-            $jquery(this).delay(50*i).fadeOut();
+            $jquery(this).delay(20*i).fadeOut();
           }
         });
       }

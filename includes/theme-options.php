@@ -40,7 +40,6 @@ $urnext_theme_settings = array(
                 'label'     => __('Show breadcrumbs', 'urnext'),
                 'type'      => 'multi_checkbox',
                 'options'   => array(
-                    'frontpage' => __('Show breadcrumbs on the front page?', 'urnext'),
                     'page'      => __('Show breadcrumbs on pages?', 'urnext'),
                     'post'      => __('Show breadcrumbs on single posts?', 'urnext'),
                     'category'  => __('Show breadcrumbs on categories?', 'urnext'),
@@ -167,10 +166,6 @@ class URnextSettingsPage{
             $opt_name = 'urnext_theme_option_name_' . $setting_name;
             $opts[$opt_name] = get_option( $opt_name );
         }
-        
-        echo '<pre>';
-        var_dump($opts, $mods);
-        echo '</pre>';
     }
 
     /**

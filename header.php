@@ -18,11 +18,17 @@ $sticky_header = (bool) get_theme_mod('sticky_header');
 <!-- start page output -->
 <body <?php body_class('font bg-body-color ' . get_theme_mod('layout') ); ?>>
    
-   <!-- start siteloader -->
-   <div id="siteloader" class="bg-body-color">
+    <!-- start siteloader -->
+    <div id="siteloader" class="bg-body-color">
         <div class="spinner"></div>
-   </div>
+    </div>
     <!-- end siteloader -->
+
+    <!-- start top bar 
+    <div id="top-bar" class="bg-body-color">
+        Hello
+    </div>
+     end top bar -->
 
     <!-- start menu button -->
     <div class="toggler toggle-button top-bar-text-color" id="toggle">
@@ -39,12 +45,14 @@ $sticky_header = (bool) get_theme_mod('sticky_header');
     <!-- end search button -->
 
     <?php if( URNEXT_WOOCOMMERCE_ACTIVE ): ?>
+    <!-- start cart -->
     <a href="<?php echo wc_get_cart_url(); ?>" id="cart" class="cart-button add-tooltip" title="Hello">
         <span class="lnr lnr-cart top-bar-text-color"></span>
         <?php if( WC()->cart->get_cart_contents_count() > 0 ): ?>
             <span class="count bg-header-color header-text-color"><?php echo WC()->cart->get_cart_contents_count(); ?></span>
         <?php endif; ?>
     </a>
+    <!-- end cart -->
     <?php endif; ?>
 
     <!-- start navbar -->
@@ -78,7 +86,7 @@ $sticky_header = (bool) get_theme_mod('sticky_header');
     <!-- end search form -->
 
     <!-- start menu overlay -->
-    <nav class="overlay bg-menu-color" id="overlay">
+    <nav class="overlay bg-menu-color headadjust" id="overlay">
         <?php 
         wp_nav_menu(
             array(

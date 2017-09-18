@@ -6,7 +6,7 @@ $fontlist = get_google_fonts_list();
 $urnext_options = array(
     // section key 
     'urnext_style_options' => array(
-        'name'          => __( 'URnext Theme Styles', 'urnext' ),
+        'name'          => __( 'Theme Styles', 'urnext' ),
         'description'   => __('Change theme style options', 'urnext'), 
         'settings'      => array(
             
@@ -105,7 +105,7 @@ $urnext_options = array(
         )
     ),
     'urnext_header_style_options' => array(
-        'name'          => __( 'URnext Header Styles', 'urnext' ),
+        'name'          => __( 'Header Styles', 'urnext' ),
         'description'   => __('Change header style options', 'urnext'), 
         'settings'      => array(
 
@@ -224,7 +224,7 @@ $urnext_options = array(
         ),
     ),
     'urnext_footer_options' => array(
-        'name'          => __( 'URnext Footer Styles', 'urnext' ),
+        'name'          => __( 'Footer Styles', 'urnext' ),
         'description'   => __('Change footer style options', 'urnext'), 
         'settings'      => array(
 
@@ -250,7 +250,7 @@ $urnext_options = array(
                 'label'         => __( 'Footer Link Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
-                'selector'      => 'body footer a,body footer a:active,body footer a:visited',
+                'selector'      => 'body #footer a,body #footer a:active,body #footer a:visited',
                 'only_global'   => true,
                 'opacity'       => 100
             ),
@@ -259,7 +259,7 @@ $urnext_options = array(
                 'label'         => __( 'Footer Link Hover Color', 'urnext' ), 
                 'method'        => 'WP_Customize_Color_Control',
                 'style'         => 'color',
-                'selector'      => 'body footer a:hover',
+                'selector'      => 'body #footer a:hover',
                 'only_global'   => true,
                 'opacity'       => 100
             ),
@@ -469,7 +469,6 @@ function get_google_fonts_list(){
     global $google_font_list;
 
     $options    = array();
-    require_once('fonts.php');
 
     foreach( $google_font_list['items'] as $font ){
 

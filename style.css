@@ -1,22 +1,53 @@
 /*
 Theme Name: URnext
 Author: Yoeri Dekker
-Description: A lean and mean one-page theme for WordPress
+Theme URI: https://www.urnext-theme.com
+Description: A lean and mean power theme for WordPress
 Version: 0.0.1
+Author URI: http://themeforest.net/user/UBnext
+Tags: grid-layout, flexible-header, post-formats
 Text Domain: urnext
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 
-/* =============================================================================
+/*
 // TABLE OF CONTENTS
 // -----------------------------------------------------------------------------
 //   01. Global
-// ========================================================================== */
+// =============================================================================
+//   02. Widgets
+// =============================================================================
+*/
 
+
+
+/**
+* 0.1 Global
+**/
 body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: 100;
+    position: relative;
     font-size: 100%;
+    overflow-x: hidden;
+}
+body.no-overflow{
+    overflow: hidden !important;
+}
+body.layout-boxed{
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+body.layout-full{
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+h1,h2,h3,h4,h5,h6{
+    font-weight: 100
 }
 body a{
     -webkit-transition: all .35s ease;
@@ -27,9 +58,89 @@ body a{
 body a:hover{
     text-decoration: none;
 }
+
+/**
+* 0.2 Widgets
+**/
+#wp-calendar {
+    border-collapse: collapse; 
+    border:none; 
+    width:100%;
+}
+
+#wp-calendar thead,
+#wp-calendar tbody,
+#wp-calendar tfoot{
+    width: 100%;
+}
+#wp-calendar thead tr,
+#wp-calendar tbody tr,
+#wp-calendar tfoot tr{
+    width: 100%;
+}
+#wp-calendar tbody tr td{
+    height: 30px;
+    vertical-align: middle;
+    background: rgba(0,0,0,0.01);
+}
+#wp-calendar tbody tr:nth-child(odd) td{
+    background: rgba(0,0,0,0.04);
+}
+#wp-calendar tbody tr td:hover{
+    background: rgba(0,0,0,0.1);
+}
+#wp-calendar tbody tr td a{
+    font-weight: bold;
+    display: block;
+
+}
+#wp-calendar thead tr th,
+#wp-calendar tbody tr td{
+    border: none; 
+}
+#wp-calendar td, #wp-calendar th {
+    text-align:center;
+}
+#wp-calendar caption {
+    text-align: center;
+    caption-side: top;
+    width: 100%;
+    color: inherit;
+}
+#wp-calendar thead, #wp-calendar tfoot {
+    line-height:33px;
+    background: none;
+}
+#wp-calendar tbody { line-height:33px; }
+#wp-calendar #prev, #wp-calendar #next { padding:0 10px; background:none; }
+#wp-calendar #prev { text-align:left; }
+#wp-calendar #next { text-align:right; }
+
+
+#calendar_wrap:after {
+    content: " ";
+    clear: both;
+    display: block;
+}
+
+/* */
+.widget-area select{
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    border:none;
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+
 .textajust p{
     font-size:inherit;
 }
+
+
 #main-content ol, #main-content ul{
     margin-left:30px;
     list-style: disc;
@@ -39,21 +150,7 @@ body a:hover{
 }
 
 
-/* System Fonts as used by GitHub */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 100;
-    position: relative;
-}
-h1,h2,h3,h4,h5,h6{
-    font-weight: 100
-}
-/* Layout */
-body.layout-boxed{
-    width: 100%;
-    max-width: 1180px;
-    margin: 0 auto;
-}
+
 
 /* menu */
 #navbar{
@@ -198,6 +295,28 @@ body.admin-bar a.cart-button{
 }
 
 
+@media screen and (max-width: 782px){
+    body.admin-bar #navbar.sticky-top{
+        top:46px;
+    } 
+    body.admin-bar .toggle-button{
+        top:46px;
+    }
+    body.admin-bar a.search-button{
+        top:79px;
+    }
+    body.admin-bar a.cart-button{
+        top:77px;
+    }
+    
+}
+
+@media screen and (max-width: 600px){
+    #wpadminbar{
+        position: fixed !important;
+    }
+}
+
 div#particles-js{
     width: 100%;
     height: 100%;
@@ -240,6 +359,7 @@ div.content-panel img{
     height: auto;
 }
 .overlay {
+    overflow: auto;
     position: fixed;
     background: rgba(255,255,255,1);
     top: 0;
@@ -262,11 +382,16 @@ div.content-panel img{
     position: relative;
     top: 100px;
     left: 0;
-    font-size: 3rem;
-    line-height: 60px;
-    text-align: center;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    text-align: left;
     list-style: none;
     padding: 0;
+    margin: 0 auto 100px auto;
+    width: 100%;
+    max-width: 480px;
+    min-width: 300px;
+    box-sizing: border-box;
 }
 .overlay ul li {
     display: none;
@@ -275,6 +400,13 @@ div.content-panel img{
     color:inherit;
     font-weight: 100;
     text-decoration: none;
+}
+.overlay ul li ul.children{
+    display: block;
+    margin: 10px 0 10px 40px;
+    top: 0;
+    font-size: 1.5rem;
+    line-height: 2rem;
 }
 /* Panel pager */
 .pager {
@@ -372,6 +504,23 @@ div#scroll-down > span {
 div#scroll-down:hover {
     opacity: 1;
 }
+
+/* breadcrumbs */
+div#breadcrumbs{
+    padding: 15px 0;
+    font-size: 1rem;
+}
+div#breadcrumbs *{
+    font-size: inherit;
+}
+div#breadcrumbs span.lnr{
+    font-size: 0.7rem;
+}
+div#breadcrumbs a{
+    color: inherit;
+}
+
+
 /* main content */
 #main-content{
     margin-bottom: 0;
@@ -384,10 +533,18 @@ div#scroll-down:hover {
 
 /* archive */
 .archive-intro{
-    padding: 120px 0 40px 0;
+    padding: 50px 0 50px 0;
 }
 body.archive footer{
     margin-top: 0;
+}
+
+/* intro */
+.intro{
+    padding: 150px 0 50px 0;
+}
+body.has-hidden-header .intro{
+    padding: 75px 0 50px 0;
 }
 
 /* sidebar */
@@ -403,12 +560,15 @@ div.grid{
 }
 div.sizer{
     width:25%;
+    margin: 0;
+    padding: 0;
+    outline: none;
     height: 0;
 }
 div.grid div.grid-item{
-    width: 25%;
-    box-sizing: border-box;
-    margin: 0;
+    width: 23%;
+    box-sizing: content-box;
+    margin: 1%;
     padding: 0;
     position: relative;
     display: table;
@@ -417,10 +577,12 @@ div.grid div.grid-item{
     overflow: hidden;
 }
 div.grid div.grid-item.half{
-    width: 50%;
+    width: 48%;
+    margin: 1%;
 }
 div.grid div.grid-item.full{
-    width:100%;
+    width:98%;
+    margin: 1%;
 }
 div.grid div.grid-item:nth-child(odd){
 
@@ -525,10 +687,10 @@ body.layout-boxed .pager{
 
 @media screen and (max-width: 1180px){
     div.grid div.grid-item{
-        width: 25%;
+        width: 23%;
     }
     div.grid div.grid-item.half{
-        width: 50%;
+        width: 48%;
     }
     body.layout-boxed #navbar{
         width: 100%;
@@ -547,18 +709,18 @@ body.layout-boxed .pager{
 }
 @media screen and (max-width: 768px){
     div.grid div.grid-item{
-        width: 50%;
+        width: 48%;
     }
     div.grid div.grid-item.half{
-        width: 100%;
+        width: 98%;
     }
 }
 @media screen and (max-width: 480px){
     div.grid div.grid-item{
-        width: 100%;
+        width: 98%;
     }
     div.grid div.grid-item.half{
-        width: 100%;
+        width: 98%;
     }
 }
 /* footer */
@@ -577,10 +739,18 @@ body.layout-boxed .pager{
     content: "\0BB \020";
 }
 
-#main-content footer div.copyright{
-    background: rgba(0,0,0,0.1);
+div#footer div.copyright{
+    background: rgba(0,0,0,0.05);
     padding: 10px 0;
     margin: 15px 0 0 0;
+}
+
+div#footer{
+    padding: 50px 0 0 0;
+    margin: 0;
+    display: block;
+    outline: none;
+    box-sizing: border-box;
 }
 /* helper */
 .inherit-border a{
