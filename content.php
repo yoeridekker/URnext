@@ -27,8 +27,8 @@
                         foreach( $post_categories as $cat_id ): $cat = get_category( $cat_id ); ?>
                             <a href="<?php echo esc_url( get_category_link( $cat_id ) ); ?>" class="btn center-button button text-color border-text-color"><?php echo $cat->name; ?></a>
                         <?php endforeach; ?>
-                        
                     </div>
+                    <?php the_tags( 'Tags: ', ', ', '<br />' ); ?> 
                 </div>
             </div>
         </div>
@@ -42,6 +42,15 @@
         <div data-wow-offset="10" data-wow-delay="0s" class="wow slideInLeft <?php echo is_active_sidebar( 'right_sidebar' ) ? 'col-lg-8' : 'col-md-12';?> text-color">
             <article id="post-<?php the_ID(); ?>" <?php post_class('textadjust'); ?>>
                 <?php the_content(); ?>
+
+                <?php 
+                wp_link_pages( 
+                    array(
+                        'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'urnext' ),
+                        'after'  => '</div>',
+                    )
+                ); 
+                ?>
             </article>
 
             <?php 
