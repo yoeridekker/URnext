@@ -1,16 +1,15 @@
 <?php 
+
+global $i;
 // Get the default header 
 get_header();
-?>
 
-<?php 
 // Get the banner for the author archive
 get_template_part('parts/banner-author'); 
-?>
 
-<?php 
 // Loop the authors posts
 $i = 0;
+
 if ( have_posts() ) : ?>
 
     <div class="grid">
@@ -21,10 +20,12 @@ if ( have_posts() ) : ?>
         <?php while ( have_posts() ) : the_post(); ?>
 
             <?php 
+            get_template_part('loop','post'); 
+            /*
             // Define the archive inline styles
             $class = ( $i % 3 == 0 ) ? ' half' : '' ;
-            $bg    = get_field('background_color');
-            $color = get_field('text_color');
+            $bg    = get_post_meta('background_color');
+            $color = get_post_meta('text_color');
             $image = has_post_thumbnail() ? get_the_post_thumbnail_url() : false ;
             $class.= $image ? ' image' : ' no-image' ;
             $style = $image ? sprintf('background-image:url(%s);', $image ) : '' ;
@@ -45,7 +46,7 @@ if ( have_posts() ) : ?>
             </div>
             <!-- end grid item -->
         
-        <?php $i++; endwhile; ?>
+        <?php */ $i++; endwhile; ?>
 
     </div>
  

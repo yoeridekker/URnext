@@ -5,6 +5,12 @@ get_header();
 // Get the banner
 get_template_part('parts/banner');
 
+// Get the breadcrumbs
+$show_breadcrumbs = get_urnext_option( 'page', 'show_breadcrumbs' );
+if( (int) $show_breadcrumbs === 1){
+    get_template_part('parts/breadcrumbs');
+}
+
 ?>
 
 <!-- start main content -->
