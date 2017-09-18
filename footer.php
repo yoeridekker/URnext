@@ -24,7 +24,7 @@ $footer_width_class = sprintf('col-sm-6 col-md-%s', $footer_width );
 
 ?>
 <!-- start footer -->
-<footer class="footer bg-footer-color footer-text-color">
+<div id="footer" class="footer bg-footer-color footer-text-color">
     <div class="container">
         <div class="row">
         <?php foreach( $footer_widgets as $footer_widget ): ?>
@@ -43,7 +43,7 @@ $footer_width_class = sprintf('col-sm-6 col-md-%s', $footer_width );
             </div>
         </div>
     </div>
-</footer>
+</div>
 <!-- end footer -->
 <?php wp_footer(); ?>
 </body>
