@@ -12,6 +12,17 @@ $urnext_theme_settings = array(
         )
     ),
     
+    
+    'post_grid' => array(
+        'label' => __('Post grid', 'urnext'),
+        'fields'    => array(
+            'posts_per_page' => array(
+                'label' => __('Posts per page', 'urnext'),
+                'type'  => 'number'
+            )
+        )
+    ),
+
     'header' => array(
         'label' => __('Header', 'urnext'),
         'fields'    => array(
@@ -19,6 +30,31 @@ $urnext_theme_settings = array(
                 'label' => __('Field 2', 'urnext'),
                 'type'  => 'switch'
             )
+        )
+    ),
+
+    'breadcrumbs' => array(
+        'label' => __('Breadcrumbs', 'urnext'),
+        'fields'    => array(
+            'show_breadcrumbs' => array(
+                'label'     => __('Show breadcrumbs', 'urnext'),
+                'type'      => 'multi_checkbox',
+                'options'   => array(
+                    'frontpage' => __('Show breadcrumbs on the front page?', 'urnext'),
+                    'page'      => __('Show breadcrumbs on pages?', 'urnext'),
+                    'post'      => __('Show breadcrumbs on single posts?', 'urnext'),
+                    'category'  => __('Show breadcrumbs on categories?', 'urnext'),
+                )
+            ),
+            'breadcrumbs_align' => array(
+                'label'     => __('Align breadcrumbs', 'urnext'),
+                'type'      => 'select',
+                'options'   => array(
+                    'align-left'    => __('Align left', 'urnext'),
+                    'centered'      => __('Align center', 'urnext'),
+                    'align-right'   => __('Align right', 'urnext'),
+                )
+            ),
         )
     ),
 
@@ -187,7 +223,8 @@ class URnextSettingsPage{
                     sprintf('section_id_%s', $setting_name ), // Section      
                     array(
                         'name'      => $field_name,
-                        'section'   => 'urnext_theme_option_name_' . $setting_name
+                        'section'   => 'urnext_theme_option_name_' . $setting_name,
+                        'args'      => $field
                     )    
                 ); 
             }
@@ -209,7 +246,7 @@ class URnextSettingsPage{
             }
             $input = $return;
         }
-        var_dump( $input );
+        //var_dump( $input );
         return $input;
     }
 
@@ -223,6 +260,51 @@ class URnextSettingsPage{
     /** 
      * Get the settings option array and print one of its values
      */
+
+     
+    public function multi_checkbox_callback( $args ){
+        if( isset( $args['args']['options'] ) && !empty( $args['args']['options'] ) ){
+            foreach( $args['args']['options'] as $key => $value ){
+                $name = $args['name'];
+                $checked = isset( $this->options[$name][$key] ) && (int) $this->options[$name][$key] === 1 ? ' checked' : '' ;
+                printf(
+                    '<div class="switch-wrapper"><label for="%s">%s</label><input id="%s" class="switcher" name="%s[%s][%s]" type="checkbox" value="1"%s></div>',
+                    $name . $key,
+                    $value,
+                    $name . $key,
+                    $args['section'],
+                    $name,
+                    $key,
+                    $checked
+                );
+            }
+        }
+    }
+
+    public function select_callback( $args ){
+        $options    = '';
+        $selected   = isset( $this->options[ $args['name'] ] ) ? esc_attr( $this->options[ $args['name'] ]) : '' ;
+
+        if( isset( $args['args']['options'] ) && !empty( $args['args']['options'] ) ){
+            foreach( $args['args']['options'] as $key => $value ){
+                $options.= sprintf(
+                    '<option value="%s"%s>%s</option>',
+                    $key,
+                    ( $selected == $key ? ' selected' : '' ),
+                    $value
+                );
+            }
+        }
+
+        printf(
+            '<select id="%s" name="%s[%s]">%s</select>',
+            $args['name'],
+            $args['section'],
+            $args['name'],
+            $options
+        );
+    }
+
     public function number_callback( $args ){
         printf(
             '<input type="number" id="%s" name="%s[%s]" value="%s" />',
