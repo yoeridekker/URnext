@@ -30,6 +30,13 @@
         <div data-wow-offset="10" data-wow-delay="0s" class="wow slideInLeft <?php echo is_active_sidebar( 'page_sidebar' ) ? 'col-lg-8' : 'col-md-12';?> text-color">
             <article id="post-<?php the_ID(); ?>" <?php post_class('textadjust'); ?>>
                 <?php the_content(); ?>
+                <div class="clear"></div>
+                <?php wp_link_pages( 
+                    array(
+                        'before' => '<div class="centered page-links">' . esc_html__( 'Pages:', 'urnext' ),
+                        'after'  => '</div>',
+                    )
+                ); ?>
             </article>
 
             <?php 
