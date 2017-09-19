@@ -7,7 +7,7 @@ global $i;
 get_header();
 
 // Get the banner for the category archive
-get_template_part('parts/banner'); 
+get_template_part('parts/no-banner'); 
 
 // Get the breadcrumbs
 $show_breadcrumbs = get_urnext_option( 'category', 'show_breadcrumbs' );
@@ -18,25 +18,21 @@ if( (int) $show_breadcrumbs === 1){
 <!-- start main content -->
 <div class="content-panel" data-section-name="content" id="main-content">
 
+    <div class="archive-intro intro">
+        <div class="container centered">
+            <h1 class="headadjust light-weight centered underline after-text-color faded">
+                <?php single_cat_title(''); ?>
+            </h1>
+            <?php if ( category_description() ) : ?>
+                <div class="archive-meta centered"><?php echo category_description(); ?></div>
+            <?php endif; ?>
+        </div>
+    </div>
+
     <?php 
     $i = 0;
 
     if ( have_posts() ) : ?>
-
-        <div class="archive-intro intro">
-            <div class="container centered">
-                <h1 class="archive-title light-weight centered underline after-text-color faded">
-                    <?php single_cat_title(''); ?>
-                </h1>
-                <?php if ( category_description() ) : ?>
-                    <div class="archive-meta centered"><?php echo category_description(); ?></div>
-                <?php endif; ?>
-                <div class="centered">
-                    <a href="#" class="btn center-button button text-color border-text-color">Hello</a>
-                    <a href="#" class="btn center-button button text-color border-text-color">World</a>
-                </div>
-            </div>
-        </div>
 
         <!-- start the grid -->
         <div class="grid">

@@ -4,7 +4,7 @@
 get_header();
 
 // Get the banner for the archive
-get_template_part('parts/banner'); 
+get_template_part('parts/no-banner'); 
 
 // Get the breadcrumbs
 get_template_part('parts/breadcrumbs');
