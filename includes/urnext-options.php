@@ -469,6 +469,7 @@ function get_google_fonts_list(){
     global $google_font_list;
 
     $options    = array();
+    $options['system'] = 'System font';
 
     foreach( $google_font_list['items'] as $font ){
 
