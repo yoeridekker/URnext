@@ -5,7 +5,7 @@ Theme URI: https://www.urnext-theme.com
 Description: A lean and mean power theme for WordPress
 Version: 0.0.1
 Author URI: http://themeforest.net/user/UBnext
-Tags: grid-layout, flexible-header, post-formats
+Tags: grid-layout, flexible-header, post-formats, theme-options, custom-colors, custom-menu, featured-image-header, featured-images
 Text Domain: urnext
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -26,6 +26,16 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 /**
 * 0.1 Global
 **/
+html,body{
+    margin: 0;
+    padding: 0;
+    outline: none;
+    height: auto;
+    height: 100%;
+    min-height: 100%;
+    min-height: 100vh;
+    position: relative;
+}
 body{
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-weight: 100;
@@ -141,10 +151,6 @@ body a:hover{
 }
 
 
-#main-content ol, #main-content ul{
-    margin-left:30px;
-    list-style: disc;
-}
 .sticky-top{
     position: fixed !important;
 }
@@ -350,9 +356,9 @@ div.content-panel{
     position: relative;
     transition: height 0.3s ease;
 }
-div.content-panel.home{
+#banner{
     background-size: cover;
-    background-position: 50% 50%;
+    background-position: center 0px;
 }
 div.content-panel img{
     max-width: 100%;
@@ -408,55 +414,7 @@ div.content-panel img{
     font-size: 1.5rem;
     line-height: 2rem;
 }
-/* Panel pager */
-.pager {
-	position:fixed;
-	right:20px;
-	top: 50%;
-    transform: translateY(-50%);
-	font-size:1.4em;
-	z-index: 10;
-}
-.pager a {
-	display:block;
-	height:20px;
-	margin-bottom:5px;
-	position:relative;
-	padding:4px;
-}
-.pager a.active:after {
-	box-shadow:inset 0 0 0 5px;
-}
-.pager a .hover-text {
-    position: absolute;
-    right: 5px;
-    top: 0px;
-    font-size: 1.3rem;
-    font-weight: 100;
-    transition: opacity 0.5s ease;
-    padding-right: 15px;
-    opacity: 0;
-    min-width: 100px;
-    text-align: right;
-}
-.pager a:hover .hover-text {
-	opacity: 1;
-}
-.pager a:after {
-	-webkit-transition:box-shadow 0.5s ease;
-	transition:box-shadow 0.5s ease;
-	width:10px;
-	height:10px;
-	display: block;
-	border:1px solid;
-	border-radius:50%;
-	content:'';
-	position: absolute;
-	margin:auto;
-	top:0;
-	right:4px;
-	bottom:0;
-}
+
 #siteloader{
     position: fixed;
     top: 0;
@@ -467,6 +425,11 @@ div.content-panel img{
 }
 a.navbar-brand{
     line-height: 80px !important;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    border: none;
+    outline: none;
 }
 a.navbar-brand img{
     height: 80px;
@@ -520,31 +483,39 @@ div#breadcrumbs a{
     color: inherit;
 }
 
+/* banner */
+#banner{
 
+}
+#no-banner{
+    min-height: 80px;
+}
 /* main content */
 #main-content{
     margin-bottom: 0;
+    min-height: 100%;
+    min-height: 100vh;
+    padding: 80px 0 50px 0;
 }
-
+#main-content article *{
+    max-width: 100%;
+}
+body.has-hidden-header #main-content{
+    padding: 80px 0 50px 0;
+}
 #main-content article a{
     border-bottom:  1px solid transparent;
     border-color: inherit;
 }
 
-/* archive */
-.archive-intro{
-    padding: 50px 0 50px 0;
-}
-body.archive footer{
-    margin-top: 0;
+#main-content article ol, #main-content article ul{
+    margin-left:30px;
+    list-style: disc;
 }
 
 /* intro */
 .intro{
-    padding: 150px 0 50px 0;
-}
-body.has-hidden-header .intro{
-    padding: 75px 0 50px 0;
+    padding: 0 0 50px 0;
 }
 
 /* sidebar */
@@ -639,9 +610,12 @@ div.grid div.grid-item div.corner{
     transition: all 0.4s ease 0.1s;
 }
 div.grid div.grid-item.image:hover div.corner{
-    opacity: 0.85;
+    opacity: 0.8;
 }
 div.grid div.grid-item.no-image div.corner{
+    opacity: 0.7;
+}
+div.grid div.grid-item.no-image:hover div.corner{
     opacity: 1;
 }
 div.grid div.grid-item.no-image div.inner,
@@ -714,6 +688,12 @@ body.layout-boxed .pager{
     div.grid div.grid-item.half{
         width: 98%;
     }
+    div.grid div.grid-item.full{
+        width: 98%;
+    }
+    div.sizer{
+        width:50%;
+    }
 }
 @media screen and (max-width: 480px){
     div.grid div.grid-item{
@@ -722,43 +702,46 @@ body.layout-boxed .pager{
     div.grid div.grid-item.half{
         width: 98%;
     }
+    div.sizer{
+        width:50%;
+    }
 }
 /* footer */
-#main-content footer{
-    padding: 60px 0 0 0;
-    margin-top: 0;
-}
-#main-content footer ul, #main-content footer ol{
-    list-style: none;
-    margin-left: 0;
-}
-#main-content footer ul li, #main-content footer ol li{
-    
-}
-#main-content footer ul li:before, #main-content footer ol li:before {
-    content: "\0BB \020";
-}
-
-div#footer div.copyright{
-    background: rgba(0,0,0,0.05);
-    padding: 10px 0;
-    margin: 15px 0 0 0;
-}
-
-div#footer{
+#footer{
     padding: 50px 0 0 0;
     margin: 0;
     display: block;
     outline: none;
     box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    bottom:0;
 }
+#footer ul, #footer ol{
+    list-style: none;
+    margin-left: 0;
+}
+#footer ul li, #footer ol li{
+    
+}
+#footer ul li:before, #footer ol li:before {
+    content: "\0BB \020";
+}
+
+#footer div.copyright{
+    background: rgba(0,0,0,0.05);
+    padding: 10px 0;
+    margin: 15px 0 0 0;
+}
+
+
 /* helper */
+.fix-gutters > [class*="col-"]{
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
 .inherit-border a{
     border-color:inherit !important;
-}
-.button.center-button{
-    display: inline-block;
-    width: auto;
 }
 .blocked{
     display: block
@@ -822,11 +805,10 @@ div#footer{
     font-weight: 300;
     font-family: inherit;
     text-transform: uppercase;
-    border-radius: 25px;
     line-height: 50px;
     height: 50px;
     padding: 0 25px;
-    margin: 10px;
+    margin: 10px 5px;
     opacity: 0.8;
     cursor: pointer;
     outline: none;
@@ -838,15 +820,19 @@ div#footer{
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
+    border-radius: 0;
+}
+.buttons a{
+    border-color:inherit;
 }
 .button.small,
-.buttons a.small{
-    border-radius: 15px;
+.buttons.small a{
+    border-radius: 0;
     line-height: 30px;
-    font-size: 80%;
+    font-size: 0.9rem;
     height: 30px;
     padding: 0 10px;
-    margin: 10px;
+    margin: 10px 5px;
 }
 .buttons.left{
     float: left;
@@ -861,7 +847,7 @@ div#footer{
 }
 .button:hover,
 .buttons a:hover{
-    transform: scale(1.05);
+    transform: scale(1.01);
 }
 .button:focus,
 .button:hover,
@@ -874,6 +860,11 @@ div#footer{
 .buttons a:focus{
     outline: none;
     box-shadow: none;
+}
+.button.center-button,
+.buttons.center-button a{
+    display: inline-block;
+    width: auto;
 }
 @font-face {
 	font-family: 'Linearicons';
