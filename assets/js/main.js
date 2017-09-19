@@ -1,30 +1,31 @@
 
 /**
- * UBnext theme functions - js
- */
+* UBnext theme functions - js
+*/
 
 // Define constants
-var 
-  scroller,
-  contentOffset,
-  windowwidth = 0,
-  windowheight = 0,
-  bannerheight = 0,
-  scroll,
-  nav,
-  particlesColor = '#fff';
+var scroller,
+    contentOffset,
+    windowwidth = 0,
+    windowheight = 0,
+    banner = false,
+    bannerheight = 0,
+    scroll,
+    nav,
+    particlesColor = '#fff';
 
-// Init WOW js
-new WOW().init();
 
 // init jQuery noConflict - Just to be sure
 var $jquery = jQuery.noConflict();
 
+// Init WOW js if animations are enabled
+if( localize.animations === '1' ){
+    new WOW().init();
+}
+
 /**
- * UBnext theme functions - setup listeners
- */
-
-
+* UBnext theme functions - setup listeners
+*/
 
 // Window load
 $jquery(window).on('load', function(){
@@ -37,6 +38,7 @@ $jquery(window).on('load', function(){
         setBlockheight();
         initBanner(true);
         contentOffset = $jquery('div#main-content').offset().top;
+        $jquery('div#main-content').css('min-height', windowheight);
     });
 
     // Window scroll
@@ -51,8 +53,14 @@ $jquery(window).on('load', function(){
                 nav.fadeIn(400);
             }
         }
-    });
 
+        if( banner && localize.parallax === '1' ){
+            banner.css('background-position', 'center ' + ((scroll)) + 'px');
+        }
+        
+    });
+    // Finally, remove the loader
+    $jquery("#siteloader").fadeOut(500);
 });
 
 // Document ready
@@ -65,93 +73,114 @@ $jquery( document ).ready( function(){
 });
 
 function globalInit(){
-  nav = $jquery('nav#navbar');
-  contentOffset = $jquery('div#main-content').offset().top;
+
+    // Define primary navbar
+    nav = $jquery('nav#navbar');
+
+    if( $jquery('#banner').length === 1 ){
+        banner = $jquery('#banner');
+    }
+    contentOffset = $jquery('div#main-content').offset().top;
   
-  $jquery('.add-tooltip').tooltipster({
-    side:'bottom',
-    content: 'Loading cart...',
-    functionBefore: function(instance, helper) {
-      var $origin = $jquery(helper.origin);
-      // we set a variable so the data is only loaded once via Ajax, not every time the tooltip opens
-      if ($origin.data('loaded') !== true) {
-          $jquery.get( localize.ajaxurl + '?action=urnext_get_cart_contens', function(data) {
+    $jquery('.add-tooltip').tooltipster({
+        side:'bottom',
+        content: 'Loading cart...',
+        functionBefore: function(instance, helper) {
+            var $origin = $jquery(helper.origin);
+            // we set a variable so the data is only loaded once via Ajax, not every time the tooltip opens
+            if ($origin.data('loaded') !== true) {
+                $jquery.get( localize.ajaxurl + '?action=urnext_get_cart_contens', function(data) {
 
-              // call the 'content' method to update the content of our tooltip with the returned data.
-              // note: this content update will trigger an update animation (see the updateAnimation option)
-              instance.content(data);
+                    // call the 'content' method to update the content of our tooltip with the returned data.
+                    // note: this content update will trigger an update animation (see the updateAnimation option)
+                    instance.content(data);
 
-              // to remember that the data has been loaded
-              $origin.data('loaded', true);
-          });
-      }
-    }
-  });
+                    // to remember that the data has been loaded
+                    $origin.data('loaded', true);
+                });
+            }
+        }
+    });
 
-  $jquery('#scroll-down').on('click', function(e){
-    e.preventDefault();
-    $jquery("html, body").animate({ scrollTop: contentOffset }, 1000);
-  });
-  $jquery(".textadjust").fitText(
-    2,
-    { 
-      minFontSize: '17px',
-      maxFontSize: '20px'
-    }
-  );
-  $jquery(".headadjust").fitText(
-    2,
-    { 
-      minFontSize: '22px',
-      maxFontSize: '60px'
-    }
-  );
+    $jquery('#scroll-down').on('click', function(e){
+        e.preventDefault();
+        $jquery("html, body").animate({ scrollTop: contentOffset }, 1000);
+    });
 
+    $jquery(".textadjust").fitText(
+        2, 
+        { 
+            minFontSize: '17px',
+            maxFontSize: '20px'
+        }
+    );
+    $jquery(".headadjust").fitText(
+        2,
+        { 
+            minFontSize: '22px',
+            maxFontSize: '60px'
+        }
+    );
+    $jquery(".tinytextadjust").fitText(
+        3,
+        { 
+            minFontSize: '13px',
+            maxFontSize: '16px'
+        }
+    );
 }
 
 function setWindowwidth(){
-  windowwidth = $jquery(window).width();
+    windowwidth = $jquery(window).width();
 }
 
 function setWindowheight(){
-  windowheight = $jquery(window).height();
+    windowheight = $jquery(window).height();
 }
 
+var smallest = 999999999;
 function setBlockheight(){
-  setWindowwidth();
-  setWindowheight();
-  $jquery('div.grid div.grid-item').each(function(){
-    var gridWidth = $jquery(this).width();
-    var gridHeight = $jquery(this).hasClass('full') ? ( gridWidth / 2 ) : gridWidth ;
-      $jquery(this).height( gridHeight );
-  });
+    setWindowwidth();
+    setWindowheight();
+
+    var gridWidth = $jquery('div.grid div.sizer').width();
+    if( gridWidth < smallest ){
+        smallest = gridWidth;
+    }
+    $jquery('div.grid div.grid-item').each(function(){
+        //var gridWidth = $jquery(this).innerWidth();
+        //var gridOuterWidth = $jquery(this).outerWidth();
+        //console.log(gridWidth,gridOuterWidth);
+        var gridHeight = $jquery(this).hasClass('full') ? ( gridWidth * 2 ) : gridWidth ;
+        //var gridHeight = gridWidth;
+        $jquery(this).height( gridHeight );
+    });
 }
 
 function initGallery(){
-  $jquery('.slick-gallery').slick({
-    centerMode: true,
-    
-    centerPadding: 0,
-    slidesToShow: 3,
-    infinite: true,
-    dots:true,
-    arrows: false,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-        }
-      }
-    ]
-  });
+    $jquery('.slick-gallery').slick({
+        centerMode: true,
+        centerPadding: 0,
+        slidesToShow: 3,
+        infinite: true,
+        dots:true,
+        arrows: false,
+        slidesToScroll: 1,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                slidesToShow: 2,
+            }
+        },
+            {
+                breakpoint: 768,
+                settings: {
+                slidesToShow: 1,
+                }
+            }
+        ]
+    });
 }
 
 function initGrid(){
@@ -168,9 +197,9 @@ function initGrid(){
 
 function initBanner( resize ){
     if ( windowwidth < 768 ){
-        $jquery('#banner.has-banner').addClass('auto-height');
+        if( banner && banner.hasClass('has-banner') ) banner.addClass('auto-height');
     }else{
-        $jquery('#banner.has-banner').removeClass('auto-height');
+        if( banner && banner.hasClass('has-banner') ) banner.removeClass('auto-height');
     }
     // set the banner
     setBanner();
@@ -192,56 +221,14 @@ function setBanner(){
 
     bannerheight = windowheight - adminBarHeight - breadcrumbsHeight;
 
-    if( $jquery('#banner').hasClass('auto-height') ){
-        $jquery('#banner').height('auto');
-    }else{
-        $jquery('#banner').height(bannerheight);
-    }
-
-    $jquery("#siteloader").fadeOut(1000);
-  
-  /*
-  scroller = $jquery.scrollify({
-    section : ".content-panel",
-    scrollbars: true,
-    offset:0,
-    scrollSpeed: 500,
-    interstitialSection: 'div.auto-height',
-    before:function(i,panels) {
-        var ref = panels[i].attr("data-section-name");
-        $jquery(".pager .active").removeClass("active");
-        $jquery(".pager").find("a[href=\"#" + ref + "\"]").addClass("active");
-    },
-    after: function( i,panels ){
-      //console.log( panels.length );
-      if( hideHeaderOnScroll ){
-        if( i > 0 ){
-          nav.fadeOut();
+    if( banner ){
+        if( banner.hasClass('auto-height') ){
+            banner.height('auto');
         }else{
-          nav.fadeIn();
+            banner.height(bannerheight);
         }
-      }
-    },
-    afterRender:function() {
-        
-      var pager = "<ul class=\"pager\">";
-      var activeClass = "";
-      $jquery(".content-panel").each(function(i) {
-          activeClass = "";
-          if(i===0) {
-              activeClass = "active";
-          }
-          pager += "<li><a class=\"text-color " + activeClass + "\" href=\"#" + $jquery(this).attr("data-section-name") + "\"></a></li>";
-      });
-      pager += "</ul>";
-      $jquery(".home").append(pager);
-
-      $jquery(".pager a").on("click",$jquery.scrollify.move);
-      setParticles();
-      $jquery("#siteloader").fadeOut(1000);
     }
-  });
-  */
+    
 }
 
 function initMenu(){
