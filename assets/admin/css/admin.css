@@ -35,11 +35,12 @@
 }
 .wrap.urnext-options p.info{
     padding: 5px 10px;
-    background: #ddd;
-    color: #999;
+    background: #fff;
+    color: #000;
     text-transform: uppercase;
     font-weight: 100;
-    margin: 0;  
+    margin: 0; 
+    border-bottom: 1px solid #f2f2f2;
 }
 .wrap.urnext-options table.form-table{
     border:none;
@@ -68,11 +69,24 @@
 .wrap.urnext-options table.form-table tr td input[type=number]{
     width: 75px;
 }
+.wrap.urnext-options table.form-table tr td input.wp-color-picker{
+    display: inline-block;
+    width: auto;
+}
 .wrap.urnext-options table.form-table tr td textarea{
     width: 100%;
     min-height: 150px;
 }
-.wrap.urnext-options .button{
+.wrap.urnext-options table.form-table tr td p.hint{
+    color: #999;
+    font-size: 11px;
+    margin: 0;
+    padding: 0 3px;
+}
+.wrap.urnext-options .button.wp-picker-clear{
+    display: inline-block;
+}
+.wrap.urnext-options .button.button-primary{
     border-radius: 0;
     border: none;
     box-shadow: none;
@@ -121,4 +135,24 @@
     top : -1px;
     background: #FAFAFA;
     border: 1px solid #aaa;
+}
+
+.socialbadge{
+    font-size: 15px;
+    line-height: 20px;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    text-align: center;
+}
+.socialbadge.facebook{
+    background: #3b5998;
+    color: #fff;
+}
+.socialbadge.twitter{
+    background: #4099FF;
+    color: #fff;
 }

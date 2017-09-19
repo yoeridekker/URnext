@@ -33,6 +33,41 @@ $urnext_theme_settings = array(
         )
     ),
 
+    'miscellaneous' => array(
+        'label' => __('Miscellaneous', 'urnext'),
+        'fields'    => array(
+            'animations' => array(
+                'label' => __('Enable animations', 'urnext'),
+                'type'  => 'switch'
+            ),
+            'header_parallax' => array(
+                'label' => __('Enable header parallax effect', 'urnext'),
+                'type'  => 'switch'
+            )
+        )
+    ),
+
+    // Options for social media
+    'social' => array(
+        'label' => __('Social Media', 'urnext'),
+        'fields'    => array(
+            'facebook' => array(
+                'label' => __('<span class="socialbadge facebook socicon socicon-facebook"></span> Facebook page url', 'urnext'),
+                'type'  => 'text',
+                'hint'  => __('Add your Facebook page url. Use a valid url (https://facebook.com/pagename)','urnext')
+            ),
+            'twitter' => array(
+                'label' => __('<span class="socialbadge twitter socicon socicon-twitter"></span> Twitter page url', 'urnext'),
+                'type'  => 'text',
+            ),
+            'icon_color' => array(
+                'label' => __('Social media icon colors', 'urnext'),
+                'type'  => 'color'
+            )
+        )
+    ),
+
+    // Options for the breadcrumbs
     'breadcrumbs' => array(
         'label' => __('Breadcrumbs', 'urnext'),
         'fields'    => array(
@@ -40,9 +75,12 @@ $urnext_theme_settings = array(
                 'label'     => __('Show breadcrumbs', 'urnext'),
                 'type'      => 'multi_checkbox',
                 'options'   => array(
+                    'frontpage' => __('Show breadcrumbs on the frontpage?', 'urnext'),
                     'page'      => __('Show breadcrumbs on pages?', 'urnext'),
                     'post'      => __('Show breadcrumbs on single posts?', 'urnext'),
                     'category'  => __('Show breadcrumbs on categories?', 'urnext'),
+                    'author'    => __('Show breadcrumbs on author page?', 'urnext'),
+                    '404'       => __('Show breadcrumbs on 404 (not found) page?', 'urnext'),
                 )
             ),
             'breadcrumbs_align' => array(
@@ -120,8 +158,12 @@ class URnextSettingsPage{
     }
 
     public function urnext_theme_settings_load_script(){
+        // Add the color picker css file       
+        wp_enqueue_style( 'wp-color-picker' ); 
+
         wp_enqueue_script( 'admin_switch_button', get_template_directory_uri() . '/assets/admin/js/jquery.switchButton.js', array('jquery', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-effects-core'), null, true );
-        wp_enqueue_script( 'urnext_admin_main', get_template_directory_uri() . '/assets/admin/js/admin.js', array('admin_switch_button'), null, true );
+        wp_enqueue_script( 'urnext_admin_main', get_template_directory_uri() . '/assets/admin/js/admin.js', array('admin_switch_button', 'wp-color-picker'), null, true );
+        wp_enqueue_style( 'urnext_socicon_css', get_template_directory_uri() . '/assets/css/socicon.css', false, '1.0.0' );
         wp_enqueue_style( 'urnext_wp_admin_css', get_template_directory_uri() . '/assets/admin/css/admin.css', false, '1.0.0' );
     }
 
@@ -166,6 +208,9 @@ class URnextSettingsPage{
             $opt_name = 'urnext_theme_option_name_' . $setting_name;
             $opts[$opt_name] = get_option( $opt_name );
         }
+        echo '<pre>';
+        var_dump( $opts );
+        echo '</pre>';
     }
 
     /**
@@ -241,7 +286,6 @@ class URnextSettingsPage{
             }
             $input = $return;
         }
-        //var_dump( $input );
         return $input;
     }
 
@@ -250,6 +294,15 @@ class URnextSettingsPage{
      */
     public function print_section_info(){
         print __('<p class="info">Change your theme settings below</p>', 'urnext');
+    }
+
+    /** 
+     * Print the info text if set
+     */
+     public function print_hint( $args ){
+        if( isset( $args['hint'] ) && !empty( $args['hint'] ) ){
+            printf('<p class="hint">%s</p>', $args['hint'] );
+        }
     }
 
     /** 
@@ -327,6 +380,17 @@ class URnextSettingsPage{
     public function text_callback( $args ){
         printf(
             '<input type="text" id="%s" name="%s[%s]" value="%s" />',
+            $args['name'],
+            $args['section'],
+            $args['name'],
+            isset( $this->options[ $args['name'] ] ) ? esc_attr( $this->options[ $args['name'] ]) : ''
+        );
+        $this->print_hint( $args['args'] );
+    }
+
+    public function color_callback( $args ){
+        printf(
+            '<input type="text" id="%s" class="color-field" name="%s[%s]" value="%s" />',
             $args['name'],
             $args['section'],
             $args['name'],
