@@ -16,7 +16,7 @@
 <div id="breadcrumbs" class="bg-header-color">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 header-text-color <?php echo get_urnext_option('breadcrumbs_align'); ?>">
+            <div class="tinytextadjust col-md-12 header-text-color <?php echo get_urnext_option('breadcrumbs_align'); ?>">
                 <?php echo the_breadcrumb(); ?>
             </div>
         </div>
