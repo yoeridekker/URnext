@@ -164,21 +164,31 @@ function urnext_load_scripts() {
     global $urnext_theme_globals;
 
     wp_enqueue_style( 'urnext-reset', get_template_directory_uri() . '/assets/css/reset.css' );
+
     wp_enqueue_style( 'urnext-slick', get_template_directory_uri() . '/assets/css/slick.css' );
+    wp_enqueue_style( 'urnext-slick-theme', get_template_directory_uri() . '/assets/css/slick-theme.css' );
+    
+    wp_enqueue_style( 'urnext-socicon', get_template_directory_uri() . '/assets/css/socicon.css' );
     wp_enqueue_style( 'urnext-tooltip', get_template_directory_uri() . '/assets/css/tooltipster.css' );
     
     wp_enqueue_style( 'urnext-featherlight', get_template_directory_uri() . '/assets/css/featherlight.css' );
     wp_enqueue_style( 'urnext-eatherlight-gallery', get_template_directory_uri() . '/assets/css/featherlight.gallery.css' );
 
-    wp_enqueue_style( 'urnext-slick-theme', get_template_directory_uri() . '/assets/css/slick-theme.css' );
     wp_enqueue_style( 'urnext-bootstrap-style', get_template_directory_uri() . '/assets/css/bootstrap.min.css' );
-    wp_enqueue_style( 'urnext-animate-style', get_template_directory_uri() . '/assets/css/animate.css' );
+    
+    // Load animations.css if animations are enabled
+    if( (int) get_urnext_option('animations') === 1 ){
+        wp_enqueue_style( 'urnext-animate-style', get_template_directory_uri() . '/assets/css/animate.css' );
+    }
+
     wp_enqueue_style( 'urnext-style', get_stylesheet_uri() );
 
+    // Only load if Woocommerce is active
     if( URNEXT_WOOCOMMERCE_ACTIVE ){
         wp_enqueue_style( 'urnext-woocommerce', get_template_directory_uri() . '/assets/css/woocommerce.css' );
     }
     
+    // Only load on singular (page,post)
     if ( is_singular() ){ 
         wp_enqueue_script( "comment-reply" );
     }
@@ -187,16 +197,23 @@ function urnext_load_scripts() {
     wp_enqueue_script( 'urnext-featherlight', get_template_directory_uri() . '/assets/js/featherlight.js', array('jquery'), '1.0.0', true );
     wp_enqueue_script( 'urnext-featherlight-gallery', get_template_directory_uri() . '/assets/js/featherlight.gallery.js', array('jquery'), '1.0.0', true );
     wp_enqueue_script( 'urnext-fittext', get_template_directory_uri() . '/assets/js/fittext.js', array('jquery'), '1.0.0', true );
+    
+    // Use slick fot the carrousel and sliders
     wp_enqueue_script( 'urnext-slick', get_template_directory_uri() . '/assets/js/slick.js', array('jquery'), '1.0.0', true );
     
     // Only load particles if we need it
     if( $urnext_theme_globals['particles_js'] ){
         wp_enqueue_script( 'urnext-particles', get_template_directory_uri() . '/assets/js/particles.min.js', array('jquery'), '1.0.0', true );
     }
-    wp_enqueue_script( 'urnext-scrollify', get_template_directory_uri() . '/assets/js/scrollify.js', array('jquery'), '1.0.17', true );
+    
+    // Require bootstrap and tether
     wp_enqueue_script( 'urnext-tether', get_template_directory_uri() . '/assets/js/tether.min.js', array('jquery'), '4.0.0', true );
     wp_enqueue_script( 'urnext-bootstrap', get_template_directory_uri() . '/assets/js/bootstrap.min.js', array('jquery'), '4.0.0', true );
-    wp_enqueue_script( 'urnext-wow', get_template_directory_uri() . '/assets/js/wow.min.js', array('jquery'), '4.0.0', true );
+    
+    // Load wow.js if animations are enabled
+    if( (int) get_urnext_option('animations') === 1 ){
+        wp_enqueue_script( 'urnext-wow', get_template_directory_uri() . '/assets/js/wow.min.js', array('jquery'), '4.0.0', true );
+    }
 
     // Use isotope for archive grids
     wp_enqueue_script( 'urnext-isotope', get_template_directory_uri() . '/assets/vendor/isotope/isotope.pkgd.js', array('jquery'), '1.0.0', true );
@@ -205,7 +222,13 @@ function urnext_load_scripts() {
     wp_enqueue_script( 'urnext-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'urnext-bootstrap'), '1.0.0', true );
 
     // Localize main
-    wp_localize_script( 'urnext-main', 'localize', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+    $localize = array(
+        'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+        'animations'    => ( (int) get_urnext_option('animations') === 1 ? 1 : 0 ),
+        'parallax'      => ( (int) get_urnext_option('header_parallax') === 1 ? 1 : 0 ),
+    );
+    
+    wp_localize_script( 'urnext-main', 'localize', $localize );
 }
 add_action( 'wp_enqueue_scripts', 'urnext_load_scripts' );
 
@@ -327,7 +350,7 @@ function the_breadcrumb() {
 	$wrap_before        = '<div class="breadcrumbs header-text-color" itemscope itemtype="http://schema.org/BreadcrumbList">'; // the opening wrapper tag
 	$wrap_after         = '</div><!-- .breadcrumbs -->'; // the closing wrapper tag
 	$sep                = '<span class="header-text-color lnr lnr-chevron-right"></span>'; // separator between crumbs
-	$sep_before         = '<span class="header-text-color sep">'; // tag before separator
+	$sep_before         = '<span class="header-text-color hidden-xs-down sep">'; // tag before separator
     $sep_after          = '</span>'; // tag after separator
     $show_youre_here    = 1; // 1 - show the 'You are here' link, 0 - don't show
 	$show_home_link     = 1; // 1 - show the 'Home' link, 0 - don't show
@@ -344,7 +367,7 @@ function the_breadcrumb() {
 	$link_before    = '<span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">';
 	$link_after     = '</span>';
 	$link_attr      = ' itemprop="item"';
-	$link_in_before = '<span itemprop="name">';
+	$link_in_before = '<span class="hidden-xs-down" itemprop="name">';
 	$link_in_after  = '</span>';
 	$link           = $link_before . '<a href="%1$s"' . $link_attr . '>' . $link_in_before . '%2$s' . $link_in_after . '</a>' . $link_after;
 	$frontpage_id   = get_option('page_on_front');
