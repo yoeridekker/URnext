@@ -30,7 +30,6 @@ if ( post_password_required() ) {
 			?>
 		</h2>
 
-
 		<ol class="comment-list">
 			<?php
 				wp_list_comments( array(
@@ -41,7 +40,8 @@ if ( post_password_required() ) {
 			?>
 		</ol><!-- .comment-list -->
 
-
+        <?php the_comments_pagination(); ?>
+        
 	<?php endif; // have_comments() ?>
 
 	<?php
@@ -51,6 +51,7 @@ if ( post_password_required() ) {
 		<p class="no-comments"><?php _e( 'Comments are closed.', 'urnext' ); ?></p>
 	<?php endif; ?>
 
-	<?php comment_form(); ?>
+    <div class="border-text-color text-color inherit-border"><?php comment_form(); ?></div>
+	
 
 </div><!-- .comments-area -->
