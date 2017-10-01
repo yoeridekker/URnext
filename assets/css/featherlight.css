@@ -16,7 +16,10 @@
 
 		/* dimensions: spanning the background from edge to edge */
 		position:fixed;
-		top: 0; right: 0; bottom: 0; left: 0;
+        top: 0; 
+        right: 0; 
+        bottom: 0; 
+        left: 0;
 		z-index: 2147483647; /* z-index needs to be >= elements on the site. */
 
 		/* position: centering content */
@@ -56,8 +59,8 @@
 
 		/* dimensions: cut off images */
 		overflow: auto;
-		padding: 25px 25px 0;
-		border-bottom: 25px solid transparent;
+		padding: 0;
+		border:0;
 
 		/* dimensions: handling large content */
 		margin-left: 5%;
@@ -118,7 +121,6 @@
 		width: 100%;
 	}
 
-
 	.featherlight-iframe .featherlight-content {
 		/* removed the border for image croping since iframe is edge to edge */
 		border-bottom: 0;
@@ -146,8 +148,7 @@
 		margin-left: 0;
 		margin-right: 0;
 		max-height: 98%;
-
-		padding: 10px 10px 0;
-		border-bottom: 10px solid transparent;
+		padding:0;
+		border:0;
 	}
 }

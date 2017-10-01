@@ -83,6 +83,16 @@
     margin: 0;
     padding: 0 3px;
 }
+.wrap.urnext-options table.form-table tr td p.alert{
+    color: #a07809;
+    font-size: 12px;
+    margin: 5px 0;
+    padding: 5px;
+    display: block;
+    background: #fbd363;
+    border: 1px solid #cca435;
+    text-align: center;
+}
 .wrap.urnext-options .button.wp-picker-clear{
     display: inline-block;
 }
@@ -138,21 +148,14 @@
 }
 
 .socialbadge{
-    font-size: 15px;
-    line-height: 20px;
-    height: 20px;
-    width: 20px;
+    font-size: 30px;
+    line-height: 35px;
+    height: 35px;
+    width: 35px;
     display: inline-block;
     margin: 0;
     padding: 0;
     outline: none;
     text-align: center;
-}
-.socialbadge.facebook{
-    background: #3b5998;
-    color: #fff;
-}
-.socialbadge.twitter{
-    background: #4099FF;
-    color: #fff;
+    vertical-align: middle;
 }

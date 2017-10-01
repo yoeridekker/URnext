@@ -5,14 +5,22 @@
 
 // Define constants
 var scroller,
-    contentOffset,
+    contentOffset = 0,
     windowwidth = 0,
     windowheight = 0,
     banner = false,
     bannerheight = 0,
+    bannerWrapperHeight = 0,
     scroll,
     nav,
-    particlesColor = '#fff';
+    sidebar = false,
+    sidebarTopCorrection = 80,
+    wpadminbar = false,
+    adminBarHeight = 0,
+    breadcrumbs = false,
+    breadcrumbsHeight = 0,
+    grid = false,
+    page = 1;
 
 
 // init jQuery noConflict - Just to be sure
@@ -29,16 +37,30 @@ if( localize.animations === '1' ){
 
 // Window load
 $jquery(window).on('load', function(){
-    initBanner(false);
-    contentOffset = $jquery('div#main-content').offset().top;
+    urnext_setDimensions();
+    urnext_initBanner(false);
+    
     $jquery('body').focus();
+
+    // Sidebar scroll 
+    if( sidebar ){
+        var stickyCorrection = localize.stickyHeader === '1' ? adminBarHeight + sidebarTopCorrection : adminBarHeight + 15;
+        $jquery('#inner-sidebar').stick_in_parent({
+            //parent: '#main-content',
+            offset_top: stickyCorrection
+        });
+    }
 
     // Window resize
     $jquery(window).on('resize', function(){
-        setBlockheight();
-        initBanner(true);
-        contentOffset = $jquery('div#main-content').offset().top;
-        $jquery('div#main-content').css('min-height', windowheight);
+        urnext_setDimensions();
+        urnext_setBlockheight();
+        urnext_initBanner(true);
+        // Check if we use isotope
+        if( grid && localize.gridLayout === '1' ){
+            grid.isotope('layout');
+        }
+        $jquery('body:not(.page-template-template-stretched) #main-content').css('min-height', windowheight);
     });
 
     // Window scroll
@@ -46,42 +68,62 @@ $jquery(window).on('load', function(){
         scroll = $jquery(window).scrollTop();
 
         // Defined in header.php
+        var navBreakPoint = bannerWrapperHeight-breadcrumbsHeight-adminBarHeight;
         if( hideHeaderOnScroll ){
-            if( scroll >= ( contentOffset - 100 ) ){
+            if( scroll >= navBreakPoint ){
                 nav.fadeOut(100);
             }else{
                 nav.fadeIn(400);
             }
         }
 
-        if( banner && localize.parallax === '1' ){
-            banner.css('background-position', 'center ' + ((scroll)) + 'px');
+        if( banner && localize.hasParallax === '1' ){
+            var pos = ( ( ( scroll / bannerheight ) * 100 ) / 2 ) + 50;
+            //var pos = ( ( scroll / bannerheight ) * 100 );
+            banner.css('background-position-y', pos + '%');
         }
         
     });
+
+    // Check if we use isotope
+    if( grid && localize.gridLayout === '1' ){
+        grid.isotope('layout');
+    }
+
     // Finally, remove the loader
     $jquery("#siteloader").fadeOut(500);
 });
 
 // Document ready
 $jquery( document ).ready( function(){
-    globalInit();
-    initGallery();
-    setBlockheight();
-    initGrid();
-    initMenu();
+    urnext_setDimensions();
+    urnext_globalInit();
+    urnext_initGallery();
+    urnext_setBlockheight();
+    urnext_initGrid();
+    urnext_initMenu();
 });
 
-function globalInit(){
+function urnext_globalInit(){
 
     // Define primary navbar
     nav = $jquery('nav#navbar');
 
-    if( $jquery('#banner').length === 1 ){
-        banner = $jquery('#banner');
-    }
-    contentOffset = $jquery('div#main-content').offset().top;
-  
+    // Try to define the sidebar
+    if( $jquery('#sidebar').length === 1) sidebar = $jquery('#sidebar');
+
+    // Try to define the grid
+    if( $jquery('.grid').length === 1) grid = $jquery('.grid');
+
+    // Define banner
+    if( $jquery('#banner').length === 1 ) banner = $jquery('#banner');
+
+    // Define breadcrumbs
+    if( $jquery('#breadcrumbs').length === 1 ) breadcrumbs = $jquery('#breadcrumbs');
+
+    // Define wpadminbar
+    if( $jquery('#wpadminbar').length === 1 ) wpadminbar = $jquery('#wpadminbar');
+
     $jquery('.add-tooltip').tooltipster({
         side:'bottom',
         content: 'Loading cart...',
@@ -104,60 +146,78 @@ function globalInit(){
 
     $jquery('#scroll-down').on('click', function(e){
         e.preventDefault();
-        $jquery("html, body").animate({ scrollTop: contentOffset }, 1000);
+        urnext_setDimensions();
+        var scrollToPos = hideHeaderOnScroll ? ( contentOffset - breadcrumbsHeight - adminBarHeight ) : ( contentOffset - breadcrumbsHeight - adminBarHeight - 80 );
+        $jquery("html, body").animate({ scrollTop: scrollToPos }, 1000);
     });
 
-    $jquery(".textadjust").fitText(
-        2, 
-        { 
-            minFontSize: '17px',
-            maxFontSize: '20px'
-        }
-    );
-    $jquery(".headadjust").fitText(
-        2,
-        { 
-            minFontSize: '22px',
-            maxFontSize: '60px'
-        }
-    );
-    $jquery(".tinytextadjust").fitText(
-        3,
-        { 
-            minFontSize: '13px',
-            maxFontSize: '16px'
-        }
-    );
+    // Add listeners 
+    var loadmorePagination = $jquery('#urnext-loadmore');
+    loadmorePagination.on('click', function(e){
+        e.preventDefault();
+        var request = $jquery(this).data();
+        request.paged = page;
+        $jquery.ajax({
+            url: localize.ajaxurl,
+            type: 'post',
+            dataType:'json',
+            async: true,
+            data:{
+                action: 'more_post_ajax',
+                data: request
+            },
+            success: function(data){
+                if( grid && localize.gridLayout === '1' ){
+                    // Append items
+                    grid.isotope( 'insert', $jquery(data.html) );
+                    // Size items
+                    urnext_setBlockheight();
+                    // Re-laouy items
+                    grid.isotope( 'layout' );
+                }else{
+                    grid.append( data.html );
+                }
+                // Update the paged param 
+                page++;
+                // Check if we have more results
+                if( page >= data.max_num_pages ){
+                    loadmorePagination.remove();
+                }
+            }
+        })
+    });
 }
 
-function setWindowwidth(){
+function urnext_setDimensions(){
+    if( breadcrumbs ) breadcrumbsHeight = breadcrumbs.outerHeight();
+    if( wpadminbar ) adminBarHeight = wpadminbar.outerHeight();
     windowwidth = $jquery(window).width();
-}
-
-function setWindowheight(){
     windowheight = $jquery(window).height();
+    bannerWrapperHeight = $jquery('#banner-wrapper').height();
+    contentOffset = $jquery('#main-content').offset().top;
 }
 
-var smallest = 999999999;
-function setBlockheight(){
-    setWindowwidth();
-    setWindowheight();
-
-    var gridWidth = $jquery('div.grid div.sizer').width();
-    if( gridWidth < smallest ){
-        smallest = gridWidth;
+function urnext_setBlockheight(){
+    if( grid && localize.gridLayout === '1' ){
+        var gridWidth = grid.find('.sizer').width();
+        grid.find('.grid-item').each(function(){
+            //var gridHeight = $jquery(this).hasClass('full') ? ( gridWidth * 2 ) : gridWidth ;
+            if( localize.squareItems === '1' || $jquery(this).hasClass('image') ){
+                $jquery(this).css('min-height', gridWidth );
+            } 
+        });
     }
-    $jquery('div.grid div.grid-item').each(function(){
-        //var gridWidth = $jquery(this).innerWidth();
-        //var gridOuterWidth = $jquery(this).outerWidth();
-        //console.log(gridWidth,gridOuterWidth);
-        var gridHeight = $jquery(this).hasClass('full') ? ( gridWidth * 2 ) : gridWidth ;
-        //var gridHeight = gridWidth;
-        $jquery(this).height( gridHeight );
-    });
 }
 
-function initGallery(){
+function urnext_initGallery(){
+    $jquery('#main-content .article-content .gallery').find('br').remove();
+    $jquery('#main-content .article-content .gallery').slick({
+        infinite: true,
+        dots:false,
+        arrows: true,
+        slidesToScroll: 1,
+        adaptiveHeight: true,
+    });
     $jquery('.slick-gallery').slick({
         centerMode: true,
         centerPadding: 0,
@@ -183,206 +243,85 @@ function initGallery(){
     });
 }
 
-function initGrid(){
-  $jquery('.grid').isotope({
-    itemSelector: '.grid-item',
-    percentPosition: true,
-    layoutMode: 'masonry',
-    masonry: {
-      // use element for option
-      columnWidth: '.sizer', 
+function urnext_initGrid(){
+    // Check if we use isotope
+    if( grid && localize.gridLayout === '1' ){
+        grid.isotope({
+            itemSelector: '.grid-item',
+            percentPosition: false,
+            layoutMode: 'masonry',
+            masonry: {
+                // use element for option
+                columnWidth: '.grid .sizer', 
+            }
+        });
     }
-  });
 }
 
-function initBanner( resize ){
+function urnext_initBanner( resize ){
     if ( windowwidth < 768 ){
         if( banner && banner.hasClass('has-banner') ) banner.addClass('auto-height');
     }else{
         if( banner && banner.hasClass('has-banner') ) banner.removeClass('auto-height');
     }
     // set the banner
-    setBanner();
+    urnext_setBanner();
 }
 
-function setBanner(){
-  
-    setParticles();
-
-    var adminBarHeight = 0;
-    if( $jquery('#wpadminbar').length === 1 ){
-        adminBarHeight = $jquery('#wpadminbar').outerHeight();
-    }
-
-    var breadcrumbsHeight = 0;
-    if( $jquery('div#breadcrumbs').length === 1 ){
-        breadcrumbsHeight = $jquery('div#breadcrumbs').outerHeight();
-    }
-
-    bannerheight = windowheight - adminBarHeight - breadcrumbsHeight;
-
+function urnext_setBanner(){
+    urnext_setDimensions();
+    bannerheight = windowheight - adminBarHeight;
     if( banner ){
-        if( banner.hasClass('auto-height') ){
-            banner.height('auto');
-        }else{
-            banner.height(bannerheight);
-        }
-    }
-    
-}
-
-function initMenu(){
-  var toggles     = $jquery('.toggler');
-  var menu        = $jquery('#overlay');
-  var search      = $jquery('#search-overlay');
-  var activeClass = 'nav-active';
-  var body        = $jquery('body');
-  var onSearch    = false;
-
-  toggles.click( function(e) {
-
-    e.preventDefault();
-    body.toggleClass('no-overflow');
-    var toggleTarget = $jquery(this).attr('id');
-    if( toggleTarget === 'toggle' ){
-      toggles.toggleClass('toggle-active');
-      if( onSearch ){
-        search.removeClass(activeClass);
-        onSearch = false;
-      }else{
-        menu.toggleClass(activeClass);
-        menu.find("li").each(function(i) {
-          if( menu.hasClass(activeClass) ){
-            $jquery(this).delay(50*i).fadeIn();
-          }else{
-            $jquery(this).delay(20*i).fadeOut();
-          }
-        });
-      }
-    }
-    if( toggleTarget === 'search' ){
-      onSearch = true;
-      menu.removeClass(activeClass);
-      search.addClass(activeClass);
-      toggles.addClass('toggle-active');
-    }
-  });
-}
-
-/* ---- particles.js config ---- */
-function setParticles(){
-  
-  // check if a paricles container is set 
-  if( $jquery('#particles-js').length === 0 ) return false;
-  particlesJS(
-    "particles-js", {
-      "particles": {
-        "number": {
-          "value": 80,
-          "density": {
-            "enable": true,
-            "value_area": 800
-          }
-        },
-        "color": {
-          "value": particlesColor
-        },
-        "shape": {
-          "type": "circle",
-          "stroke": {
-            "width": 0,
-            "color": particlesColor
-          },
-          "polygon": {
-            "nb_sides": 5
-          },
-          "image": {
-            "src": "img/github.svg",
-            "width": 100,
-            "height": 100
-          }
-        },
-        "opacity": {
-          "value": 0.5,
-          "random": false,
-          "anim": {
-            "enable": false,
-            "speed": 1,
-            "opacity_min": 0.1,
-            "sync": false
-          }
-        },
-        "size": {
-          "value": 3,
-          "random": true,
-          "anim": {
-            "enable": false,
-            "speed": 40,
-            "size_min": 0.1,
-            "sync": false
-          }
-        },
-        "line_linked": {
-          "enable": true,
-          "distance": 150,
-          "color": particlesColor,
-          "opacity": 0.4,
-          "width": 1
-        },
-        "move": {
-          "enable": true,
-          "speed": 6,
-          "direction": "none",
-          "random": false,
-          "straight": false,
-          "out_mode": "out",
-          "bounce": false,
-          "attract": {
-            "enable": false,
-            "rotateX": 600,
-            "rotateY": 1200
-          }
-        }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": {
-            "enable": true,
-            "mode": "repulse"
-          },
-          "onclick": {
-            "enable": true,
-            "mode": "push"
-          },
-          "resize": true
-        },
-        "modes": {
-          "grab": {
-            "distance": 400,
-            "line_linked": {
-              "opacity": 1
+        if( localize.fullHeight === '1' ){
+            if( banner.hasClass('auto-height') ){
+                banner.height('auto');
+            }else{
+                banner.height(bannerheight);
             }
-          },
-          "bubble": {
-            "distance": 400,
-            "size": 40,
-            "duration": 2,
-            "opacity": 8,
-            "speed": 3
-          },
-          "repulse": {
-            "distance": 200,
-            "duration": 0.4
-          },
-          "push": {
-            "particles_nb": 4
-          },
-          "remove": {
-            "particles_nb": 2
-          }
+        }else{
+            banner.height('auto');
         }
-      },
-      "retina_detect": true
-  });
+    }
+}
+
+function urnext_initMenu(){
+    var toggles     = $jquery('.toggler');
+    var menu        = $jquery('#overlay');
+    var search      = $jquery('#search-overlay');
+    var activeClass = 'nav-active';
+    var body        = $jquery('body');
+    var onSearch    = false;
+
+    toggles.click( function(e) {
+
+        e.preventDefault();
+        body.toggleClass('no-overflow');
+        var toggleTarget = $jquery(this).attr('id');
+        
+        if( toggleTarget === 'toggle' ){
+            toggles.toggleClass('toggle-active');
+            if( onSearch ){
+                search.find('input#urnext-searchinput').focus();
+                search.removeClass(activeClass);
+                onSearch = false;
+            }else{
+                menu.toggleClass(activeClass);
+                menu.find("li").each(function(i) {
+                    if( menu.hasClass(activeClass) ){
+                        $jquery(this).delay(50*i).fadeIn();
+                    }else{
+                        $jquery(this).delay(20*i).fadeOut();
+                    }
+                });
+            }
+        }
+         
+        if( toggleTarget === 'search' ){
+            onSearch = true;
+            menu.removeClass(activeClass);
+            search.addClass(activeClass);
+            search.find('input#urnext-searchinput').focus();
+            toggles.addClass('toggle-active');
+        }
+    });
 }

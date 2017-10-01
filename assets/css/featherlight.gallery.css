@@ -10,8 +10,8 @@
 	.featherlight-previous {
 		display: block;
 		position: absolute;
-		top: 25px;
-		right: 25px;
+		top: 0;
+		right: 0;
 		bottom: 0;
 		left: 80%;
 		cursor: pointer;
@@ -23,20 +23,42 @@
 		-ms-user-select: none;
 		user-select: none;
 		/* IE9 hack, otherwise navigation doesn't appear */
-		background: rgba(0,0,0,0);
+        background: rgba(0,0,0,0);
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+        opacity: 0;
 	}
 
 	.featherlight-previous {
-		left: 25px;
+		left: 0;
 		right: 80%;
 	}
 
-	.featherlight-next:hover,
+	
 	.featherlight-previous:hover {
-		background: rgba(255,255,255,0.25);
+        opacity: 1;
+        background: rgba(255,255,255,0.7);
+        background: -moz-linear-gradient(left, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,255,255,0.7)), color-stop(100%, rgba(255,255,255,0)));
+        background: -webkit-linear-gradient(left, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 100%);
+        background: -o-linear-gradient(left, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 100%);
+        background: -ms-linear-gradient(left, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(to right, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
 	}
 
-
+    .featherlight-next:hover{
+        opacity: 1;
+        background: rgba(255,255,255,0);
+        background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,255,255,0)), color-stop(100%, rgba(255,255,255,0.7)));
+        background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 100%);
+        background: -o-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 100%);
+        background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 100%);
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
+    }
 	.featherlight-next span,
 	.featherlight-previous span {
 		display: none;
@@ -49,16 +71,16 @@
 		/* center horizontally */
 		text-align: center;
 
-		font-size: 80px;
-		line-height: 80px;
+		font-size: 60px;
+		line-height: 60px;
 
 		/* center vertically */
-		margin-top: -40px;
+		margin-top: -30px;
 
-		text-shadow: 0px 0px 5px #fff;
+		text-shadow: 0px 0px 5px rgba(0,0,0,0.3);
 		color: #fff;
 		font-style: normal;
-		font-weight: normal;
+		font-weight: 100;
 	}
 	.featherlight-next span {
 		right: 5%;
@@ -104,13 +126,13 @@
 @media only screen and (max-width: 1024px) {
 	.featherlight-next,
 	.featherlight-previous {
-		top: 10px;
-		right: 10px;
+		top: 0;
+		right: 0;
 		left: 85%;
 	}
 
 	.featherlight-previous {
-		left: 10px;
+		left: 0;
 		right: 85%;
 	}
 

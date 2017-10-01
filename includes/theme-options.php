@@ -1,7 +1,8 @@
 <?php
-global $urnext_theme_settings;
+global $urnext_theme_settings, $urnext_social_options;
 
 $urnext_theme_settings = array( 
+    /*
     'top_bar' => array(
         'label'     => __('Top bar','urnext'),
         'fields'    => array(
@@ -11,18 +12,45 @@ $urnext_theme_settings = array(
             ),
         )
     ),
-    
-    
+    */
     'post_grid' => array(
         'label' => __('Post grid', 'urnext'),
         'fields'    => array(
-            'posts_per_page' => array(
-                'label' => __('Posts per page', 'urnext'),
-                'type'  => 'number'
-            )
+            'grid_layout' => array(
+                'label' => __('Use grid layout?', 'urnext'),
+                'type'  => 'switch'
+            ),
+            'grid_column_count' => array(
+                'label' => __('Grid column count', 'urnext'),
+                'type'      => 'select',
+                'options'   => array(
+                    3   => __('3 columns', 'urnext'),
+                    4   => __('4 columns', 'urnext'),
+                )
+            ),
+            'grid_show_excerpt' => array(
+                'label' => __('Show excerpt on grid items?', 'urnext'),
+                'type'  => 'switch'
+            ),
+            'grid_column_margin' => array(
+                'label' => __('Add margins to the grid?', 'urnext'),
+                'type'  => 'switch'
+            ),
+            'square_grid_items' => array(
+                'label' => __('Square grid items?', 'urnext'),
+                'type'  => 'switch'
+            ),
+            'pagination_type' => array(
+                'label'     => __('Pagination type', 'urnext'),
+                'type'      => 'select',
+                'options'   => array(
+                    'normal'    => __('Normal (Pagination buttons)', 'urnext'),
+                    'ajax'      => __('Ajax (Load more button)', 'urnext')
+                )
+            ),
         )
     ),
-
+    /*
     'header' => array(
         'label' => __('Header', 'urnext'),
         'fields'    => array(
@@ -32,7 +60,7 @@ $urnext_theme_settings = array(
             )
         )
     ),
-
+    */
     'miscellaneous' => array(
         'label' => __('Miscellaneous', 'urnext'),
         'fields'    => array(
@@ -40,47 +68,57 @@ $urnext_theme_settings = array(
                 'label' => __('Enable animations', 'urnext'),
                 'type'  => 'switch'
             ),
-            'header_parallax' => array(
-                'label' => __('Enable header parallax effect', 'urnext'),
-                'type'  => 'switch'
+            'google_analytics' => array(
+                'label' => __('Google Analytics code', 'urnext'),
+                'type'  => 'textarea'
             )
         )
     ),
 
     // Options for social media
     'social' => array(
-        'label' => __('Social Media', 'urnext'),
+        'label'     => __('Social Media', 'urnext'),
+        'fields'    => array()
+    ),
+
+    /*
+    // Options for the sidebar
+    'sidebars' => array(
+        'label' => __('Sidebars', 'urnext'),
         'fields'    => array(
-            'facebook' => array(
-                'label' => __('<span class="socialbadge facebook socicon socicon-facebook"></span> Facebook page url', 'urnext'),
-                'type'  => 'text',
-                'hint'  => __('Add your Facebook page url. Use a valid url (https://facebook.com/pagename)','urnext')
+            'show_sidebars' => array(
+                'label'     => __('Show sidebars', 'urnext'),
+                'type'      => 'multi_checkbox',
+                'options'   => array(
+                    'frontpage' => __('Show sidebars on the frontpage?', 'urnext'),
+                    'page'      => __('Show sidebars on pages?', 'urnext'),
+                    'post'      => __('Show sidebars on single posts?', 'urnext'),
+                    'category'  => __('Show sidebars on categories?', 'urnext'),
+                    'author'    => __('Show sidebars on author page?', 'urnext'),
+                    '404'       => __('Show sidebars on 404 (not found) page?', 'urnext'),
+                )
             ),
-            'twitter' => array(
-                'label' => __('<span class="socialbadge twitter socicon socicon-twitter"></span> Twitter page url', 'urnext'),
-                'type'  => 'text',
-            ),
-            'icon_color' => array(
-                'label' => __('Social media icon colors', 'urnext'),
-                'type'  => 'color'
-            )
         )
     ),
+    */
 
     // Options for the breadcrumbs
     'breadcrumbs' => array(
         'label' => __('Breadcrumbs', 'urnext'),
         'fields'    => array(
-            'show_breadcrumbs' => array(
+            'hide_breadcrumbs' => array(
                 'label'     => __('Show breadcrumbs', 'urnext'),
                 'type'      => 'multi_checkbox',
+                'alert'     => ( (int) get_theme_mod('breadcrumbs') === 1 ? __('Breadcrumbs are site-wide enabled!', 'urnext') : __('Breadcrumbs are site-wide disabled!', 'urnext') ),
                 'options'   => array(
-                    'frontpage' => __('Show breadcrumbs on the frontpage?', 'urnext'),
-                    'page'      => __('Show breadcrumbs on pages?', 'urnext'),
-                    'post'      => __('Show breadcrumbs on single posts?', 'urnext'),
-                    'category'  => __('Show breadcrumbs on categories?', 'urnext'),
-                    'author'    => __('Show breadcrumbs on author page?', 'urnext'),
-                    '404'       => __('Show breadcrumbs on 404 (not found) page?', 'urnext'),
+                    'frontpage' => __('Hide breadcrumbs on the frontpage?', 'urnext'),
+                    'page'      => __('Hide breadcrumbs on pages?', 'urnext'),
+                    'post'      => __('Hide breadcrumbs on single posts?', 'urnext'),
+                    'category'  => __('Hide breadcrumbs on categories?', 'urnext'),
+                    'author'    => __('Hide breadcrumbs on author page?', 'urnext'),
+                    '404'       => __('Hide breadcrumbs on 404 (not found) page?', 'urnext'),
+                    'search'    => __('Hide breadcrumbs on search page?', 'urnext'),
+                    'shop'      => __('Hide breadcrumbs on shop pages?', 'urnext'),
                 )
             ),
             'breadcrumbs_align' => array(
@@ -91,6 +129,15 @@ $urnext_theme_settings = array(
                     'centered'      => __('Align center', 'urnext'),
                     'align-right'   => __('Align right', 'urnext'),
                 )
+            ),
+            'breadcrumbs_separator' => array(
+                'label'     => __('Breadcrumbs separator', 'urnext'),
+                'type'      => 'text',
+                'hint'      => __('Default breadcrumbs separator is a right chevron. Replace it with your own separator.', 'urnext'),
+            ),
+            'breadcrumbs_home_link' => array(
+                'label'     => __('Show "You are here" text', 'urnext'),
+                'type'      => 'switch',
             ),
         )
     ),
@@ -116,7 +163,7 @@ $urnext_theme_settings = array(
             )
         )
     ),
-
+    /*
     'performance' => array(
         'label' => __('Performance', 'urnext'),
         'fields'    => array(
@@ -126,14 +173,47 @@ $urnext_theme_settings = array(
             )
         )
     ),
+    */
+    'footer' => array(
+        'label' => __('Footer', 'urnext'),
+        'fields'    => array(
+            'copyright_text' => array(
+                'label' => __('Copyright text', 'urnext'),
+                'type'  => 'textarea'
+            ),
+            'footer_menu' => array(
+                'label'     => __('Show disclaimer menu?', 'urnext'),
+                'type'      => 'switch',
+                'hint'      => __('Add a menu to the "disclaimer" menu if you enable this option.', 'urnext'),
+            ),
+            'footer_social_icons' => array(
+                'label'     => __('Show social channels?', 'urnext'),
+                'type'      => 'switch',
+                'hint'      => __('Show the social channels in the bottom footer?.', 'urnext'),
+            ),
+        )
+    ),
     
 );
+
 /**
+* This file will dynamically add social channels options
 *
+*/
+if( isset( $urnext_social_options ) && !empty( $urnext_social_options ) ){
+    foreach( $urnext_social_options as $channel ){
+        $urnext_theme_settings['social']['fields'][$channel] = array(
+            'label' => sprintf('<span class="socialbadge %s socicon socicon-%s"></span> %s ', $channel, $channel, $channel ),
+            'type'  => 'text',
+            'hint'  => sprintf( __('Add your %s page url. Use a valid url.','urnext'), $channel, $channel )
+        );
+    }
+}
+
+/**
 * This file will create the theme options for the URnext theme
 *
-**/
-
+*/
 class URnextSettingsPage{
 
     /**
@@ -173,7 +253,7 @@ class URnextSettingsPage{
     public function add_urnext_theme_settings_page(){
 
         // This page will be under "Settings"
-        add_menu_page(
+        add_theme_page(
             __('URnext Theme Options', 'urnext'), 
             __('URnext', 'urnext'), 
             'manage_options', 
@@ -187,8 +267,8 @@ class URnextSettingsPage{
         foreach( $this->settings as $setting_name => $settings ){
 
             // Create submenu for the URnext settings
-            add_submenu_page( 
-                'urnext_settings',
+            add_theme_page( 
+                //'urnext_settings',
                 $settings['label'],
                 $settings['label'],
                 'manage_options',
@@ -217,8 +297,8 @@ class URnextSettingsPage{
      * Options page callbacks
      */
     public function urnext_callback_setting_page(){
-        $screen = get_current_screen();
-        $setting = str_replace('urnext_page_urnext_page_', '', $screen->id );
+        $screen = get_current_screen();        
+        $setting = str_replace('appearance_page_urnext_page_', '', $screen->id );
         $this->options = get_option( 'urnext_theme_option_name_' . $setting );
         ?>
         <div class="wrap urnext-options">
@@ -306,11 +386,22 @@ class URnextSettingsPage{
     }
 
     /** 
+     * Print alert text if set
+     */
+     public function print_alert( $args ){
+        if( isset( $args['alert'] ) && !empty( $args['alert'] ) ){
+            printf('<p class="alert">%s</p>', $args['alert'] );
+        }
+    }
+
+    /** 
      * Get the settings option array and print one of its values
      */
 
      
     public function multi_checkbox_callback( $args ){
+        
+        $this->print_alert( $args['args'] );
         if( isset( $args['args']['options'] ) && !empty( $args['args']['options'] ) ){
             foreach( $args['args']['options'] as $key => $value ){
                 $name = $args['name'];
@@ -327,9 +418,11 @@ class URnextSettingsPage{
                 );
             }
         }
+        $this->print_hint( $args['args'] );
     }
 
     public function select_callback( $args ){
+        $this->print_alert( $args['args'] );
         $options    = '';
         $selected   = isset( $this->options[ $args['name'] ] ) ? esc_attr( $this->options[ $args['name'] ]) : '' ;
 
@@ -351,9 +444,11 @@ class URnextSettingsPage{
             $args['name'],
             $options
         );
+        $this->print_hint( $args['args'] );
     }
 
     public function number_callback( $args ){
+        $this->print_alert( $args['args'] );
         printf(
             '<input type="number" id="%s" name="%s[%s]" value="%s" />',
             $args['name'],
@@ -361,9 +456,11 @@ class URnextSettingsPage{
             $args['name'],
             isset( $this->options[ $args['name'] ] ) ? esc_attr( $this->options[ $args['name'] ]) : ''
         );
+        $this->print_hint( $args['args'] );
     }
 
     public function textarea_callback( $args ){
+        $this->print_alert( $args['args'] );
         printf(
             '<textarea id="%s" name="%s[%s]">%s</textarea>',
             $args['name'],
@@ -371,6 +468,7 @@ class URnextSettingsPage{
             $args['name'],
             isset( $this->options[ $args['name'] ] ) ? esc_attr( $this->options[ $args['name'] ]) : ''
         );
+        $this->print_hint( $args['args'] );
     }
     
 
@@ -378,6 +476,7 @@ class URnextSettingsPage{
      * Get the settings option array and print one of its values
      */
     public function text_callback( $args ){
+        $this->print_alert( $args['args'] );
         printf(
             '<input type="text" id="%s" name="%s[%s]" value="%s" />',
             $args['name'],
@@ -389,6 +488,7 @@ class URnextSettingsPage{
     }
 
     public function color_callback( $args ){
+        $this->print_alert( $args['args'] );
         printf(
             '<input type="text" id="%s" class="color-field" name="%s[%s]" value="%s" />',
             $args['name'],
@@ -396,9 +496,11 @@ class URnextSettingsPage{
             $args['name'],
             isset( $this->options[ $args['name'] ] ) ? esc_attr( $this->options[ $args['name'] ]) : ''
         );
+        $this->print_hint( $args['args'] );
     }
 
     public function switch_callback( $args ){
+        $this->print_alert( $args['args'] );
         $checked = isset( $this->options[ $args['name'] ] ) && (int) $this->options[$args['name']] === 1 ? ' checked' : '' ;
         printf(
             '<div class="switch-wrapper"><input id="%s" class="switcher" name="%s[%s]" type="checkbox" value="1"%s></div>',
@@ -407,6 +509,7 @@ class URnextSettingsPage{
             $args['name'],
             $checked
         );
+        $this->print_hint( $args['args'] );
     }
 }
 

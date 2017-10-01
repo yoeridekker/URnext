@@ -2593,6 +2593,7 @@ return Item;
 
   proto._getItemLayoutPosition = function( item ) {
     item.getSize();
+
     // how many columns does this brick span
     var remainder = item.size.outerWidth % this.columnWidth;
     var mathMethod = remainder && remainder < 1 ? 'round' : 'ceil';
@@ -2618,11 +2619,14 @@ return Item;
     return position;
   };
 
-  proto._getTopColPosition = function( colSpan ) {
+  proto._getTopColPosition = function( colSpan, item) {
+      
     var colGroup = this._getTopColGroup( colSpan );
     // get the minimum Y value from the columns
     var minimumY = Math.min.apply( Math, colGroup );
-
+    console.log(colGroup.indexOf( minimumY ), colGroup,minimumY,item);
+    $jquery( item.element ).removeClass('first');
+    if( colGroup.indexOf( minimumY ) === 0 ) $jquery( item.element ).addClass('first');
     return {
       col: colGroup.indexOf( minimumY ),
       y: minimumY,
@@ -3555,4 +3559,3 @@ var trim = String.prototype.trim ?
   return Isotope;
 
 }));
-

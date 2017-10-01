@@ -41,7 +41,6 @@
   
     proto._getItemLayoutPosition = function( item ) {
       item.getSize();
-  
       // if this element cannot fit in the current row
       if ( this.y !== 0 && item.size.outerHeight + this.y > this.isotope.size.innerHeight ) {
         this.y = 0;

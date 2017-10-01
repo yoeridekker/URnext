@@ -19,6 +19,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+// Get the banner for the category archive
+get_template_part('parts/no-banner');
+
+// Get the breadcrumbs
+$show_breadcrumbs = (int) get_urnext_option('breadcrumbs');
+$hide_breadcrumbs = (int) get_urnext_option('shop', 'hide_breadcrumbs' );
+if( $show_breadcrumbs === 1 && $hide_breadcrumbs !== 1 ){
+    get_template_part('parts/breadcrumbs');
+}
 ?>
+
+</div>
+<div class="content-panel" data-section-name="content" id="main-content">
+
 <div class="container">
     <div class="row" role="main">

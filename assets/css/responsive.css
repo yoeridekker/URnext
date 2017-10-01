@@ -1,0 +1,133 @@
+/* custom container width
+@media (min-width: 1200px) {
+    .container{
+        max-width: 1600px;
+        width: 100%;
+    }
+}
+*/
+
+@media screen and (max-width: 1180px){
+    /*
+    .grid .grid-item{
+        width: 23%;
+    }
+    .grid .grid-item.half{
+        width: 48%;
+    }
+    */
+    body.layout-boxed #navbar{
+        width: 100%;
+        left: 0;
+        margin: 0;
+        right: 0;
+    }
+    body.layout-boxed .toggle-button{
+        right: 20px;
+        margin-right: 0;
+    }
+    body.layout-boxed .pager{
+        right: 20px;
+        margin-right: 0;
+    }
+}
+
+@media screen and (max-width: 992px){
+    #footer .footer-column{
+        border-right: none;
+    }
+    #footer .footer-column:nth-of-type(odd){
+        border-right: 1px solid transparent;
+    }
+    /*
+    .grid .grid-item{
+        width: 48%;
+    }
+    .grid .grid-item.half{
+        width: 98%;
+    }
+    .grid .grid-item.full{
+        width: 98%;
+    }
+    .sizer{
+        width:50%;
+    }
+    .grid .grid-item .inner h3{
+        width: 90%;
+    }
+    */
+}
+
+@media screen and (max-width: 782px){
+    body.admin-bar #navbar.sticky-top{
+        top:46px;
+    } 
+    body.admin-bar .toggle-button{
+        top:56px;
+    }
+    body.admin-bar a.search-button{
+        top:79px;
+    }
+    body.admin-bar a.cart-button{
+        top:77px;
+    }
+}
+
+@media screen and (max-width: 768px){
+    /*.grid .grid-item .inner h3{
+        width: 250px;
+    }*/
+}
+
+@media screen and (max-width: 600px){
+    #wpadminbar{
+        position: fixed !important;
+    }
+}
+
+@media screen and (max-width: 576px){
+    #footer .footer-column,
+    #footer .footer-column:nth-of-type(odd),
+    #footer .footer-column:nth-of-type(even){
+        border-right: none;
+    }
+    /*
+    .grid .grid-item .inner h3{
+        width: 200px;
+    }*/
+    .grid .list-item {
+        padding-left: 165px;
+    }
+    .grid .list-item .slide-panel {
+        left: 0;
+    }
+}
+
+@media screen and (max-width: 480px){
+    #banner{
+        height: 300px;
+        min-height: 300px;
+    }
+    /*
+    .grid .grid-item{
+        width: 98%;
+    }
+    .grid .grid-item.half{
+        width: 98%;
+    }
+    .sizer{
+        width:100%;
+    }
+    .grid .grid-item .inner h3{
+        width: 280px;
+    }
+    */
+    input[type=submit],
+    .button,
+    .buttons a{
+        float: none;
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
+}

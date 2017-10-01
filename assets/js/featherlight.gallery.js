@@ -106,8 +106,8 @@
 
 	$.extend(FeatherlightGallery.prototype, {
 		/** Additional settings for Gallery **/
-		previousIcon: '&#9664;',     /* Code that is used as previous icon */
-		nextIcon: '&#9654;',         /* Code that is used as next icon */
+		previousIcon: '<span class="lnr lnr-chevron-left"></span>',     /* Code that is used as previous icon */
+		nextIcon: '<span class="lnr lnr-chevron-right"></span>',         /* Code that is used as next icon */
 		galleryFadeIn: 100,          /* fadeIn speed when image is loaded */
 		galleryFadeOut: 300,         /* fadeOut speed before image is loaded */
 
@@ -148,7 +148,7 @@
 
 		createNavigation: function(target) {
 			var self = this;
-			return $('<span title="'+target+'" class="'+this.namespace+'-'+target+'"><span>'+this[target+'Icon']+'</span></span>').click(function(){
+			return $('<span title="'+target+'" class="'+this.namespace+'-'+target+'">'+this[target+'Icon']+'</span>').click(function(){
 				$(this).trigger(target+'.'+self.namespace);
 			});
 		}

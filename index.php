@@ -2,12 +2,14 @@
 // Get the default header 
 get_header();
 
+?>
+<!-- template: ' . <?php  echo basename( get_page_template() ) ; ?> -->
+<?php 
 // Start the Loop.
 while ( have_posts() ) : the_post(); ?>
 
     <div class="full">
-        
-        
+       
             <?php 
             /*
             * Include the post format-specific template for the content. If you want to

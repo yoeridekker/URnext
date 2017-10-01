@@ -4,8 +4,15 @@
     v2.0 | 20110126
     License: none (public domain)
 */
-
-html, body, div, span, applet, object, iframe,
+html{
+    font-size: 62.5%;
+    margin: 0;
+	padding: 0;
+	border: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	vertical-align: baseline;
+}
+body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
@@ -21,10 +28,10 @@ time, mark, audio, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-size: 100%;
-	font: inherit;
+    font-family: inherit;
 	vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
@@ -288,8 +295,41 @@ blockquote.right {}
 #cancel-comment-reply a {}
 
 /* Comment Form */
-
-#respond { } 
+#respond{
+    clear: both;
+    display: block;
+    padding: 15px;
+    background: rgba(0,0,0,0.03);
+    margin: 15px auto;
+}
+#respond textarea,
+#respond input[type='text'], 
+.contact_form input[type='text'], 
+.contact_form textarea{
+    width: 100%;
+    margin: 0 0 15px 0;
+    padding: 15px 12px;
+    border: 0;
+    outline: 0;
+    resize: none;
+    font-size: inherit;
+    line-height: inherit;
+    background-color: rgba(0,0,0,0.05);
+    color: inherit;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid transparent;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+#respond textarea:focus,
+#respond input[type='text']:focus, 
+.contact_form input[type='text']:focus, 
+.contact_form textarea:focus{
+    border-color: inherit;
+}
 #reply-title { } 
 #cancel-comment-reply-link { }
 #commentform { } 
@@ -308,37 +348,37 @@ blockquote.right {}
 .form-submit
 
 .alignnone {
-    margin: 5px 20px 20px 0;
+    margin: 5px 15px 15px 0;
 }
 
 .aligncenter,
 div.aligncenter {
     display: block;
-    margin: 5px auto 5px auto;
+    margin: 5px auto 0 auto;
 }
 
 .alignright {
     float:right;
-    margin: 5px 0 20px 20px;
+    margin: 5px 0 15px 15px;
 }
 
 .alignleft {
     float: left;
-    margin: 5px 20px 20px 0;
+    margin:5px 15px 15px 0;
 }
 
 a img.alignright {
     float: right;
-    margin: 5px 0 20px 20px;
+    margin: 5px 0 15px 15px;
 }
 
 a img.alignnone {
-    margin: 5px 20px 20px 0;
+    margin: 5px 15px 15px 0;
 }
 
 a img.alignleft {
     float: left;
-    margin: 5px 20px 20px 0;
+    margin: 5px 15px 15px 0;
 }
 
 a img.aligncenter {
@@ -348,39 +388,38 @@ a img.aligncenter {
 }
 
 .wp-caption {
-    background: #fff;
-    border: 1px solid #f0f0f0;
-    max-width: 96%; /* Image does not overflow the content area */
-    padding: 5px 3px 10px;
+    border: none;
+    max-width: 100%; /* Image does not overflow the content area */
+    padding: 0;
     text-align: center;
 }
 
 .wp-caption.alignnone {
-    margin: 5px 20px 20px 0;
+    margin: 5px 15px 15px 0;
 }
 
 .wp-caption.alignleft {
-    margin: 5px 20px 20px 0;
+    margin: 5px 15px 15px 0;
 }
 
 .wp-caption.alignright {
-    margin: 5px 0 20px 20px;
+    margin: 5px 0 15px 15px;
 }
 
 .wp-caption img {
     border: 0 none;
     height: auto;
     margin: 0;
-    max-width: 98.5%;
+    max-width: 100%;
     padding: 0;
     width: auto;
 }
 
 .wp-caption p.wp-caption-text {
-    font-size: 0.6rem;
-    line-height: 17px;
+    font-size: 1.3rem;
+    line-height: inherit;
     margin: 0;
-    padding: 0 4px 5px;
+    padding: 0;
 }
 
 /* Text meant only for screen readers. */

@@ -6,31 +6,22 @@ get_header();
 get_template_part('parts/banner');
 
 // Get the breadcrumbs
-$show_breadcrumbs = get_urnext_option( 'post', 'show_breadcrumbs' );
-if( (int) $show_breadcrumbs === 1){
+$show_breadcrumbs = (int) get_urnext_option('breadcrumbs');
+$hide_breadcrumbs = (int) get_urnext_option('post', 'hide_breadcrumbs' );
+if( $show_breadcrumbs === 1 && $hide_breadcrumbs !== 1 ){
     get_template_part('parts/breadcrumbs');
 }
 ?>
+</div>
+<!-- end banner wrapper -->
 
 <!-- start main content -->
-<div class="content-panel" data-section-name="content" id="main-content">
-
-<?php 
-// Start the Loop.
-while ( have_posts() ) : the_post(); ?>
-
-    <?php 
-    /*
-    * Include the post format-specific template for the content. If you want to
-    * use this in a child theme, then include a file called called content-___.php
-    * (where ___ is the post format) and that will be used instead.
-    */
-    get_template_part( 'content', get_post_format() );
-    ?>
-
-<?php endwhile; ?>
-
-</div>
+<article class="content-panel single" id="main-content">
+    <?php while ( have_posts() ) : the_post(); ?>
+        <?php get_template_part( 'parts/post/content', get_post_format() );?>
+        <div class="clear"></div>
+    <?php endwhile; ?>
+</article>
 
 <?php
 // Get the default footer

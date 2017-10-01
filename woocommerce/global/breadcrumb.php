@@ -21,6 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+the_breadcrumb();
+/*
 if ( ! empty( $breadcrumb ) ) {
 
     echo $wrap_before;
@@ -45,3 +47,4 @@ if ( ! empty( $breadcrumb ) ) {
 	echo $wrap_after;
 
 }
+*/
