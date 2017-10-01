@@ -9,40 +9,45 @@ get_template_part('parts/no-banner');
 // Get the breadcrumbs
 get_template_part('parts/breadcrumbs');
 
-$i = 0;
 ?>
 
+</div>
+<!-- end banner wrapper -->
+
 <!-- start main content -->
-<div class="content-panel" data-section-name="content" id="main-content">
+<div class="content-panel" id="main-content">
 
 <?php if ( have_posts() ) : ?>
 
-    <div class="archive-intro intro">
+    <div class="intro">
         <div class="container centered">
-            <?php the_archive_title( '<h1 class="archive-title light-weight centered underline after-text-color faded">', '</h1>' ); ?>
+            <?php the_archive_title( '<h1 class="centered underline after-text-color faded">', '</h1>' ); ?>
             <?php if ( category_description() ) : ?>
                 <div class="archive-meta centered"><?php echo category_description(); ?></div>
             <?php endif; ?>
-            <div class="centered">
-                <a href="#" class="btn center-button button text-color border-text-color">Hello</a>
-                <a href="#" class="btn center-button button text-color border-text-color">World</a>
-            </div>
         </div>
     </div>
 
-    <div class="grid">
-
-        <!-- set grid sizer, do not remove! -->
-        <div class="sizer"></div>
+    <div class="container no-padding">
         
-        <?php while ( have_posts() ) : the_post(); ?>
-
-            <?php get_template_part('loop','post'); ?>
+        <!-- start the grid -->
+        <div class="grid fix-gutters">
         
-        <?php $i++; endwhile; ?>
+            <!-- set grid sizer, do not remove! -->
+            <div class="sizer <?php echo urnext_grid_column_classes(); ?>"></div>
+        
+            <?php while ( have_posts() ) : the_post(); ?>
+                <?php get_template_part('loop','post'); ?>
+            <?php endwhile; ?>
 
+        
+        </div>
+        <!-- end the grid -->
+        <div class="clear"></div>
     </div>
- 
+
+    <?php get_template_part('parts/pagination'); ?>
+    
 <?php else: ?>
     <p><?php _e('Sorry, no posts matched your criteria.', 'urnext'); ?></p>
 <?php endif; ?>
