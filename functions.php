@@ -1,12 +1,28 @@
 <?php 
 /**
-* Set defines
-*/
+ * Set defines
+ */
 define('WOOCOMMERCE_USE_CSS', false);
+define('TD', 'urnext' );
 
 /**
-* Register theme globals
-*/
+ * Check if woocommerce is active
+ */
+if ( class_exists( 'woocommerce' ) ) { 
+    define('URNEXT_WOOCOMMERCE_ACTIVE', true ); 
+} else {
+    define('URNEXT_WOOCOMMERCE_ACTIVE', false ); 
+}
+
+/**
+ * Set ACF in lite mode
+ * This will disable the user interface on the backed
+ */
+//define( 'ACF_LITE', true );
+
+/**
+ * Register theme globals
+ */
 global $urnext_social_options, $urnext_theme_globals;
 $urnext_social_options = array(
     'augment',
@@ -197,11 +213,13 @@ $urnext_social_options = array(
 );
 $urnext_theme_globals = array();
 
+
 /**
-* Load requirements
-*/
+ * Load requirements
+ */
 require_once('includes/class-tgm-plugin-activation.php');
 require_once('includes/acf.php');
+require_once('includes/walker-megadrop.php');
 require_once('includes/fonts.php');
 require_once('includes/theme-options.php');
 require_once('includes/customizer.php');
@@ -209,19 +227,12 @@ require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 require_once('includes/urnext-ajax.php');
 
 /**
-* Set ACF in lite mode
-* This will disable the user interface on the backed
-*/
-//define( 'ACF_LITE', true );
-
-/**
-* urnext_register_theme_globals
-* Description: Will loop all the possible theme options and customizer options 
-*/
+ * urnext_register_theme_globals
+ * Description: Will loop all the possible theme options and customizer options 
+ */
 add_action( 'wp', 'urnext_register_theme_globals' );
 function urnext_register_theme_globals() {
     global $urnext_theme_options, $urnext_theme_globals, $urnext_theme_settings;
-
     // Get the options from the theme customizer
     foreach( $urnext_theme_options as $urnext_option ){
         foreach( $urnext_option['settings'] as $setting => $details ){
@@ -229,18 +240,45 @@ function urnext_register_theme_globals() {
             $urnext_theme_globals[ $setting ] = ( $value === '' && isset( $details['default'] ) ) ? $details['default'] : $value ;
         }
     }
-
     // Get the options from the theme options page
     foreach( $urnext_theme_settings as $setting_name => $details ){
         $opt_name = 'urnext_theme_option_name_' . $setting_name;
         $settings = get_option( $opt_name );
-        if( $settings && !empty($settings) ){
+        if( $settings && !empty( $settings ) && is_array( $settings ) ){
             foreach( $settings as $setting_key => $setting_value ){
-                $urnext_theme_globals[ $setting_key ] = $setting_value;
+                // Handle repeater fields
+                if( isset( $urnext_theme_settings[$setting_name]['fields'][$setting_key]['type'] ) && $urnext_theme_settings[$setting_name]['fields'][$setting_key]['type'] === 'repeater' ){
+                    if( $setting_value && !empty( $setting_value ) && is_array( $setting_value ) ){
+                        foreach( $setting_value as $index => $values ){
+                            $count = count( $values );
+                            for( $i = 0; $i < $count; $i++ ){
+                                $urnext_theme_globals[$setting_key][$i][$index] = $values[$i];
+                            }
+                        }
+                    }
+                }else{
+                    $urnext_theme_globals[ $setting_key ] = $setting_value;
+                }
+            }
+        }else{
+            foreach( $details['fields'] as $field_key => $field_settings ){
+                // Handle repeater fields
+                if( isset( $field_settings['type'] ) && $field_settings['type'] === 'repeater' && isset($field_settings['fields']) ){
+                    $i = 0;
+                    foreach( $field_settings['fields'] as $repeat_field_key => $repeate_field_settings ){
+                        if( isset( $repeate_field_settings['default'] ) ){
+                            $urnext_theme_globals[$field_key][$i][$repeat_field_key] = $repeate_field_settings['default'];
+                        }
+                    }
+                    $i++;
+                }else{
+                    if( isset( $field_settings['default'] ) ){
+                        $urnext_theme_globals[ $field_key ] = $field_settings['default'];
+                    }
+                }
             }
         }
     }
-
 }
 
 /**
@@ -303,12 +341,12 @@ function urnext_social_icons( $ul_class = '', $li_class = '', $a_class = '' ){
     return $html;
 }
 
-function urnext_grid_column_classes( $column_count = 3 ){
-    $get_column_count = (int) get_urnext_option('grid_column_count');
+function urnext_grid_column_classes( $column_count = 3, $columns = 'grid_column_count', $margins = 'grid_column_margin' ){
+    $get_column_count = (int) get_urnext_option($columns);
     if( $get_column_count !== 0 ){
         $column_count = $get_column_count;
     }
-    $grid_margin = (int) get_urnext_option('grid_column_margin') === 1 ? 'grid-margin' : 'no-grid-margin' ;
+    $grid_margin = (int) get_urnext_option($margins) === 1 ? 'grid-margin' : 'no-grid-margin' ;
     $xl_count = ceil( 12 / $column_count ); // ≥1200px
     $lg_count = ceil( 12 / $column_count ); // ≥992px
     $md_count = $column_count > 1 ? ceil( 12 / ( $column_count - 1 ) ) : 12 ; // ≥768px
@@ -334,28 +372,28 @@ function custom_excerpt_length( $length ) {
 }
 add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
 
-
 /**
-* Register menu
-*/
+ * Register menu
+ */
 add_action( 'after_setup_theme', 'urnext_register_primary_menu' );
 function urnext_register_primary_menu() {
-   register_nav_menu( 'primary', __( 'Primary Menu', 'urnext' ) );
-   register_nav_menu( 'footer', __( 'Footer Menu', 'urnext' ) );
-   register_nav_menu( '404', __( '404 Not Found Menu', 'urnext' ) );
-   register_nav_menu( 'disclaimer', __( 'Footer Disclaimer Menu', 'urnext' ) );
+   register_nav_menu( 'primary', esc_html__( 'Primary Menu', 'urnext' ) );
+   register_nav_menu( 'mobile', esc_html__( 'Mobile Menu', 'urnext' ) );
+   register_nav_menu( 'footer', esc_html__( 'Footer Menu', 'urnext' ) );
+   register_nav_menu( '404', esc_html__( '404 Not Found Menu', 'urnext' ) );
+   register_nav_menu( 'disclaimer', esc_html__( 'Footer Disclaimer Menu', 'urnext' ) );
 }
 
 /**
-* Set the content width if not defined
-*/
+ * Set the content width if not defined
+ */
 if ( ! isset( $content_width ) ) {
 	$content_width = 1140;
 }
 
 /**
-* Enable custom header
-*/
+ * Enable custom header
+ */
 $args = array(
 	'flex-width'    => true,
 	'width'         => 1280,
@@ -366,28 +404,33 @@ $args = array(
 add_theme_support( 'custom-header', $args );
 
 /**
-* Enable post thumbnails
-*/
+ * Enable post thumbnails
+ */
+add_theme_support( 'yoast-seo-breadcrumbs' );
+
+/**
+ * Enable post thumbnails
+ */
 add_theme_support( 'post-thumbnails' ); 
 
 /**
-* Enable custom editor style
-*/
+ * Enable custom editor style
+ */
 add_editor_style();
 
 /**
-* Enable automatic feed links
-*/
+ * Enable automatic feed links
+ */
 add_theme_support( 'automatic-feed-links' );
 
 /**
-* Enable title tag
-*/
+ * Enable title tag
+ */
 add_theme_support( 'title-tag' );
 
 /**
-* Enable post formats
-*/
+ * Enable post formats
+ */
 add_theme_support(
     'post-formats',
     array(
@@ -401,8 +444,38 @@ add_theme_support(
 add_image_size( 'urnext-banner', 1600, 99999, false );
 
 /**
-* Enable woocommerce
-*/
+ * Force Visual Composer to initialize as "built into the theme". 
+ * This will hide certain tabs under the Settings->Visual Composer page
+ */
+add_action( 'vc_before_init', 'urnext_vcSetAsTheme' );
+function urnext_vcSetAsTheme() {
+    vc_set_as_theme();
+}
+
+add_filter('vc_shortcodes_css_class', 'laborator_css_classes_for_vc', 10, 2);
+
+function laborator_css_classes_for_vc($class_string, $tag){
+	global $atts_values;
+	if($tag == 'vc_row' || $tag == 'vc_row_inner'){
+		$class_string = str_replace(array('wpb_row vc_row-fluid'), array('row'), $class_string);
+    
+    }elseif( $tag == 'vc_column' || $tag == 'vc_column_inner'){
+        
+        if( preg_match("/vc_span(\d+)/", $class_string, $matches) ){
+			$span_columns = $matches[1]; 
+			$col_type = $tag == 'vc_column' ? 'sm' : 'md';
+			$class_string = str_replace($matches[0], "col-{$col_type}-{$span_columns}", $class_string);
+        }
+        
+	}elseif($tag == 'vc_tabs'){
+
+    }
+	return $class_string;
+}
+
+/**
+ * Enable woocommerce
+ */
 add_theme_support( 'woocommerce' );
 add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
 
@@ -413,14 +486,12 @@ function urnext_change_breadcrumb_wrap( $defaults ) {
 	return $defaults;
 }
 
-/**
-* Check if woocommerce is active
-*/
-if ( class_exists( 'woocommerce' ) ) { 
-    define('URNEXT_WOOCOMMERCE_ACTIVE', true ); 
-} else {
-    define('URNEXT_WOOCOMMERCE_ACTIVE', false ); 
+function my_acf_google_map_api( $api ){
+	$api['key'] = 'AIzaSyACyDvbVuOm_i52heMGmBGgIFatOlvNdT0';
+	return $api;
 }
+add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
+
 
 /**
 * Proper way to enqueue scripts and styles.
@@ -444,6 +515,8 @@ function urnext_load_scripts() {
     
     wp_enqueue_style( 'urnext-bootstrap-style', get_template_directory_uri() . '/assets/css/bootstrap.min.css' );
     
+    wp_enqueue_style( 'urnext-spinkit', get_template_directory_uri() . '/assets/css/spinkit.css' );
+    
     // Load animations.css if animations are enabled
     if( (int) get_urnext_option('animations') === 1 ){
         wp_enqueue_style( 'urnext-animate-style', get_template_directory_uri() . '/assets/css/animate.css' );
@@ -451,7 +524,8 @@ function urnext_load_scripts() {
 
     // Only load if Woocommerce is active
     if( URNEXT_WOOCOMMERCE_ACTIVE ){
-        wp_enqueue_style( 'urnext-woocommerce', get_template_directory_uri() . '/assets/css/woocommerce.css' );
+        //wp_enqueue_style( 'urnext-woocommerce', get_template_directory_uri() . '/assets/css/woocommerce.css' );
+        wp_enqueue_style( 'urnext-woocommerce', get_template_directory_uri() . '/assets/css/wc.css' );
     }
 
     wp_enqueue_style( 'urnext-style', get_stylesheet_uri() );
@@ -464,9 +538,10 @@ function urnext_load_scripts() {
         wp_enqueue_script( "comment-reply" );
     }
 
-    wp_enqueue_script( 'urnext-html5shiv', get_template_directory_uri() . '/assets/js/html5shiv.min.js' );
+    wp_enqueue_script( 'urnext-html5shiv', get_template_directory_uri() . '/assets/js/html5shiv.min.js', array(), false );
     wp_script_add_data( 'urnext-html5shiv', 'conditional', 'lt IE 9' );
 
+    wp_enqueue_script( 'urnext-snapsvg', get_template_directory_uri() . '/assets/js/snap.js', array('jquery') );
     wp_enqueue_script( 'urnext-tooltipster', get_template_directory_uri() . '/assets/js/tooltipster.min.js', array('jquery'), '1.0.0', true );
     wp_enqueue_script( 'urnext-featherlight', get_template_directory_uri() . '/assets/js/featherlight.js', array('jquery'), '1.0.0', true );
     wp_enqueue_script( 'urnext-featherlight-gallery', get_template_directory_uri() . '/assets/js/featherlight.gallery.js', array('jquery'), '1.0.0', true );
@@ -475,11 +550,15 @@ function urnext_load_scripts() {
     wp_enqueue_script( 'urnext-slick', get_template_directory_uri() . '/assets/js/slick.js', array('jquery'), '1.0.0', true );
     
     // for sitcky elements
-    wp_enqueue_script( 'urnext-stickykit', get_template_directory_uri() . '/assets/js/sticky-kit.js', array('jquery'), '1.0.0', true );
+    wp_enqueue_script( 'urnext-sticky-sidebar', get_template_directory_uri() . '/assets/js/sticky-sidebar.min.js', array('jquery'), '1.0.0', true );
 
+    if( (int) get_urnext_option('main_menu_type') === 1){
+        wp_enqueue_script( 'urnext-mean-menu', get_template_directory_uri() . '/assets/js/jquery.meanmenu.min.js', array('jquery'), '4.0.0', true );
+    }
+    
     // Require bootstrap and tether
-    wp_enqueue_script( 'urnext-tether', get_template_directory_uri() . '/assets/js/tether.min.js', array('jquery'), '4.0.0', true );
-    wp_enqueue_script( 'urnext-bootstrap', get_template_directory_uri() . '/assets/js/bootstrap.min.js', array('jquery'), '4.0.0', true );
+    //wp_enqueue_script( 'urnext-tether', get_template_directory_uri() . '/assets/js/tether.min.js', array('jquery'), '4.0.0', true );
+    //wp_enqueue_script( 'urnext-bootstrap', get_template_directory_uri() . '/assets/js/bootstrap.min.js', array('jquery'), '4.0.0', true );
     
     // Load wow.js if animations are enabled
     if( (int) get_urnext_option('animations') === 1 ){
@@ -491,25 +570,57 @@ function urnext_load_scripts() {
         wp_enqueue_script( 'urnext-isotope', get_template_directory_uri() . '/assets/vendor/isotope/isotope.pkgd.js', array('jquery'), '1.0.0', true );
     }
 
+    // Only load if Woocommerce is active
+    if( URNEXT_WOOCOMMERCE_ACTIVE ){
+        wp_enqueue_script( 'urnext-woocommerce', get_template_directory_uri() . '/assets/js/woocommerce.js', array('jquery', 'urnext-main'), '1.0.0', true );
+    }
+
     // Load the main js file
-    wp_enqueue_script( 'urnext-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'urnext-bootstrap'), '1.0.0', true );
+    wp_enqueue_script( 'urnext-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0.0', true );
+
+    // Load the Google Maps js file
+    if( get_page_template_slug() === 'template-contact.php' ){
+        wp_enqueue_script( 'urnext-googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyACyDvbVuOm_i52heMGmBGgIFatOlvNdT0&callback=urnext_init_map', array('urnext-main'), '3', true );
+    }
+    
+    // Get locations and format them
+    $locations = (array) get_urnext_option('locations');
+    array_walk_recursive( $locations ,'address_auto_p');
 
     // Localize main
     $localize = array(
-        'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-        'animations'    => ( (int) get_urnext_option('animations') === 1 ? 1 : 0 ),
-        'hasParallax'   => ( (int) get_urnext_option('header_parallax') === 1 ? 1 : 0 ),
-        'gridLayout'    => ( (int) get_urnext_option('grid_layout') === 1 ? 1 : 0 ),
-        'fullHeight'    => ( (int) get_urnext_option('fullheight_header') === 1 ? 1 : 0 ),
-        'squareItems'   => ( (int) get_urnext_option('square_grid_items') === 1 ? 1 : 0 ),
-        'stickyHeader'  => ( (int) get_urnext_option('sticky_header') === 1 ? 1 : 0 ),
-        'hideHeader'    => ( (int) get_urnext_option('hide_header') === 1 ? 1 : 0 ),
+        'ajaxurl'           => admin_url( 'admin-ajax.php' ),
+        'animations'        => ( (int) get_urnext_option('animations') === 1 ? 1 : 0 ),
+        'hasParallax'       => ( (int) get_urnext_option('header_parallax') === 1 ? 1 : 0 ),
+        'gridLayout'        => ( (int) get_urnext_option('grid_layout') === 1 ? 1 : 0 ),
+        'fullHeight'        => ( (int) get_urnext_option('fullheight_header') === 1 ? 1 : 0 ),
+        'squareItems'       => ( (int) get_urnext_option('square_grid_items') === 1 ? 1 : 0 ),
+        'hasStickyHeader'   => ( (int) get_urnext_option('sticky_header') === 1 ? 1 : 0 ),
+        'hideHeader'        => ( (int) get_urnext_option('hide_header') === 1 ? 1 : 0 ),
+        'showMap'           => ( (int) get_urnext_option('show_map') === 1 ? 1 : 0 ),
+        'locations'         => (array) $locations,
+        'animationDuration' => (int) get_urnext_option('animation_duration'),
+        'mainMenuType'      => (int) get_urnext_option('main_menu_type'),
+        'mainMenuTrigger'   => (string) get_urnext_option('main_menu_trigger'),
+        'menuBreakpoint'    => (int) get_urnext_option('menu_responsive_breakpoint'),
+        'mapZoom'           => (int) get_urnext_option('map_zoom'),
+        'mapStyle'          => (string) get_urnext_option('map_style'),
     );
     
     wp_localize_script( 'urnext-main', 'localize', $localize );
 }
 add_action( 'wp_enqueue_scripts', 'urnext_load_scripts' );
 
+
+function address_auto_p(&$item, $key) {
+    if( $key === 'address' ) $item = wpautop($item);
+}
+
+add_filter('script_loader_tag', 'urnext_add_async_attribute', 10, 2);
+function urnext_add_async_attribute( $tag, $handle ) {
+    if ( 'urnext-googlemaps' !== $handle ) return $tag;
+    return str_replace( ' src', ' async="async" src', $tag );
+}
 
 function urnext_enable_more_buttons_tinymce($buttons) {
     $buttons[] = 'fontsizeselect';
@@ -531,7 +642,7 @@ function urnext_widgets_init() {
     // Register right sidebar area
     register_sidebar( 
         array(
-            'name'          => __('Right sidebar', 'urnext'),
+            'name'          => esc_html__('Right sidebar', 'urnext'),
             'id'            => 'right_sidebar',
             'before_widget' => '<div>',
             'after_widget'  => '</div>',
@@ -543,7 +654,7 @@ function urnext_widgets_init() {
     // Register left sidebar area
     register_sidebar( 
         array(
-            'name'          => __('Left sidebar', 'urnext'),
+            'name'          => esc_html__('Left sidebar', 'urnext'),
             'id'            => 'left_sidebar',
             'before_widget' => '<div>',
             'after_widget'  => '</div>',
@@ -555,7 +666,7 @@ function urnext_widgets_init() {
     // Register left footer area
     register_sidebar( 
         array(
-            'name'          => __('Left footer', 'urnext'),
+            'name'          => esc_html__('Left footer', 'urnext'),
             'id'            => 'left_footer',
             'before_widget' => '<div class="footer-text-color">',
             'after_widget'  => '</div>',
@@ -567,7 +678,7 @@ function urnext_widgets_init() {
     // Register left middle footer area
     register_sidebar( 
         array(
-            'name'          => __('Middle left footer', 'urnext'),
+            'name'          => esc_html__('Middle left footer', 'urnext'),
             'id'            => 'middle_left_footer',
             'before_widget' => '<div class="footer-text-color">',
             'after_widget'  => '</div>',
@@ -579,7 +690,7 @@ function urnext_widgets_init() {
     // Register middle footer area
     register_sidebar( 
         array(
-            'name'          => __('Middle right footer', 'urnext'),
+            'name'          => esc_html__('Middle right footer', 'urnext'),
             'id'            => 'middle_right_footer',
             'before_widget' => '<div class="footer-text-color">',
             'after_widget'  => '</div>',
@@ -592,7 +703,7 @@ function urnext_widgets_init() {
     // Register right footer area
     register_sidebar( 
         array(
-            'name'          => __('Right footer', 'urnext'),
+            'name'          => esc_html__('Right footer', 'urnext'),
             'id'            => 'right_footer',
             'before_widget' => '<div class="footer-text-color">',
             'after_widget'  => '</div>',
@@ -604,7 +715,7 @@ function urnext_widgets_init() {
     // Register shop sidebar area
     register_sidebar( 
         array(
-            'name'          => __('Shop sidebar', 'urnext'),
+            'name'          => esc_html__('Shop sidebar', 'urnext'),
             'id'            => 'shop',
             'before_widget' => '<div class="">',
             'after_widget'  => '</div>',
@@ -616,7 +727,7 @@ function urnext_widgets_init() {
     // Register page sidebar area
     register_sidebar( 
         array(
-            'name'          => __('Page sidebar', 'urnext'),
+            'name'          => esc_html__('Page sidebar', 'urnext'),
             'id'            => 'page_sidebar',
             'before_widget' => '<div class="">',
             'after_widget'  => '</div>',
@@ -634,15 +745,15 @@ function urnext_breadcrumb() {
     $html               = '';
 
     /* === OPTIONS === */
-    $text['here']       = (int) get_urnext_option('breadcrumbs_home_link') === 1 ? __('You are here: ', 'urnext') : '' ; // text for the 'Home' link
-	$text['home']       = __('Home<!--<span class="lnr lnr-home ishome"></span>-->', 'urnext'); // text for the 'Home' link
-	$text['category']   = __('Category %s', 'urnext'); // text for a category page
-	$text['search']     = __('Search Results for "%s" Query', 'urnext'); // text for a search results page
-	$text['tag']        = __('Posts Tagged "%s"', 'urnext'); // text for a tag page
-	$text['author']     = __('Articles Posted by %s', 'urnext'); // text for an author page
-	$text['404']        = __('Error 404', 'urnext'); // text for the 404 page
-	$text['page']       = __('Page %s', 'urnext'); // text 'Page N'
-	$text['cpage']      = __('Comment Page %s', 'urnext'); // text 'Comment Page N'
+    $text['here']       = (int) get_urnext_option('breadcrumbs_home_link') === 1 ? esc_html__('You are here: ', 'urnext') : '' ; // text for the 'Home' link
+	$text['home']       = esc_html__('Home<!--<span class="lnr lnr-home ishome"></span>-->', 'urnext'); // text for the 'Home' link
+	$text['category']   = esc_html__('Category %s', 'urnext'); // text for a category page
+	$text['search']     = esc_html__('Search Results for "%s" Query', 'urnext'); // text for a search results page
+	$text['tag']        = esc_html__('Posts Tagged "%s"', 'urnext'); // text for a tag page
+	$text['author']     = esc_html__('Articles Posted by %s', 'urnext'); // text for an author page
+	$text['404']        = esc_html__('Error 404', 'urnext'); // text for the 404 page
+	$text['page']       = esc_html__('Page %s', 'urnext'); // text 'Page N'
+	$text['cpage']      = esc_html__('Comment Page %s', 'urnext'); // text 'Comment Page N'
 
     $get_sep            = (string) get_urnext_option('breadcrumbs_separator');
 	$wrap_before        = '<div class="breadcrumbs header-text-color" itemscope itemtype="http://schema.org/BreadcrumbList">'; // the opening wrapper tag
@@ -650,9 +761,9 @@ function urnext_breadcrumb() {
 	$sep                =  $get_sep !== '' ? $get_sep : '<span class="header-text-color lnr lnr-chevron-right"></span>'; // separator between crumbs
 	$sep_before         = '<span class="header-text-color hidden-xs-down sep">'; // tag before separator
     $sep_after          = '</span>'; // tag after separator
-    $show_youre_here    = 1; // 1 - show the 'You are here' link, 0 - don't show
+    $show_youre_here    = true; // 1 - show the 'You are here' link, 0 - don't show
 	$show_home_link     = 1; // 1 - show the 'Home' link, 0 - don't show
-	$show_on_home       = 1; // 1 - show breadcrumbs on the homepage, 0 - don't show
+	$show_on_home       = true; // 1 - show breadcrumbs on the homepage, 0 - don't show
 	$show_current       = 1; // 1 - show current page title, 0 - don't show
 	$before             = '<span class="header-text-color current">'; // tag before the current crumb
 	$after              = '</span>'; // tag after the current crumb
@@ -672,7 +783,43 @@ function urnext_breadcrumb() {
 	$parent_id      = ($post) ? $post->post_parent : '';
 	$sep            = ' ' . $sep_before . $sep . $sep_after . ' ';
 	$home_link      = $link_before . '<a href="' . $home_url . '"' . $link_attr . ' class="home">' . $link_in_before . $text['home'] . $link_in_after . '</a>' . $link_after;
+    $youre_here     = '';
 
+    if( $show_youre_here ) $youre_here.= $before . $text['here'] . $after;
+
+    // Preffered breadcrumbs solution "WordPRess SEO (Yoast SEO)"
+    if ( function_exists('yoast_breadcrumb') ) {
+        return '<!-- Yoast breadcrumb -->'. yoast_breadcrumb('','', false);
+    }
+
+    // Check if we can use WooCommerce breadcrumbs (secondary method)
+    if( class_exists('WC_Breadcrumb') && is_callable( array('WC_Breadcrumb', 'generate') ) ){
+        $breadcrumbs = new WC_Breadcrumb();
+        $breadcrumb = $breadcrumbs->generate();
+        $html.= '<!-- WC breadcrumb -->'. $wrap_before;
+        if ( $show_on_home ){
+            $html.= $youre_here . $home_link ;
+            if ( ! empty( $breadcrumb ) ) $html.= $sep;
+        }
+        if ( ! empty( $breadcrumb ) ) {
+            foreach ( $breadcrumb as $key => $crumb ) {
+                $html.= $before;
+                if ( ! empty( $crumb[1] ) && sizeof( $breadcrumb ) !== $key + 1 ) {
+                    $html.= sprintf( $link, esc_url( $crumb[1] ), esc_html( $crumb[0] ) );
+                } else {
+                    $html.= esc_html( $crumb[0] );
+                }
+                $html.= $after;
+                if ( sizeof( $breadcrumb ) !== $key + 1 ) {
+                    $html.= $sep;
+                }
+            }
+        }
+        $html.= $wrap_after;
+        return $html;
+    }
+
+    // Without WP SOE or WooCommerce, use the build in breadcrumbs function
     $youre_here = '';
     if( $show_youre_here ) $youre_here.= $before . $text['here'] . $after;
 
@@ -727,13 +874,17 @@ function urnext_breadcrumb() {
 			if ($show_current) $html.= $before . get_the_time('Y') . $after;
 
 		} elseif ( is_single() && !is_attachment() ) {
+            
             if ($show_home_link) $html.= $sep;
             
 			if ( get_post_type() != 'post' ) {
-				$post_type = get_post_type_object(get_post_type());
-				$slug = $post_type->rewrite;
-				$html.= sprintf($link, $home_url . $slug['slug'] . '/', $post_type->labels->singular_name);
-				if ($show_current) $html.= $sep . $before . get_the_title() . $after;
+                $post_type = get_post_type_object(get_post_type());
+                $slug = $post_type->rewrite;
+                $archive_link = get_post_type_archive_link( get_post_type() );
+				$html.= sprintf($link, $archive_link, $post_type->labels->singular_name);
+				if ($show_current) {
+                    $html.= $sep . $before . get_the_title() . $after;
+                }
 			} else {
 				$cat = get_the_category(); $cat = $cat[0];
 				$cats = get_category_parents($cat, TRUE, $sep);
@@ -875,6 +1026,11 @@ function urnext_register_required_plugins() {
 			'slug'          => 'wordpress-seo',
             'is_callable'   => 'wpseo_init',
             'required'      => false,
+        ),
+        array(
+			'name'          => 'Contact Form 7',
+			'slug'          => 'contact-form-7',
+            'required'      => false,
 		)
 	);
 
@@ -926,4 +1082,22 @@ function urnext_adjust_sticky_query($query) {
             }
         }
     }
+}
+
+function urnext_get_spinner( $spinner ){
+    $spinner = (int) $spinner;
+    $spinners = array(
+        1 => '<div class="sk-rotating-plane bg-primary-color"></div>',
+        2 => '<div class="sk-double-bounce"><div class="sk-child sk-double-bounce1 bg-primary-color"></div><div class="sk-child sk-double-bounce2 bg-primary-color"></div></div>',
+        3 => '<div class="sk-wave"><div class="sk-rect sk-rect1 bg-primary-color"></div><div class="sk-rect sk-rect2 bg-primary-color"></div><div class="sk-rect sk-rect3 bg-primary-color"></div><div class="sk-rect sk-rect4 bg-primary-color"></div><div class="sk-rect sk-rect5 bg-primary-color"></div></div>',
+        4 => '<div class="sk-wandering-cubes"><div class="sk-cube sk-cube1 bg-primary-color"></div><div class="sk-cube sk-cube2 bg-primary-color"></div></div>',
+        5 => '<div class="sk-spinner sk-spinner-pulse bg-primary-color"></div>',
+        6 => '<div class="sk-chasing-dots"><div class="sk-child sk-dot1 bg-primary-color"></div><div class="sk-child sk-dot2 bg-primary-color"></div></div>',
+        7 => '<div class="sk-three-bounce"><div class="sk-child sk-bounce1 bg-primary-color"></div><div class="sk-child sk-bounce2 bg-primary-color"></div><div class="sk-child sk-bounce3 bg-primary-color"></div></div>',
+        8 => '<div class="sk-circle"><div class="sk-circle1 sk-child before-primary-color"></div><div class="sk-circle2 sk-child before-primary-color"></div><div class="sk-circle3 sk-child before-primary-color"></div><div class="sk-circle4 sk-child before-primary-color"></div><div class="sk-circle5 sk-child before-primary-color"></div><div class="sk-circle6 sk-child before-primary-color"></div><div class="sk-circle7 sk-child before-primary-color"></div><div class="sk-circle8 sk-child before-primary-color"></div><div class="sk-circle9 sk-child before-primary-color"></div><div class="sk-circle10 sk-child before-primary-color"></div><div class="sk-circle11 sk-child before-primary-color"></div><div class="sk-circle12 sk-child before-primary-color"></div></div>',
+        9 => '<div class="sk-cube-grid"><div class="sk-cube sk-cube1 bg-primary-color"></div><div class="sk-cube sk-cube2 bg-primary-color"></div><div class="sk-cube sk-cube3 bg-primary-color"></div><div class="sk-cube sk-cube4 bg-primary-color"></div><div class="sk-cube sk-cube5 bg-primary-color"></div><div class="sk-cube sk-cube6 bg-primary-color"></div><div class="sk-cube sk-cube7 bg-primary-color"></div><div class="sk-cube sk-cube8 bg-primary-color"></div><div class="sk-cube sk-cube9 bg-primary-color"></div></div>',
+        10 => '<div class="sk-fading-circle"><div class="sk-circle1 sk-circle before-primary-color"></div><div class="sk-circle2 sk-circle before-primary-color"></div><div class="sk-circle3 sk-circle before-primary-color"></div><div class="sk-circle4 sk-circle before-primary-color"></div><div class="sk-circle5 sk-circle before-primary-color"></div><div class="sk-circle6 sk-circle before-primary-color"></div><div class="sk-circle7 sk-circle before-primary-color"></div><div class="sk-circle8 sk-circle before-primary-color"></div><div class="sk-circle9 sk-circle before-primary-color"></div><div class="sk-circle10 sk-circle before-primary-color"></div><div class="sk-circle11 sk-circle before-primary-color"></div><div class="sk-circle12 sk-circle before-primary-color"></div></div>',
+        11 => '<div class="sk-folding-cube"><div class="sk-cube1 sk-cube before-primary-color"></div><div class="sk-cube2 sk-cube before-primary-color"></div><div class="sk-cube4 sk-cube before-primary-color"></div><div class="sk-cube3 sk-cube before-primary-color"></div></div>',
+    );
+    return isset( $spinners[$spinner] ) ? $spinners[$spinner] : '' ;
 }

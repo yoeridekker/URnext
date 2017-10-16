@@ -58,16 +58,21 @@
 .wrap.urnext-options table.form-table tr:last-child{
     border-top:1px solid #f2f2f2;
 }
-.wrap.urnext-options table.form-table tr td input,
-.wrap.urnext-options table.form-table tr td select,
-.wrap.urnext-options table.form-table tr td textarea{
+.wrap.urnext-options table.form-table tr td > button,
+.wrap.urnext-options table.form-table tr td > input,
+.wrap.urnext-options table.form-table tr td > select,
+.wrap.urnext-options table.form-table tr td > textarea,
+.wrap.urnext-options table.form-table tr td .repeatable > button,
+.wrap.urnext-options table.form-table tr td .repeatable > input,
+.wrap.urnext-options table.form-table tr td .repeatable > select,
+.wrap.urnext-options table.form-table tr td .repeatable > textarea{
     display: block;
 }
 .wrap.urnext-options table.form-table tr td input[type=text]{
     width: 100%;
 }
 .wrap.urnext-options table.form-table tr td input[type=number]{
-    width: 75px;
+    width: 150px;
 }
 .wrap.urnext-options table.form-table tr td input.wp-color-picker{
     display: inline-block;
@@ -76,6 +81,12 @@
 .wrap.urnext-options table.form-table tr td textarea{
     width: 100%;
     min-height: 150px;
+}
+.wrap.urnext-options table.form-table tr td > label,
+.wrap.urnext-options table.form-table tr td .repeatable > label{
+    margin: 10px 0 5px 0;
+    font-weight: bold;
+    display: block;
 }
 .wrap.urnext-options table.form-table tr td p.hint{
     color: #999;
@@ -97,12 +108,7 @@
     display: inline-block;
 }
 .wrap.urnext-options .button.button-primary{
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-    text-shadow: none;
-    font-weight: 100;
-    background: #008088;
+    margin-right: 10px;
 }
 .switch-wrapper {
     display: block;
@@ -158,4 +164,51 @@
     outline: none;
     text-align: center;
     vertical-align: middle;
+}
+
+div.repeatcontainer div.repeatable:first-child a.deletebutton{
+    display: none;
+}
+div.repeatable{
+    padding: 15px;
+    border:1px solid #f2f2f2;
+    margin: 0 0 10px 0;
+    background: #fafafa;
+}
+div.repeatable a.deletebutton {
+    float: right;
+    text-decoration: none;
+    color: #fff;
+    background: rgb(154, 0, 0);
+    border: none;
+    padding: 5px;
+    font-size: 0.8em;
+    margin: -15px -16px 0 0;
+}
+div.repeatable a.deletebutton:hover{
+    background: rgb(172, 0, 0);
+}
+div.file-selector-box {
+    position: relative;
+    width: 100%;
+    display: block;
+    height: 30px;
+}
+div.file-selector-box button.button-primary{
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width:150px;
+}
+div.file-selector-box input{
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: 30px;
+    line-height: 30px;
+    box-sizing: border-box;
+    top: -1px;
+    padding-left: 160px;
 }

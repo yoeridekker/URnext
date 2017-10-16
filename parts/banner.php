@@ -94,6 +94,10 @@ if( is_home() && $home_banner !== '' ):
     $style.= sprintf('background-image:url(%s)', esc_url( $home_banner ) );
 endif;
 
+// Disable banner everywhere but here:
+if( $banner ):
+    $banner = is_singular() || is_home() ;
+endif;
 
 if( $banner ): ?>
 
@@ -113,7 +117,7 @@ if( $banner ): ?>
             
             <?php if( !$has_banner || $caption ): ?>
                 <!-- start caption -->
-                <div style="<?php echo $caption_style; ?>" class="wow fadeInDownBig ontop header-text-color as-table inset-content full-height <?php echo $caption_class; ?>" data-wow-duration="0.8s" data-wow-delay="0.5s">
+                <div style="<?php echo $caption_style; ?>" class="wow fadeInDownBig ontop header-text-color as-table inset-content full-height <?php echo $caption_class; ?>">
                     <div class="row as-row full-height">
                         <div class="col-md-8 as-cell full-height">
                             <div class="buttons center-button inherit-border after-header-text-color header-text-color">
@@ -137,13 +141,13 @@ if( $banner ): ?>
         <!-- end banner -->
 
     <?php else: ?>
-         <!-- start no-banner -->
+         <!-- start nobanner -->
         <div id="no-banner" class="content-panel bg-header-color"></div>
         <!-- end nobanner -->
     <?php endif; ?>
 
 <?php else: ?>
-    <!-- start no-banner -->
+    <!-- start nobanner -->
     <div id="no-banner" class="content-panel bg-header-color"></div>
     <!-- end nobanner -->
 <?php endif; ?>

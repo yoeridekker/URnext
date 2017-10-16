@@ -1,11 +1,6 @@
 /*
 WooCommerce styles 
 */
-.woocommerce-breadcrumb{
-    padding-top:120px;
-    padding-bottom: 15px;
-}
-
 @font-face{
 	font-family:'star';
 	src:url('../../../plugins/woocommerce/assets/fonts/star.eot');

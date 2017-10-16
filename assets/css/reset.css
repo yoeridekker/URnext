@@ -246,50 +246,59 @@ blockquote.right {}
 
 /* Comment Output*/
 
-.commentlist .reply {}
-.commentlist .reply a {}
+.comment-list .reply {
+    display: block;
+}
+.comment-list .reply a {
+    color:inherit;
+    font-size: inherit;
+}
 
-.commentlist .alt {}
-.commentlist .odd {}
-.commentlist .even {}
-.commentlist .thread-alt {}
-.commentlist .thread-odd {}
-.commentlist .thread-even {}
-.commentlist li ul.children .alt {}
-.commentlist li ul.children .odd {}
-.commentlist li ul.children .even {}
+.comment-list .alt {}
+.comment-list .odd {}
+.comment-list .even {}
+.comment-list .thread-alt {}
+.comment-list .thread-odd {}
+.comment-list .thread-even {}
+.comment-list li ul.children .alt {}
+.comment-list li ul.children .odd {}
+.comment-list li ul.children .even {}
 
-.commentlist .vcard {}
-.commentlist .vcard cite.fn {}
-.commentlist .vcard span.says {}
-.commentlist .vcard img.photo {}
-.commentlist .vcard img.avatar {}
-.commentlist .vcard cite.fn a.url {}
+.comment-list .vcard {}
+.comment-list .vcard cite.fn {}
+.comment-list .vcard span.says {}
+.comment-list .vcard img.photo {}
+.comment-list .vcard img.avatar {}
+.comment-list .vcard cite.fn a.url {}
 
-.commentlist .comment-meta {} 
-.commentlist .comment-meta a {}
-.commentlist .commentmetadata {}
-.commentlist .commentmetadata a {}
+.comment-list .comment-meta {} 
+.comment-list .comment-meta a {}
+.comment-list .commentmetadata {}
+.comment-list .commentmetadata a {}
 
-.commentlist .parent {}
-.commentlist .comment {}
-.commentlist .children {}
-.commentlist .pingback {}
-.commentlist .bypostauthor {}
-.commentlist .comment-author {}
-.commentlist .comment-author-admin {}
+.comment-list .parent {}
+.comment-list .comment {
+    padding: 15px 0 0 15px;
+    border: none;
+    background: rgba(0,0,0,0.04);
+}
+.comment-list .children {}
+.comment-list .pingback {}
+.comment-list .bypostauthor {}
+.comment-list .comment-author {}
+.comment-list .comment-author-admin {}
 
-.commentlist {}
-.commentlist li {}
-.commentlist li p {}
-.commentlist li ul {}
-.commentlist li ul.children li {}
-.commentlist li ul.children li.alt {}
-.commentlist li ul.children li.byuser {}
-.commentlist li ul.children li.comment {}
-.commentlist li ul.children li.depth-{id} {}
-.commentlist li ul.children li.bypostauthor {}
-.commentlist li ul.children li.comment-author-admin {}
+.comment-list {}
+.comment-list li {}
+.comment-list li p {}
+.comment-list li ul {}
+.comment-list li ul.children li {}
+.comment-list li ul.children li.alt {}
+.comment-list li ul.children li.byuser {}
+.comment-list li ul.children li.comment {}
+.comment-list li ul.children li.depth-{id} {}
+.comment-list li ul.children li.bypostauthor {}
+.comment-list li ul.children li.comment-author-admin {}
 
 #cancel-comment-reply {}
 #cancel-comment-reply a {}

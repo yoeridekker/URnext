@@ -221,28 +221,84 @@
 /* .tooltipster-box */
 
 .tooltipster-sidetip .tooltipster-box {
-    background: #565656;
-    border: 2px solid black;
-    border-radius: 4px;
+    background: inherit;
+    border: 1px solid transparent;
+    border-radius: 0;
+    border-color: inherit;
+    color: inherit;
 }
 .tooltipster-sidetip.tooltipster-bottom .tooltipster-box {
-    margin-top: 8px;
+    margin-top: 0;
 }
 .tooltipster-sidetip.tooltipster-left .tooltipster-box {
-    margin-right: 8px;
+    margin-right: 0;
 }
 .tooltipster-sidetip.tooltipster-right .tooltipster-box {
-    margin-left: 8px;
+    margin-left: 0;
 }
 .tooltipster-sidetip.tooltipster-top .tooltipster-box {
-    margin-bottom: 8px;
+    margin-bottom: 0;
 }
 /* .tooltipster-content */
 
 .tooltipster-sidetip .tooltipster-content {
-    color: white;
-    line-height: 18px;
-    padding: 6px 14px;
+    color: inherit;
+    line-height: inherit;
+    padding: 0;
+    border-color:inherit;
+}
+.tooltipster-sidetip .tooltipster-content a{
+    color: inherit;
+}
+
+.tooltipster-sidetip .tooltipster-content .buttons {
+    padding: 15px 0;
+    text-align: center;
+    margin: 0;
+    background: none
+}
+
+.tooltipster-sidetip .tooltipster-content .total {
+    text-align: center;
+    margin: 0;
+    padding: 5px 0;
+}
+
+.tooltipster-sidetip .tooltipster-content .buttons a{
+    display: inline-block;
+    margin: 0 5px;
+}
+.tooltipster-sidetip .tooltipster-content .woocommerce-mini-cart{
+    border-color:inherit;
+}
+.tooltipster-sidetip .tooltipster-content .woocommerce-mini-cart li{
+    display: block;
+    width: auto;
+    border-bottom: 1px solid transparent;
+    border-color:inherit;
+    background: none;
+}
+.tooltipster-sidetip .tooltipster-content .woocommerce-mini-cart li a.remove {
+    font-size: 5rem;
+    line-height: 5rem;
+    margin: 0;
+    padding: 0 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.tooltipster-sidetip .tooltipster-content .woocommerce-mini-cart li img {
+    width: 75px;
+    height: auto;
+    padding: 0;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 15px 0 0;
+}
+.tooltipster-sidetip .tooltipster-content .woocommerce-mini-cart li span.quantity {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 15px 0 0;
+    padding: 0;
 }
 /* .tooltipster-arrow : will keep only the zone of .tooltipster-arrow-uncropped that
 corresponds to the arrow we want to display */
@@ -250,36 +306,30 @@ corresponds to the arrow we want to display */
 .tooltipster-sidetip .tooltipster-arrow {
     overflow: hidden;
     position: absolute;
+    border-color: inherit;
 }
 .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow {
-    height: 10px;
-    /* half the width, for centering */
-    
+    height: 9px;
     margin-left: -10px;
-    top: 0;
+    top: -8px;
     width: 20px;
 }
 .tooltipster-sidetip.tooltipster-left .tooltipster-arrow {
     height: 20px;
     margin-top: -10px;
-    right: 0;
-    /* top 0 to keep the arrow from overflowing .tooltipster-base when it has not
-	been positioned yet */
-    
+    right: -8px;
     top: 0;
     width: 10px;
 }
 .tooltipster-sidetip.tooltipster-right .tooltipster-arrow {
     height: 20px;
     margin-top: -10px;
-    left: 0;
-    /* same as .tooltipster-left .tooltipster-arrow */
-    
+    left: -8px;
     top: 0;
     width: 10px;
 }
 .tooltipster-sidetip.tooltipster-top .tooltipster-arrow {
-    bottom: 0;
+    bottom: -8px;
     height: 10px;
     margin-left: -10px;
     width: 20px;
@@ -298,24 +348,24 @@ corresponds to the arrow we want to display */
     border: 10px solid transparent;
 }
 .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-background {
-    border-bottom-color: #565656;
+    border-bottom-color: inherit;
     left: 0px;
-    top: 3px;
+    top: 1px;
 }
 .tooltipster-sidetip.tooltipster-left .tooltipster-arrow-background {
-    border-left-color: #565656;
-    left: -3px;
+    border-left-color: inherit;
+    left: -1px;
     top: 0px;
 }
 .tooltipster-sidetip.tooltipster-right .tooltipster-arrow-background {
-    border-right-color: #565656;
-    left: 3px;
+    border-right-color: inherit;
+    left: 1px;
     top: 0px;
 }
 .tooltipster-sidetip.tooltipster-top .tooltipster-arrow-background {
-    border-top-color: #565656;
+    border-top-color: inherit;
     left: 0px;
-    top: -3px;
+    top: -1px;
 }
 /* .tooltipster-arrow-border */
 
@@ -325,21 +375,22 @@ corresponds to the arrow we want to display */
     top: 0;
 }
 .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
-    border-bottom-color: black;
+    border-bottom-color: inherit;
 }
 .tooltipster-sidetip.tooltipster-left .tooltipster-arrow-border {
-    border-left-color: black;
+    border-left-color: inherit;
 }
 .tooltipster-sidetip.tooltipster-right .tooltipster-arrow-border {
-    border-right-color: black;
+    border-right-color: inherit;
 }
 .tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
-    border-top-color: black;
+    border-top-color: inherit;
 }
 /* tooltipster-arrow-uncropped */
 
 .tooltipster-sidetip .tooltipster-arrow-uncropped {
     position: relative;
+    border-color: inherit;
 }
 .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-uncropped {
     top: -10px;

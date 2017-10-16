@@ -56,9 +56,15 @@
         width: 90%;
     }
     */
+    #navbar ul#menu-primary-menu *{
+        font-size: 1.4rem;
+    }
 }
 
 @media screen and (max-width: 782px){
+    body.admin-bar .overlay{
+        top:46px;
+    }
     body.admin-bar #navbar.sticky-top{
         top:46px;
     } 

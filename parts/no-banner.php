@@ -2,4 +2,4 @@
 <div id="no-banner" class="content-panel home bg-header-color">
 
 </div>
-<!-- end nobanner -->
+<!-- end no-banner -->

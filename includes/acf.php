@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
 
 if(function_exists("register_field_group"))
 {
@@ -218,6 +221,24 @@ if(function_exists("register_field_group"))
 					'param' => 'post_type',
 					'operator' => '==',
 					'value' => 'page',
+					'order_no' => 0,
+					'group_no' => 1,
+				),
+            ),
+            array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'product',
+					'order_no' => 0,
+					'group_no' => 1,
+				),
+            ),
+            array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'tribe_events',
 					'order_no' => 0,
 					'group_no' => 1,
 				),

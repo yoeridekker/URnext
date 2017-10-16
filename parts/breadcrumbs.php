@@ -17,7 +17,9 @@
     <div class="container">
         <div class="row">
             <div class="tinytextadjust col-md-12 header-text-color <?php echo get_urnext_option('breadcrumbs_align'); ?>">
+                <!-- start urnext_breadcrumb -->
                 <?php echo urnext_breadcrumb(); ?>
+                <!-- end urnext_breadcrumb -->
             </div>
         </div>
         <div class="clear"></div>

@@ -1,4 +1,8 @@
 <?php 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
+
 global $google_font_list;
 $google_font_list = array (
     'kind' => 'webfonts#webfontList',

@@ -57,7 +57,7 @@ $has_sidebar = $sidebar ? is_active_sidebar( $sidebar ) : false ;
                 <?php get_template_part('parts/link-pages'); ?>
                 <div class="clear"></div>
                 <!-- start the tags -->
-                <?php the_tags( '<div class="buttons marged center-button small text-color border-text-color"><span class="tagged">' . __('Tagged with', 'urnext'), '</span>', '</div>' ); ?> 
+                <?php the_tags( '<div class="buttons marged center-button small text-color border-text-color"><span class="tagged">' . esc_html__('Tagged with', 'urnext'), '</span>', '</div>' ); ?> 
                 <!-- end the tags -->
                 <div class="clear"></div>
             </div>

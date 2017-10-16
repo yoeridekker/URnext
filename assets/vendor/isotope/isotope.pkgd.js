@@ -2624,9 +2624,6 @@ return Item;
     var colGroup = this._getTopColGroup( colSpan );
     // get the minimum Y value from the columns
     var minimumY = Math.min.apply( Math, colGroup );
-    console.log(colGroup.indexOf( minimumY ), colGroup,minimumY,item);
-    $jquery( item.element ).removeClass('first');
-    if( colGroup.indexOf( minimumY ) === 0 ) $jquery( item.element ).addClass('first');
     return {
       col: colGroup.indexOf( minimumY ),
       y: minimumY,

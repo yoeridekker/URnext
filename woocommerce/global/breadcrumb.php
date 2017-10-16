@@ -20,11 +20,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-the_breadcrumb();
 /*
 if ( ! empty( $breadcrumb ) ) {
-
+    
     echo $wrap_before;
     
 	foreach ( $breadcrumb as $key => $crumb ) {
@@ -45,6 +43,6 @@ if ( ! empty( $breadcrumb ) ) {
 	}
 
 	echo $wrap_after;
-
+    
 }
 */

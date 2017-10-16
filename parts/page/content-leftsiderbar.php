@@ -32,15 +32,17 @@ global $post;
     <div class="row">
 
         <!-- primary-sidebar -->
-        <aside id="sidebar" data-wow-delay="0s" data-wow-offset="10" class="wow textadjust slideInRight col-lg-3 text-color right-sidebar widget-area" role="complementary">
+        <aside id="sidebar" class="wow textadjust slideInRight col-lg-3 text-color right-sidebar widget-area" role="complementary">
             <div id="inner-sidebar">
-                <?php dynamic_sidebar( 'left_sidebar' ); ?>
+                <div class="sidebar__inner">
+                    <?php dynamic_sidebar( 'left_sidebar' ); ?>
+                </div>
             </div>
             <div class="clear"></div>
         </aside>
         <!-- #primary-sidebar -->
 
-        <div data-wow-offset="10" data-wow-delay="0s" class="wow slideInLeft col-lg-9 text-color">
+        <div class="wow slideInLeft col-lg-9 text-color">
             <article id="post-<?php the_ID(); ?>" <?php post_class('article-content text-color border-text-color'); ?>>
                 <?php the_content(); ?>
                 <div class="clear"></div>

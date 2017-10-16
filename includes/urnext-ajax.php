@@ -1,4 +1,7 @@
 <?php 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
 
 add_action('wp_ajax_nopriv_more_post_ajax', 'urnext_more_post_ajax'); 
 add_action('wp_ajax_more_post_ajax', 'urnext_more_post_ajax');
@@ -122,10 +125,24 @@ function urnext_more_post_ajax(){
     die;
 }
 
+add_action('wp_ajax_nopriv_urnext_get_cart_count', 'urnext_get_cart_count');
+add_action('wp_ajax_urnext_get_cart_count', 'urnext_get_cart_count');
+function urnext_get_cart_count(){
+    $cart_totals = WC()->cart->get_cart_contents_count();
+    $return = array(
+        'count' => (int) $cart_totals
+    );
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode( $return );
+    die;
+}
 
-add_action('wp_ajax_nopriv_urnext_get_cart_contens', 'urnext_get_cart_contens');
-add_action('wp_ajax_urnext_get_cart_contens', 'urnext_get_cart_contens');
-function urnext_get_cart_contens(){
-    echo 'Cart content:';
+add_action('wp_ajax_nopriv_urnext_get_cart_contents', 'urnext_get_cart_contents');
+add_action('wp_ajax_urnext_get_cart_contents', 'urnext_get_cart_contents');
+function urnext_get_cart_contents(){
+    ob_start();
+    woocommerce_mini_cart();
+    $content = ob_get_clean();
+    echo html_entity_decode( $content );
     die;
 }

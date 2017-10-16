@@ -24,7 +24,7 @@ $style      = $image ? sprintf('background-image:url(%s);', $image ) : '' ;
                 <?php the_excerpt(); ?>
             <?php endif; ?>
             <div class="centered primary-text-color">
-                <a href="<?php the_permalink(); ?>" class="primary-text-color btn center-button button small"><?php _e('Read more', 'urnext'); ?></a>
+                <a href="<?php the_permalink(); ?>" class="primary-text-color btn center-button button small"><?php esc_html_e('Read more', 'urnext'); ?></a>
             </div>
         </div>
         <div class="corner bg-primary-color"></div>
@@ -42,7 +42,7 @@ $style      = $image ? sprintf('background-image:url(%s);', $image ) : '' ;
         <span class="date text-color textadjust"><?php the_time( get_option('date_format') ) ?></span>
         <div class="text-color textadjust">
             <a href="<?php the_permalink(); ?>" class="textadjust border-text-color text-color btn center-button button small">
-                <?php _e('Read more', 'urnext'); ?>
+                <?php esc_html_e('Read more', 'urnext'); ?>
             </a>
         </div>
     </article>

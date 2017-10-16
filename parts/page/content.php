@@ -65,7 +65,9 @@ $has_sidebar = $sidebar ? is_active_sidebar( $sidebar ) : false ;
             <!-- primary-sidebar -->
             <aside id="sidebar" data-wow-delay="0s" data-wow-offset="10" class="wow textadjust slideInRight col-lg-3 text-color right-sidebar widget-area" role="complementary">
                 <div id="inner-sidebar">
-                    <?php dynamic_sidebar( $sidebar ); ?>
+                    <div class="sidebar__inner">
+                        <?php dynamic_sidebar( $sidebar ); ?>
+                    </div>
                 </div>
                 <div class="clear"></div>
             </aside>

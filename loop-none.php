@@ -1,1 +1,1 @@
-<p><?php _e('Sorry, no posts matched your criteria.', 'urnext'); ?></p>
+<p><?php esc_html_e('Sorry, no posts matched your criteria.', 'urnext'); ?></p>

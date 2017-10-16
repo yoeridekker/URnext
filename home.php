@@ -32,7 +32,7 @@ if( $show_breadcrumbs === 1 && $hide_breadcrumbs !== 1 ){
         </div>
         <?php get_template_part('parts/pagination'); ?>
     <?php else: ?>
-        <p><?php _e('Sorry, no posts matched your criteria.', 'urnext'); ?></p>
+        <p><?php esc_html_e('Sorry, no posts matched your criteria.', 'urnext'); ?></p>
     <?php endif; ?>
 </div>
 <?php

@@ -169,6 +169,7 @@ select {
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
+    border-radius: 0;
 }
 
 input[type='email']:focus,
@@ -185,7 +186,9 @@ select:focus {
 }
 
 select {
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 29 14" width="29"><path fill="#d1d1d1" d="M9.37727 3.625l5.08154 6.93523L19.54036 3.625"/></svg>') center right no-repeat;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 29 14" width="29"><path fill="#d1d1d1" d="M9.37727 3.625l5.08154 6.93523L19.54036 3.625"/></svg>');
+    background-position: center right;
+    background-repeat: no-repeat;
     padding-right: 3.0rem;
 }
 
@@ -212,6 +215,9 @@ fieldset {
 input[type='checkbox'],
 input[type='radio'] {
     display: inline;
+}
+pre{
+    font-size: 1rem;
 }
 
 /**
@@ -308,35 +314,42 @@ input[type='radio'] {
 }
 
 
-
-
 /* menu */
 #navbar{
-    padding: 0 1rem;
+    padding: 0;
     position: absolute;
     width: 100%;
     top: 0;
     z-index: 1030;
-    overflow: hidden;
+}
+nav#navbar.has-mobile-menu{
+    margin-top:50px;
+}
+nav#navbar.has-mobile-menu {
+    top: 52px;
 }
 body.admin-bar #navbar.sticky-top{
     top:32px;
 }
-.toggle-button {
-    position: fixed;
+#navbar .side-actions{
     display: block;
+    float: right;
+    height: 80px;
+    background: none;
+    width: auto;
+}
+.toggle-button {
+    display: inline-block;
     padding: 20px 15px;
-    right: 10px;
-    top: 10px;
-    margin: 0;
+    margin: 10px 0 10px 10px;
     height: 60px;
     width: 60px;
     cursor: pointer;
     z-index: 1040;
     float: none;
-}
-body.admin-bar .toggle-button{
-    top:42px;
+    vertical-align: top;
+    position: relative;
+    top: 0;
 }
 .bar {
     background-color:rgba(0,0,0,0.9);
@@ -364,29 +377,34 @@ body.admin-bar .toggle-button{
 }
 .toggle-active .top {
     -webkit-transform: translateY(6px) translateX(0) rotate(45deg);
+    transform: translateY(6px) translateX(0) rotate(45deg);
 }
 .toggle-active .middle {
    opacity: 0;
 }
 .toggle-active .bottom {
     -webkit-transform: translateY(-12px) translateX(0) rotate(-45deg);
+    transform: translateY(-12px) translateX(0) rotate(-45deg);
 }
 
 /* search button */
 a.search-button{
-    position: fixed;
     display: inline-block;
     padding: 0;
-    right: 90px;
-    top: 28px;
     cursor: pointer;
     z-index: 1040;
     text-decoration: none !important;
+    width: auto;
+    height: 80px;
+    margin: 0 10px;
+    outline: none;
+    vertical-align: top;
 }
 a.search-button span{
     text-decoration: none;
+    text-align: center;
     font-weight: 100;
-    right: 0;
+    line-height: 80px;
     font-size: 2.3rem;
 }
 a.search-button.toggle-active span{
@@ -428,6 +446,7 @@ a.cart-button{
     cursor: pointer;
     z-index: 1031;
     text-decoration: none !important;
+    text-align: center;
 }
 a.cart-button span.lnr{
     text-decoration: none;
@@ -447,6 +466,15 @@ a.cart-button span.count{
     line-height: 15px;
     text-align: center;
     border-radius: 50%;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    transform: scale(1);
+}
+a.cart-button span.count.notify {
+    background: red;
+    color: #fff;
+    transform: scale(1.2);
 }
 body.admin-bar a.cart-button{
     top:60px;
@@ -493,57 +521,81 @@ body.parallax #banner{
     max-width: 100%;
     height: auto;
 }
+
 .overlay {
     overflow: auto;
     position: fixed;
     background: rgba(255,255,255,1);
     top: 0;
     left: 0;
-    width: 100%;
+    right: 0;
+    bottom: 0;
+    width: auto;
     height: 0;
     z-index: 1031;
     visibility: hidden;
     opacity: 0;
     -webkit-transition: opacity .35s, visibility .35s, height .35s;
 }
+body.admin-bar .overlay{
+    top:32px;
+}
 .nav-active {
     opacity: 1;
     visibility: visible;
-    height: 100%;
-/*    max-height: 340px;*/
+    height: auto;
 }
-.overlay ul {
+.overlay .mainmenu{
     display: block;
     position: relative;
-    top: 100px;
+    top: 0;
+    height: auto;
     left: 0;
-    font-size: 2rem;
-    line-height: 2.5rem;
+    font-size: 3.5rem;
+    line-height: 4rem;
     text-align: left;
     list-style: none;
-    padding: 0 15px;
-    margin: 0 auto 100px auto;
+    padding: 10% 15px;
+    margin: 0 auto 0 auto;
     width: 100%;
     max-width: 480px;
     min-width: 300px;
     box-sizing: border-box;
 }
-.overlay ul li {
+.overlay .mainmenu li {
     display: none;
 }
-.overlay ul li a {
+.overlay .mainmenu li a {
     color:inherit;
     font-weight: 100;
     text-decoration: none;
 }
-.overlay ul li ul.children{
+.overlay .mainmenu li ul.sub-menu{
     display: block;
     margin: 10px 0 10px 40px;
     top: 0;
-    font-size: 1.5rem;
-    line-height: 2rem;
+    font-size: 90%;
+    line-height: 105%;
 }
-
+/* Effects */
+.overlay-genie {
+	background: transparent;
+	visibility: visible;
+	opacity: 1;
+	-webkit-transition: opacity 0.3s;
+	transition: opacity 0.3s;
+}
+.overlay-genie svg {
+    height: 0;
+    position: fixed;
+    right:0;
+    bottom:0;
+	top: 0;
+	left: 0;
+}
+.nav-active.overlay-genie svg {
+    height: 100%;
+}
 #siteloader{
     position: fixed;
     top: 0;
@@ -551,27 +603,242 @@ body.parallax #banner{
     bottom: 0;
     right: 0;
     z-index: 1999;
+    display: block;
 }
-a.navbar-brand{
-    line-height: 80px !important;
+#siteloader > ul#spinners {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    margin: -70px 0 0 -30px;
+    top: 50%;
+    left:50%;
+    list-style: none;
+    text-align: left;
+    font-size: 0;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+#siteloader > ul#spinners li {
+    height: 60px;
+    width: 60px;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    opacity: 0;
+    margin-right: 40px;
+    display: none;
+    position: relative;
+    -webkit-transition: all 0.3s ease-in-out 0;
+    transition: all 0.3s ease-in-out 0;
+}
+#siteloader > ul#spinners li.selected{
+    opacity: 1;
+    display: block;
+}
+.navbar-brand{
     padding: 0;
     margin: 0;
+    height: 80px;
     text-decoration: none;
     border: none;
     outline: none;
     font-size: 2rem;
 }
+.navbar-brand span{
+    padding: 0;
+    margin: 0;
+    height: 80px;
+    line-height: 80px;
+}
 body.logo-header a.navbar-brand{
     font-size: 0 !important; /* Fix for vertical align middle */
+    line-height: 80px;
 }
 a.navbar-brand img{
     height: auto;
     width: auto;
-    max-height: 60px;
-    max-width: 150px;
+    max-height: 80px;
+    max-width: 200px;
     vertical-align: middle !important;
 }
 
+/* megadrop menu */
+#navbar #megadropmenu {
+    display: inline;
+}
+#navbar #megadropmenu #menu-primary-menu{
+    float: none;
+    display: none;
+    font-size: 0;
+    vertical-align: top;
+    margin: 0 0 0 15px;
+    padding: 0;
+    outline: none;
+}
+#navbar #megadropmenu #menu-primary-menu.showmenu{
+    display: inline-block;
+}
+#navbar #megadropmenu #menu-primary-menu.right{
+    float: right;
+    margin: 0 130px 0 0;
+}
+#navbar #megadropmenu #menu-primary-menu > li{
+    display: inline-block;
+    font-size: 0;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    border-top:3px solid transparent;
+    opacity: 1;
+    box-sizing: content-box;
+}
+#navbar #megadropmenu #menu-primary-menu > li.menu-item-has-children div.positioner{
+    width:100%;
+    height: 0;
+    position: relative;
+}
+#navbar #megadropmenu #menu-primary-menu > li.menu-item-has-children > div.positioner:after{
+    content: "\e874";
+    font-family: 'Linearicons';
+    position: absolute;
+    top: 50px;
+    display: block;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin-left: -15px;
+    background: none;
+    color: inherit;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 30px;
+    opacity: 0.2;
+    font-weight: 100;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#navbar #megadropmenu #menu-primary-menu > li.menu-item-has-children.expanded > div.positioner:after{
+    -moz-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: FlipV;
+    -ms-filter: "FlipV";
+}
+#navbar #megadropmenu #menu-primary-menu > li > a{
+    height: 77px;
+    line-height: 77px;
+    padding: 0 20px;
+    display: block;
+    box-sizing: border-box;
+    color: inherit;
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+}
+#navbar #megadropmenu #menu-primary-menu > li.current-menu-ancestor,
+#navbar #megadropmenu #menu-primary-menu > li.current-menu-item{
+    border-color: inherit;
+}
+#navbar #megadropmenu #menu-primary-menu > li:hover{
+    border-color: inherit !important;
+    opacity: 1;
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu{
+    position: absolute;
+    left:0;
+    right: 0;
+    top: 100%;
+    display: none;
+    height: auto;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu.top-border{
+    border-top:3px solid rgba(0,0,0,0.08);
+}
+#navbar #megadropmenu #menu-primary-menu > li.menu-item-has-children.expanded > div.sub-menu{
+    display: block;
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > ul > li{
+    display: inline-block;
+    vertical-align: top;
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > div > ul > li.bold{
+    padding: 0;
+    background: rgba(0,0,0,0.02);
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > div > ul > li.bold > a{
+    font-weight: 300;
+    display: block;
+    padding: 15px;    
+    border-bottom: 1px solid transparent;
+    position: relative;
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > div > ul > li.bold > a:after{
+    content: "";
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+    position: absolute;
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > div > ul > li.bold.menu-item-has-children > a{
+    border-color: transparent;
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > div > ul > li > a{
+    color: inherit;
+    padding: 10px 0;
+    display: inline-block;
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > div > ul > li ul li{
+    display: block;
+    width:100%;
+    background:none;
+    position: relative;
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > div > ul > li ul li.menu-item-has-children > a:before{
+    content: "\e876";
+    font-family: 'Linearicons';
+    position: absolute;
+    left: 5px;
+    font-size: 0.8rem;
+    color: inherit;
+    opacity: 0.75;
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > div > ul > li ul li a {
+    color: inherit;
+    font-weight: inherit;
+    padding: 10px 5px 10px 20px;
+    margin: 0;
+    line-height: inherit;
+    display: block;
+    vertical-align: top;
+    position: relative;
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > div > ul > li ul li a:after{
+    content: "";
+    position: absolute;
+    left: 0;
+    right:0;
+    top: 0;
+    height: 1px;
+    background:rgba(0,0,0,0.05);
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu div ul li a:hover{
+    background:rgba(0,0,0,0.03);
+}
+#navbar #megadropmenu #menu-primary-menu > li > div.sub-menu > div > ul > li ul li a:before {
+    content: "\e876";
+    font-family: 'Linearicons';
+    position: absolute;
+    left: 5px;
+    font-size: 0.8rem;
+    color: inherit;
+    opacity: 0.75;
+}
 #scroll-down {
     position: absolute;
     cursor: pointer;
@@ -588,6 +855,159 @@ a.navbar-brand img{
     -webkit-transition: all 0.3s ease 0s;
     -moz-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
+}
+
+#meanmenu{
+    display: none;
+    visibility: hidden;
+    height: 0;
+    opacity: 0;
+}
+/* hide the link until viewport size is reached */
+a.meanmenu-reveal {
+	display: none;
+}
+
+/* when under viewport size, .mean-container is added to body */
+.mean-container .mean-bar {
+    float: left;
+    width: 100%;
+    position: relative;
+    padding: 0;
+    height: 50px;
+    z-index: 1998;
+}
+body.has-sticky-navbar .mean-bar{
+    position: fixed;
+}
+
+.mean-container a.meanmenu-reveal {
+    width: 30px;
+    height: 30px;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+    font-size: 3rem !important;
+    text-indent: -9999em;
+    line-height: 30px;
+    font-size: 1px;
+    display: block;
+    font-family: inherit;
+    font-weight: inherit;
+}
+
+.mean-container a.meanmenu-reveal span {
+    display: block;
+    background: #fff;
+    height: 1px;
+    margin-top: 7px;
+}
+
+.mean-container .mean-nav {
+	float: left;
+	width: 100%;
+	background: inherit;
+	margin-top: 50px;
+}
+
+.mean-container .mean-nav ul {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	list-style-type: none;
+}
+
+.mean-container .mean-nav ul li {
+	position: relative;
+	float: left;
+	width: 100%;
+}
+.mean-container .mean-nav ul li a {
+	display: block;
+	float: left;
+	width: 90%;
+	padding: 0 5%;
+	margin: 0;
+	text-align: left;
+	color: inherit;
+	border-top: 1px solid #383838;
+    border-top: 1px solid rgba(255,255,255,0.5);
+	text-decoration: none;
+    text-transform: uppercase;
+    line-height: 50px;
+}
+.mean-container .mean-nav ul li li a {
+	width: 80%;
+	padding: 0 10%;
+	border-top: 1px solid #f1f1f1;
+    border-top: 1px solid rgba(255,255,255,0.25);
+	opacity: 0.75;
+	filter: alpha(opacity=75);
+	text-shadow: none !important;
+	visibility: visible;
+}
+.mean-container .mean-nav ul li.mean-last a {
+	border-bottom: none;
+	margin-bottom: 0;
+}
+.mean-container .mean-nav ul li li li a {
+	width: 70%;
+	padding: 0 15%;
+}
+.mean-container .mean-nav ul li li li li a {
+	width: 60%;
+	padding: 0 20%;
+}
+.mean-container .mean-nav ul li li li li li a {
+	width: 50%;
+	padding: 0 25%;
+}
+.mean-container .mean-nav ul li a:hover {
+	background: #252525;
+	background: rgba(255,255,255,0.1);
+}
+.mean-container .mean-nav ul li a.mean-expand {
+    margin-top: 1px;
+    width: 50px;
+    height: 50px;
+    padding: 0 !important;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    font-weight: inherit;
+    background: rgba(255,255,255,0.1);
+    border: none !important;
+    line-height: 50px;
+}
+.mean-container .mean-nav ul li a.mean-expand:hover {
+	background: rgba(0,0,0,0.1);
+}
+.mean-container .mean-push {
+	float: left;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	clear: both;
+}
+.mean-nav .wrapper {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+/* Fix for box sizing on Foundation Framework etc. */
+.mean-container .mean-bar, .mean-container .mean-bar * {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+.mean-remove {
+	display: none !important;
 }
 
 #scroll-down > span {
@@ -647,6 +1067,9 @@ body.has-hidden-header #main-content{
 body.page-template-template-stretched #main-content{
     margin: 0;
     padding: 0;
+}
+body.page-template-template-contact #main-content{
+    padding-bottom: 0;
 }
 #main-content .article-content a{
     border-bottom:  1px solid transparent;
@@ -807,7 +1230,7 @@ body.page-template-template-stretched #main-content{
     border: 0;
 }
 .grid .grid-item.grid-margin{
-    border: 0.75rem solid transparent;
+    border: 1rem solid transparent;
     border-color: inherit;
 }
 /*
@@ -960,6 +1383,12 @@ h1 span.sub-before{
     display: block;
     clear: both;
 }
+
+/* contact page */
+#contact-map{
+    height: 400px;
+    width:100%;
+}
 /* comments */
 .comment-form label{
     display: block;
@@ -1076,15 +1505,135 @@ body.layout-boxed .pager{
     font-size: 2rem
 }
 
+/* contactform 7 */
+div.wpcf7 {
+	margin: 0;
+	padding: 0;
+}
+
+div.wpcf7-response-output {
+	margin: 0;
+	padding: 1em;
+}
+
+div.wpcf7 .screen-reader-response {
+	position: absolute;
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+	height: 1px;
+	width: 1px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+div.wpcf7-mail-sent-ok {
+    border: 1px solid #398f14;
+    background: #b7e4a7;
+}
+
+div.wpcf7-mail-sent-ng {
+    border: 1px solid #ff0000;
+    background: #ff9898;
+}
+
+div.wpcf7-spam-blocked {
+    border: 1px solid #ffa500;
+    background: #ffdb98;
+}
+
+div.wpcf7-validation-errors {
+    border: 1px solid #f7e700;
+    background: #fffbc9;
+}
+
+.wpcf7-form-control-wrap {
+	position: relative;
+}
+
+span.wpcf7-not-valid-tip {
+	color: #f00;
+	font-size: inherit;
+	font-weight: inherit;
+	display: block;
+}
+
+.use-floating-validation-tip span.wpcf7-not-valid-tip {
+	position: absolute;
+	top: 20%;
+	left: 20%;
+	z-index: 100;
+	border: 1px solid #ff0000;
+	background: #fff;
+	padding: 0.5em;
+}
+
+span.wpcf7-list-item {
+	display: inline-block;
+	margin: 0 0 0 1.5em;
+}
+
+span.wpcf7-list-item-label::before,
+span.wpcf7-list-item-label::after {
+	content: " ";
+}
+
+.wpcf7-display-none {
+	display: none;
+}
+
+div.wpcf7 .ajax-loader {
+	visibility: hidden;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	border: none;
+	padding: 0;
+	margin: 0 0 0 4px;
+	vertical-align: middle;
+}
+
+div.wpcf7 .ajax-loader.is-active {
+	visibility: visible;
+}
+
+div.wpcf7 div.ajax-error {
+	display: none;
+}
+
+div.wpcf7 .placeheld {
+	color: #888;
+}
+
+div.wpcf7 .wpcf7-recaptcha iframe {
+	margin-bottom: 0;
+}
+
+div.wpcf7 input[type="file"] {
+	cursor: pointer;
+}
+
+div.wpcf7 input[type="file"]:disabled {
+	cursor: default;
+}
+
+
 /* helper */
 .no-padding{
     padding: 0 !important;
+}
+.no-margin{
+    margin: 0 !important;
 }
 .margedleft{
     margin-left:15px !important;
 }
 .padded5{
     padding: 5px;
+}
+.padded-top-bottom{
+    padding-top:15px;
+    padding-bottom: 15px;
 }
 .transition03{
     -webkit-transition: all 0.3s ease;
@@ -1153,6 +1702,7 @@ body.layout-boxed .pager{
 }
 .full-width{
     width: 100%;
+    position: relative;
 }
 .as-table{
     display: table !important;
@@ -1193,6 +1743,7 @@ input[type=submit],
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
     border-radius: 0;
+    overflow: visible;
 }
 input[type=submit] *,
 .button *,

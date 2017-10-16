@@ -22,77 +22,80 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<?php
-	/**
-	 * woocommerce_before_single_product hook.
-	 *
-	 * @hooked wc_print_notices - 10
-	 */
-	 do_action( 'woocommerce_before_single_product' );
-
-	 if ( post_password_required() ) {
-	 	echo get_the_password_form();
-	 	return;
-	 }
-?>
-
-<div data-item="product" id="product-<?php the_ID(); ?>" <?php post_class('col-md-12'); ?>>
-    <?php the_title(); ?>
-</div><!-- .summary -->
-
-<div class="col-md-8 entry-summary">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
         <?php
-		/**
-		 * woocommerce_before_single_product_summary hook.
-		 *
-		 * @hooked woocommerce_show_product_sale_flash - 10
-		 * @hooked woocommerce_show_product_images - 20
-		 */
-		do_action( 'woocommerce_before_single_product_summary' );
-    ?>
-    
-    <?php
-        /**
-            * woocommerce_after_single_product_summary hook.
+            /**
+            * woocommerce_before_single_product hook.
             *
-            * @hooked woocommerce_output_product_data_tabs - 10
-            * @hooked woocommerce_upsell_display - 15
-            * @hooked woocommerce_output_related_products - 20
+            * @hooked wc_print_notices - 10
             */
-        do_action( 'woocommerce_after_single_product_summary' );
-    ?>
+            do_action( 'woocommerce_before_single_product' );
+
+            if ( post_password_required() ) {
+                echo get_the_password_form();
+                return;
+            }
+        ?>
+        </div>
+    </div>
 </div>
 
-<div class="col-md-4 entry-summary">
-<?php
-        /**
-            * woocommerce_single_product_summary hook.
-            *
-            * @hooked woocommerce_template_single_title - 5
-            * @hooked woocommerce_template_single_rating - 10
-            * @hooked woocommerce_template_single_price - 10
-            * @hooked woocommerce_template_single_excerpt - 20
-            * @hooked woocommerce_template_single_add_to_cart - 30
-            * @hooked woocommerce_template_single_meta - 40
-            * @hooked woocommerce_template_single_sharing - 50
-            * @hooked WC_Structured_Data::generate_product_data() - 60
-            */
-        do_action( 'woocommerce_single_product_summary' );
-    ?>
-</div>
+<div data-item="product" id="product-<?php the_ID(); ?>" <?php post_class('container article-content'); ?>>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 entry-summary">
+                <?php
+                /**
+                * woocommerce_before_single_product_summary hook.
+                *
+                * @hooked woocommerce_show_product_sale_flash - 10
+                * @hooked woocommerce_show_product_images - 20
+                */
+                do_action( 'woocommerce_before_single_product_summary' );
+            ?>
+        </div>
 
-<div class="col-md-12 entry-summary">
-<?php
-        /**
-        * woocommerce_sidebar hook.
-        *
-        * @hooked woocommerce_get_sidebar - 10
-        */
-        do_action( 'woocommerce_sidebar' );
-?>
-</div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 entry-summary woocommerce-product-details border-text-color text-color">
+        <?php
+                /**
+                    * woocommerce_single_product_summary hook.
+                    *
+                    * @hooked woocommerce_template_single_title - 5
+                    * @hooked woocommerce_template_single_rating - 10
+                    * @hooked woocommerce_template_single_price - 10
+                    * @hooked woocommerce_template_single_excerpt - 20
+                    * @hooked woocommerce_template_single_add_to_cart - 30
+                    * @hooked woocommerce_template_single_meta - 40
+                    * @hooked woocommerce_template_single_sharing - 50
+                    * @hooked WC_Structured_Data::generate_product_data() - 60
+                    */
+                do_action( 'woocommerce_single_product_summary' );
+            ?>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 entry-summary">
+        <?php
+                /**
+                * woocommerce_sidebar hook.
+                *
+                * @hooked woocommerce_get_sidebar - 10
+                */
+                do_action( 'woocommerce_sidebar' );
+        ?>
+        </div>
 
-
-
-
+        <div class="col-md-12 entry-summary">
+        <?php
+                /**
+                    * woocommerce_after_single_product_summary hook.
+                    *
+                    * @hooked woocommerce_output_product_data_tabs - 10
+                    * @hooked woocommerce_upsell_display - 15
+                    * @hooked woocommerce_output_related_products - 20
+                    */
+                do_action( 'woocommerce_after_single_product_summary' );
+            ?>
+        </div>
+        
+    </div>
 <?php do_action( 'woocommerce_after_single_product' ); ?>
