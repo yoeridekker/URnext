@@ -65,7 +65,6 @@ $overwrite_banner = urnext_get_meta( get_the_ID(), 'urnext_banner_image' );
 
 // Check if we have an overwrite
 if( $overwrite_banner ):
-    //var_dump( $overwrite_banner );
     $has_banner     = true;
     $banner_image   = $overwrite_banner['sizes']['urnext-banner'];
 endif;
@@ -75,21 +74,27 @@ $style = '';
 
 // Default class
 $class = 'auto-height';
+$overwrite_class = '';
+
+// Get the overwrite height if set
+$overwrite_height = (string) urnext_get_meta( get_the_ID(), 'urnext_banner_height' );
+if( $overwrite_height !== '' ):
+    $overwrite_class = $overwrite_height;
+    $class = $overwrite_class;
+endif;
 
 // Set background image and remove auto-height class
 if( $has_banner ):
-    $class = 'has-banner';
+    $class = $overwrite_class. ' has-banner';
     $style.= sprintf('background-image:url(%s)', esc_url( $banner_image ) );
 endif;
 
-// Add overwrites for home of frontpage
+// Add overwrites for home or frontpage
 $home_banner = (string) get_header_image();
 if( is_home() && $home_banner !== '' ):
-    
-    $caption = (string) get_urnext_option( 'header_caption_text' );
-    
-    $class = 'has-banner';
-    $banner = true;
+    $caption    = (string) get_urnext_option( 'header_caption_text' );
+    $class      = $overwrite_class . ' has-banner';
+    $banner     = true;
     $has_banner = true;
     $style.= sprintf('background-image:url(%s)', esc_url( $home_banner ) );
 endif;
@@ -103,7 +108,7 @@ if( $banner ): ?>
 
     <?php if( $select_banner === 'shortcode' ): ?>
         <!-- start banner -->
-        <div id="banner" class="content-panel bg-header-color auto-height">
+        <div id="banner" class="content-panel bg-header-color <?php echo $class; ?>">
             <?php echo do_shortcode( $shortcode ); ?>
         </div>
         <!-- end banner -->

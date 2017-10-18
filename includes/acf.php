@@ -50,6 +50,41 @@ if(function_exists("register_field_group"))
 				'media_upload' => 'yes',
             ),
             array (
+				'key'       => 'field_59ce6b315k555',
+				'label'     => 'Overwrite banner height',
+				'name'      => 'urnext_banner_height',
+				'type'      => 'select',
+				'choices'   => array (
+					'' => 'Theme Default (selected in the customizer)',
+					'force-auto-height' => 'Auto height',
+					'force-full-height' => 'Full height',
+				),
+				'default_value' => '',
+				'allow_null' => 0,
+                'multiple' => 0,
+                'conditional_logic' => array (
+					'status' => 1,
+					'rules' => array (
+						array (
+							'field' => 'field_59ce6b315f67c',
+							'operator' => '==',
+							'value' => 'default',
+						),
+						array (
+							'field' => 'field_59ce6b315f67c',
+							'operator' => '==',
+							'value' => 'custom',
+                        ),
+                        array (
+							'field' => 'field_59ce6b315f67c',
+							'operator' => '==',
+							'value' => 'shortcode',
+                        ),
+					),
+					'allorany' => 'any',
+				),
+            ),
+            array (
 				'key' => 'field_59d0fb0b52271',
 				'label' => 'Caption width',
 				'name' => 'urnext_caption_width',
@@ -177,7 +212,7 @@ if(function_exists("register_field_group"))
 					'allorany' => 'all',
 				),
 				'save_format' => 'object',
-				'preview_size' => 'large',
+				'preview_size' => 'medium',
 				'library' => 'all',
 			),
 			array (

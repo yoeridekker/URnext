@@ -40,7 +40,7 @@ if ( typeof themeVars === 'undefined' ) var themeVars = {};
     themeVars.generalAnimationDuration = 400;
 
     // DOM elements
-    themeVars.body = null;
+    themeVars.body = false;
     themeVars.nav = false;
     themeVars.menu = null;
 
@@ -265,15 +265,15 @@ if ( typeof themeVars === 'undefined' ) var themeVars = {};
     function urnext_setDimensions(){
         if( themeVars.breadcrumbs ) themeVars.breadcrumbsHeight = themeVars.breadcrumbs.outerHeight();
         if( themeVars.wpadminbar ) themeVars.adminBarHeight = themeVars.wpadminbar.outerHeight();
-        themeVars.windowwidth         = $jquery(window).width();
+        themeVars.windowwidth         = window.innerWidth || document.documentElement.clientWidth; // document.body.clientWidth;
         themeVars.windowheight        = $jquery(window).height();
         themeVars.bannerWrapperHeight = $jquery('#banner-wrapper').height();
         themeVars.contentOffset       = $jquery('#main-content').offset().top;
         themeVars.minContentHeight    = themeVars.windowheight - themeVars.bannerWrapperHeight - themeVars.breadcrumbsHeight;
         //$jquery('body:not(.page-template-template-stretched) #main-content').css('min-height', themeVars.minContentHeight);
-    
+        
         // Check if we need to hide the menu
-        if( themeVars.windowwidth < themeVars.localize.menuBreakpoint ){
+        if( themeVars.windowwidth <= themeVars.localize.menuBreakpoint ){
             if( themeVars.nav ) themeVars.nav.addClass('has-mobile-menu');
             if( themeVars.megaDropMenu ) themeVars.megaDropMenu.removeClass('showmenu');
         }else{
@@ -345,9 +345,13 @@ if ( typeof themeVars === 'undefined' ) var themeVars = {};
 
     function urnext_initBanner( resize ){
         if ( themeVars.windowwidth < themeVars.breakPoints.small ){
-            if( themeVars.banner && themeVars.banner.hasClass('has-banner') ) themeVars.banner.addClass('auto-height');
+            if( themeVars.banner && themeVars.banner.hasClass('has-banner') ) {
+                themeVars.banner.addClass('auto-height');
+            }
         }else{
-            if( themeVars.banner && themeVars.banner.hasClass('has-banner') ) themeVars.banner.removeClass('auto-height');
+            if( themeVars.banner && themeVars.banner.hasClass('has-banner') && !themeVars.banner.hasClass('force-auto-height') ){
+                themeVars.banner.removeClass('auto-height');
+            }
         }
         // set the banner
         urnext_setBanner();
@@ -358,7 +362,7 @@ if ( typeof themeVars === 'undefined' ) var themeVars = {};
         themeVars.bannerheight = themeVars.windowheight - themeVars.adminBarHeight;
         if( themeVars.banner ){
             if( themeVars.localize.fullHeight === '1' ){
-                if( !themeVars.banner.hasClass('auto-height') ){
+                if( !themeVars.banner.hasClass('auto-height') && !themeVars.banner.hasClass('force-auto-height') ){
                     themeVars.banner.height(themeVars.bannerheight);
                     return true;
                 }
@@ -480,7 +484,7 @@ if ( typeof themeVars === 'undefined' ) var themeVars = {};
             meanMenuCloseSize: "1.6rem",
             meanRevealPosition: "right",
             meanRevealPositionDistance: "15px",
-            meanScreenWidth: themeVars.localize.menuBreakpoint,
+            meanScreenWidth: parseFloat(themeVars.localize.menuBreakpoint),
             meanNavPush: "0",
             meanShowChildren: true,
             meanExpandableChildren: true,
@@ -495,7 +499,8 @@ if ( typeof themeVars === 'undefined' ) var themeVars = {};
 })(jQuery, window)
 
 function urnext_init_map() {
-    if( themeVars.localize.showMap === '1' ){
+    var mapHolder = document.getElementById('contact-map');
+    if( themeVars.localize.showMap === '1' && mapHolder !== null ){
         var marker,mapZoom = 14,i = 0,defaultLat = 52,defaultLat = 5;
         if( typeof themeVars.localize.mapZoom === 'string' && themeVars.localize.mapZoom !== '0' ) mapZoom = parseInt(themeVars.localize.mapZoom);
         var mapSettings = {
@@ -634,7 +639,7 @@ function urnext_init_map() {
                 }
             ];
         }
-        var map = new google.maps.Map( document.getElementById('contact-map'), mapSettings );
+        var map = new google.maps.Map( mapHolder, mapSettings );
         if( themeVars.localize.locations[0].lat !== '' && themeVars.localize.locations[0].lng !== '' ){ 
             var bounds = new google.maps.LatLngBounds();
             var infowindow = new google.maps.InfoWindow();

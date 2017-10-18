@@ -579,7 +579,7 @@ function urnext_load_scripts() {
     wp_enqueue_script( 'urnext-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0.0', true );
 
     // Load the Google Maps js file
-    if( get_page_template_slug() === 'template-contact.php' ){
+    if( get_page_template_slug() === 'template-contact.php' || get_page_template_slug() === 'template-contact-boxed.php' ){
         wp_enqueue_script( 'urnext-googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyACyDvbVuOm_i52heMGmBGgIFatOlvNdT0&callback=urnext_init_map', array('urnext-main'), '3', true );
     }
     

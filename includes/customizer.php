@@ -9,9 +9,10 @@ $fontlist = get_google_fonts_list();
 $urnext_theme_options = array(
     // section key 
     'urnext_header_caption' => array(
-        'name'          => esc_html__( 'Header Caption', 'urnext' ),
-        'description'   => esc_html__('Change the header caption', 'urnext'), 
-        'settings'      => array(
+        'name'              => esc_html__( 'Header Caption', 'urnext' ),
+        'description'       => esc_html__('Change the header caption', 'urnext'), 
+        'active_callback'   => 'is_front_page',
+        'settings'          => array(
             'header_caption_text' => array(
                 'default'       => '',
                 'label'         => esc_html__( 'Header Caption Text', 'urnext' ), 
@@ -21,11 +22,234 @@ $urnext_theme_options = array(
             ),
         )
     ),
-    'urnext_style_options' => array(
-        'name'          => esc_html__( 'Theme Styles', 'urnext' ),
-        'description'   => esc_html__('Change theme style options', 'urnext'), 
+    // Colors
+    'colors' => array(
+        'name'          => esc_html__('Colors', 'urnext' ),
+        'description'   => esc_html__('Change the theme colors', 'urnext'), 
+        'priority'      => 21,
         'settings'      => array(
-            
+            // Body background and text color
+            'body_color' => array(
+                'default'       => '#ffffff',
+                'label'         => esc_html__( 'Body Background Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'html,body',
+                'opacity'       => 100
+            ),
+            'page_color' => array(
+                'default'       => '#ffffff',
+                'label'         => esc_html__( 'Page Background Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100
+            ),
+            'text_color' => array(
+                'default'       => '#444444',
+                'label'         => esc_html__( 'Text Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'html,body',
+                'opacity'       => 100
+            ),
+            'heading_color' => array(
+                'default'       => '#444444',
+                'label'         => esc_html__( 'Heading Text Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'h1,h2,h3,h4,h5,h6',
+                'only_global'   => true,
+                'opacity'       => 100
+            ),
+            // Primary color
+            'primary_color' => array(
+                'default'       => '#00c7ce',
+                'label'         => esc_html__( 'Primary Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100,
+                'description'   => esc_html__('The primary color is used for hover effects, overlays and other additional styles','urnext')
+            ), 
+            'primary_text_color' => array(
+                'default'       => '#ffffff',
+                'label'         => esc_html__( 'Primary Text Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100,
+                'description'   => esc_html__('The primary color is used for hover effects, overlays and other additional styles','urnext')
+            ),
+            // Top bar background and color 
+            'top_bar_color' => array(
+                'default'       => '#ffffff',
+                'label'         => esc_html__( 'Top Bar Background Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 0
+            ),
+            'top_bar_text_color' => array(
+                'default'       => '#ffffff',
+                'label'         => esc_html__( 'Top Bar Font Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100
+            ),
+            'top_bar_color_opacity' => array(
+                'default'       => '0',
+                'label'         => esc_html__( 'Top Bar Background Opacity', 'urnext' ), 
+                'method'        => 'WP_Customize_Control',
+                'type'          => 'number',
+                'description'   => esc_html__( 'Set the top bar opacity between 0 and 100', 'urnext' ), 
+            ),
+            // Header background and text color
+            'header_color' => array(
+                'default'       => '#67bbbf',
+                'label'         => esc_html__( 'Header Background Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100
+            ),
+            'header_color_opacity' => array(
+                'default'       => '100',
+                'label'         => esc_html__( 'Header Opacity', 'urnext' ), 
+                'method'        => 'WP_Customize_Control',
+                'type'          => 'number',
+                'description'   => esc_html__( 'Set the header opacity between 0 and 100', 'urnext' ), 
+            ),
+            'header_text_color' => array(
+                'default'       => '#ffffff',
+                'label'         => esc_html__( 'Header Font Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100
+            ),
+            // Header overlay 
+            'header_overlay_color' => array(
+                'default'       => '#ffffff',
+                'label'         => esc_html__( 'Header Overlay Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 0, 
+            ),
+            'header_overlay_color_opacity' => array(
+                'default'       => '0',
+                'label'         => esc_html__( 'Header Overlay Opacity', 'urnext' ), 
+                'method'        => 'WP_Customize_Control',
+                'type'          => 'number',
+                'description'   => esc_html__( 'Set the header opacity between 0 and 100', 'urnext' ),
+            ),
+            // Menu background and text color
+            'menu_color' => array(
+                'default'       => '#67bbbf',
+                'label'         => esc_html__( 'Menu Background Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100
+            ),
+            'menu_text_color' => array(
+                'default'       => '#ffffff',
+                'label'         => esc_html__( 'Menu Font Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100
+            ),
+            'menu_color_opacity' => array(
+                'default'       => '100',
+                'label'         => esc_html__( 'Menu Opacity', 'urnext' ), 
+                'method'        => 'WP_Customize_Control',
+                'type'          => 'number',
+                'description'   => esc_html__( 'Set the menu opacity between 0 and 100', 'urnext' ), 
+            ),
+            // Hyperlink styles
+            'a_color' => array(
+                'default'       => '#222222',
+                'label'         => esc_html__( 'Link Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'body a,body a:active,body a:visited',
+                'only_global'   => true,
+                'opacity'       => 100
+            ),
+            'a_color_hover' => array(
+                'default'       => '#000000',
+                'label'         => esc_html__( 'Link Hover Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'body a:hover',
+                'only_global'   => true,
+                'opacity'       => 100
+            ),
+            // Border styles
+            'border_color' => array(
+                'default'       => '#222222',
+                'label'         => esc_html__( 'Border Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100
+            ),
+            'border_color_opacity' => array(
+                'default'       => '100',
+                'label'         => esc_html__( 'Border Color Opacity', 'urnext' ), 
+                'method'        => 'WP_Customize_Control',
+                'type'          => 'number',
+                'description'   => esc_html__( 'Set the border color opacity between 0 and 100', 'urnext' ), 
+            ),
+            // Footer background and text color
+            'footer_color' => array(
+                'default'       => '#dddddd',
+                'label'         => esc_html__( 'Footer Background Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100
+            ),
+            'footer_text_color' => array(
+                'default'       => '#555555',
+                'label'         => esc_html__( 'Footer Text Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100
+            ),
+            // Footer link color
+            'a_footer_color' => array(
+                'default'       => '#000000',
+                'label'         => esc_html__( 'Footer Link Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'body #footer a,body #footer a:active,body #footer a:visited',
+                'only_global'   => true,
+                'opacity'       => 100
+            ),
+            'a_footer_color_hover' => array(
+                'default'       => '#777777',
+                'label'         => esc_html__( 'Footer Link Hover Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'selector'      => 'body #footer a:hover',
+                'only_global'   => true,
+                'opacity'       => 100
+            ),
+            // Border styles
+            'footer_border_color' => array(
+                'default'       => '#222222',
+                'label'         => esc_html__( 'Footer Border Color', 'urnext' ), 
+                'method'        => 'WP_Customize_Color_Control',
+                'style'         => 'color',
+                'opacity'       => 100
+            ),
+            'footer_border_color_opacity' => array(
+                'default'       => '100',
+                'label'         => esc_html__( 'Footer Border Color Opacity', 'urnext' ), 
+                'method'        => 'WP_Customize_Control',
+                'type'          => 'number',
+                'description'   => esc_html__( 'Set the footer border color opacity between 0 and 100', 'urnext' ), 
+            ),
+        )
+    ),
+    // Theme settings
+    'urnext_style_options' => array(
+        'name'          => esc_html__( 'Theme settings', 'urnext' ),
+        'description'   => esc_html__('Change the theme settings below', 'urnext'), 
+        'priority'      => 20,
+        'settings'      => array(
             // Layout 
             'layout' => array(
                 'default'       => 'layout-full',
@@ -38,7 +262,6 @@ $urnext_theme_options = array(
                 ),
                 'description'   => esc_html__( 'Choose a layout for your theme', 'urnext' ),
             ),
-
             // Fonts
             'font' => array(
                 'default'       => 'system',
@@ -96,77 +319,6 @@ $urnext_theme_options = array(
                 'style'         => 'text-transform',
                 'selector'      => 'h1,h2,h3,h4,h5,h6'
             ),
-
-            // Body background and text color
-            'body_color' => array(
-                'default'       => '#ffffff',
-                'label'         => esc_html__( 'Body Background Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'selector'      => 'html,body',
-                'opacity'       => 100
-            ),
-            'page_color' => array(
-                'default'       => '#ffffff',
-                'label'         => esc_html__( 'Page Background Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100
-            ),
-            'text_color' => array(
-                'default'       => '#444444',
-                'label'         => esc_html__( 'Text Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'selector'      => 'html,body',
-                'opacity'       => 100
-            ),
-            'heading_color' => array(
-                'default'       => '#444444',
-                'label'         => esc_html__( 'Heading Text Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'selector'      => 'h1,h2,h3,h4,h5,h6',
-                'only_global'   => true,
-                'opacity'       => 100
-            ),
-
-            // Hyperlink styles
-            'a_color' => array(
-                'default'       => '#222222',
-                'label'         => esc_html__( 'Link Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'selector'      => 'body a,body a:active,body a:visited',
-                'only_global'   => true,
-                'opacity'       => 100
-            ),
-            'a_color_hover' => array(
-                'default'       => '#000000',
-                'label'         => esc_html__( 'Link Hover Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'selector'      => 'body a:hover',
-                'only_global'   => true,
-                'opacity'       => 100
-            ),
-
-            // Border styles
-            'border_color' => array(
-                'default'       => '#222222',
-                'label'         => esc_html__( 'Border Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100
-            ),
-            'border_color_opacity' => array(
-                'default'       => '100',
-                'label'         => esc_html__( 'Border Color Opacity', 'urnext' ), 
-                'method'        => 'WP_Customize_Control',
-                'type'          => 'number',
-                'description'   => esc_html__( 'Set the border color opacity between 0 and 100', 'urnext' ), 
-            ),
-
             // Breadcrumbs
             'breadcrumbs' => array(
                 'default'       => '',
@@ -174,101 +326,13 @@ $urnext_theme_options = array(
                 'method'        => 'WP_Customize_Control',
                 'type'          => 'checkbox',
                 'description'   => esc_html__( 'Check to enable breadcrumbs', 'urnext' ), 
-            ),  
-
-            // Primary color
-            'primary_color' => array(
-                'default'       => '#00c7ce',
-                'label'         => esc_html__( 'Primary Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100,
-                'description'   => esc_html__('The primary color is used for hover effects, overlays and other additional styles','urnext')
-            ), 
-            'primary_text_color' => array(
-                'default'       => '#ffffff',
-                'label'         => esc_html__( 'Primary Text Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100,
-                'description'   => esc_html__('The primary color is used for hover effects, overlays and other additional styles','urnext')
-            ),  
-           
+            ),
         )
     ),
     'urnext_header_style_options' => array(
-        'name'          => esc_html__( 'Header Styles', 'urnext' ),
+        'name'          => esc_html__( 'Header settings', 'urnext' ),
         'description'   => esc_html__('Change header style options', 'urnext'), 
         'settings'      => array(
-
-            // Top bar background and color 
-            'top_bar_color' => array(
-                'default'       => '#ffffff',
-                'label'         => esc_html__( 'Top Bar Background Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 0
-            ),
-            'top_bar_text_color' => array(
-                'default'       => '#ffffff',
-                'label'         => esc_html__( 'Top Bar Font Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100
-            ),
-            'top_bar_color_opacity' => array(
-                'default'       => '0',
-                'label'         => esc_html__( 'Top Bar Background Opacity', 'urnext' ), 
-                'method'        => 'WP_Customize_Control',
-                'type'          => 'number',
-                'description'   => esc_html__( 'Set the top bar opacity between 0 and 100', 'urnext' ), 
-            ),
-
-            // Menu background and text color
-            'menu_color' => array(
-                'default'       => '#67bbbf',
-                'label'         => esc_html__( 'Menu Background Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100
-            ),
-            'menu_text_color' => array(
-                'default'       => '#ffffff',
-                'label'         => esc_html__( 'Menu Font Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100
-            ),
-            'menu_color_opacity' => array(
-                'default'       => '100',
-                'label'         => esc_html__( 'Menu Opacity', 'urnext' ), 
-                'method'        => 'WP_Customize_Control',
-                'type'          => 'number',
-                'description'   => esc_html__( 'Set the menu opacity between 0 and 100', 'urnext' ), 
-            ),
-
-            // Header background and text color
-            'header_color' => array(
-                'default'       => '#67bbbf',
-                'label'         => esc_html__( 'Header Background Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100
-            ),
-            'header_color_opacity' => array(
-                'default'       => '100',
-                'label'         => esc_html__( 'Header Opacity', 'urnext' ), 
-                'method'        => 'WP_Customize_Control',
-                'type'          => 'number',
-                'description'   => esc_html__( 'Set the header opacity between 0 and 100', 'urnext' ), 
-            ),
-            'header_text_color' => array(
-                'default'       => '#ffffff',
-                'label'         => esc_html__( 'Header Font Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100
-            ),
             'header_parallax' => array(
                 'default'       => '',
                 'label'         => esc_html__( 'Header Parallax', 'urnext' ), 
@@ -297,88 +361,19 @@ $urnext_theme_options = array(
                 'type'          => 'checkbox',
                 'description'   => esc_html__( 'Check to make the header hide on sroll', 'urnext' ), 
             ),
-
-            // Overlay 
-            'header_overlay_color' => array(
-                'default'       => '#ffffff',
-                'label'         => esc_html__( 'Header Overlay Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 0, 
-            ),
-            'header_overlay_color_opacity' => array(
-                'default'       => '0',
-                'label'         => esc_html__( 'Header Overlay Opacity', 'urnext' ), 
-                'method'        => 'WP_Customize_Control',
-                'type'          => 'number',
-                'description'   => esc_html__( 'Set the header opacity between 0 and 100', 'urnext' ),
-            ),
-
             // Logo
             'logo' => array(
                 'label'         => esc_html__( 'Upload your logo', 'urnext' ), 
-                'default'       => get_template_directory_uri() . '/images/logo.png',
+                'default'       => false,
                 'method'        => 'WP_Customize_Image_Control'
             ),
         ),
     ),
     'urnext_footer_options' => array(
-        'name'          => esc_html__( 'Footer Styles', 'urnext' ),
-        'description'   => esc_html__('Change footer style options', 'urnext'), 
+        'name'          => esc_html__( 'Footer settings', 'urnext' ),
+        'description'   => esc_html__('Change the footer settings below', 'urnext'), 
         'settings'      => array(
 
-            // Footer background and text color
-            'footer_color' => array(
-                'default'       => '#dddddd',
-                'label'         => esc_html__( 'Footer Background Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100
-            ),
-            'footer_text_color' => array(
-                'default'       => '#555555',
-                'label'         => esc_html__( 'Footer Text Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100
-            ),
-
-            // Footer link color
-            'a_footer_color' => array(
-                'default'       => '#000000',
-                'label'         => esc_html__( 'Footer Link Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'selector'      => 'body #footer a,body #footer a:active,body #footer a:visited',
-                'only_global'   => true,
-                'opacity'       => 100
-            ),
-            'a_footer_color_hover' => array(
-                'default'       => '#777777',
-                'label'         => esc_html__( 'Footer Link Hover Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'selector'      => 'body #footer a:hover',
-                'only_global'   => true,
-                'opacity'       => 100
-            ),
-
-            // Border styles
-            'footer_border_color' => array(
-                'default'       => '#222222',
-                'label'         => esc_html__( 'Footer Border Color', 'urnext' ), 
-                'method'        => 'WP_Customize_Color_Control',
-                'style'         => 'color',
-                'opacity'       => 100
-            ),
-            'footer_border_color_opacity' => array(
-                'default'       => '100',
-                'label'         => esc_html__( 'Footer Border Color Opacity', 'urnext' ), 
-                'method'        => 'WP_Customize_Control',
-                'type'          => 'number',
-                'description'   => esc_html__( 'Set the footer border color opacity between 0 and 100', 'urnext' ), 
-            ),
-            
         )
     ),
 );
@@ -389,16 +384,22 @@ function urnext_init_theme_options( $wp_customize ) {
     global $urnext_theme_options;
     // Sections, settings and controls will be added here
     foreach( $urnext_theme_options as $section => $settings ){
-        
+        // Create args
+        $args = array(
+            'title'       => $settings['name'],
+            'priority'    => ( isset( $settings['priority'] ) ? (int) $settings['priority'] : 9999 ),
+            'capability'  => 'edit_theme_options',
+            'description' => $settings['description'], 
+        );
+
+        // Add active callback if set 
+        if( isset( $settings['active_callback'] ) ){
+            $args['active_callback'] = $settings['active_callback'];
+        }
         // First add the section
         $wp_customize->add_section( 
             $section, 
-            array(
-                'title'       => $settings['name'],
-                'priority'    => 100,
-                'capability'  => 'edit_theme_options',
-                'description' => $settings['description'], 
-            ) 
+            $args
         );
 
         // Now add the settings

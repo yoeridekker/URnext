@@ -322,11 +322,19 @@ pre{
     top: 0;
     z-index: 1030;
 }
+/*
+#navbar > div.container{
+    width: 1140px;
+    position: initial;
+}
+#navbar > div.container > div.row{
+    margin: 0;
+    padding: 0;
+    position: initial;
+}
+*/
 nav#navbar.has-mobile-menu{
     margin-top:50px;
-}
-nav#navbar.has-mobile-menu {
-    top: 52px;
 }
 body.admin-bar #navbar.sticky-top{
     top:32px;
@@ -1050,6 +1058,9 @@ body.has-sticky-navbar .mean-bar{
 }
 #no-banner{
     min-height: 80px;
+}
+body.mean-container #no-banner{
+    min-height: 130px;
 }
 /* main content */
 #main-content{

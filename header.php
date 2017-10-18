@@ -6,8 +6,7 @@ $has_mobile_menu = wp_nav_menu(
         'theme_location'=> 'mobile',
         'fallback_cb' => '__return_false' // Use the primary menu if mobile is undefined
     )
-); 
-
+);
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="bg-body-color">
@@ -48,7 +47,8 @@ $has_mobile_menu = wp_nav_menu(
     <!-- start navbar -->
     <nav id="navbar" class="navbar navbar <?php if( $sticky_header ) echo 'sticky-top'; ?> navbar-light bg-top-bar-color">
         <div class="container" style="position:initial">
-            
+            <div class="row">
+            <div class="col-lg-12">
             <!-- start branding -->
             <a class="navbar-brand" href="<?php echo site_url(); ?>">
                 <?php if( $logo = get_urnext_option('logo') ): ?>
@@ -66,6 +66,7 @@ $has_mobile_menu = wp_nav_menu(
                     'theme_location'    => 'primary',
                     'container'         => 'nav',
                     'container_id'      => 'megadropmenu',
+                    'menu_id'           => 'menu-primary-menu',
                     'menu_class'        => 'mainmenu border-menu-color top-bar-text-color',
                     'walker'            => new MegaDrop_Walker_Nav_Menu()
                 )
@@ -130,7 +131,8 @@ $has_mobile_menu = wp_nav_menu(
                     </nav>
                     <!-- end genie menu overlay -->
                 <?php endif; ?>
-
+                </div>
+            </div>
             </div>
         </div>
     </nav>
